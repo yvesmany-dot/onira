@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Onira - Journal de Rêves IA</title>
   
   <link rel="manifest" href="manifest.json">
@@ -21,60 +21,67 @@
     
     .orb-glow {
       background: radial-gradient(circle at 45% 45%, #ffffff 0%, #ffe8b8 25%, #ffd1dc 50%, #d6e4ff 75%, #f5e6ff 100%);
-      box-shadow: 0 20px 45px rgba(230, 200, 160, 0.35), 0 0 35px rgba(210, 220, 255, 0.45);
+      box-shadow: 0 15px 35px rgba(230, 200, 160, 0.35), 0 0 25px rgba(210, 220, 255, 0.4);
       transition: all 0.3s ease;
     }
     .orb-pulse { animation: pulse-soft 3.2s ease-in-out infinite; }
     @keyframes pulse-soft {
       0%, 100% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(1.04); filter: brightness(1.08); box-shadow: 0 25px 55px rgba(230, 195, 140, 0.5); }
+      50% { transform: scale(1.04); filter: brightness(1.08); box-shadow: 0 20px 45px rgba(230, 195, 140, 0.5); }
     }
     .recording-active { animation: pulse-rec 1s ease-in-out infinite alternate !important; border: 2px solid rgba(255, 100, 100, 0.3); }
     @keyframes pulse-rec {
       from { transform: scale(0.96); filter: brightness(1.05); }
-      to { transform: scale(1.1); filter: brightness(1.2); box-shadow: 0 0 70px rgba(245, 100, 100, 0.4); }
+      to { transform: scale(1.08); filter: brightness(1.2); box-shadow: 0 0 50px rgba(245, 100, 100, 0.4); }
     }
   </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-0 sm:p-4 select-none">
+<body class="flex items-center justify-center min-h-screen p-0 sm:p-4 select-none bg-[#f4f1ea]">
 
-  <div class="relative w-full max-w-[390px] h-[844px] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[48px] shadow-2xl overflow-hidden flex flex-col justify-between border-[6px] border-[#e8e2d8]">
+  <!-- Cadre principal responsive (100dvh sur mobile, 844px sur grand écran) -->
+  <div class="relative w-full max-w-[390px] h-[100dvh] sm:h-[844px] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border-[6px] border-[#e8e2d8]">
 
-    <button onclick="toggleSettingsModal(true)" class="absolute top-8 right-6 z-20 w-8 h-8 rounded-full bg-white/80 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 transition-all">
+    <button onclick="toggleSettingsModal(true)" class="absolute top-4 sm:top-6 right-5 z-20 w-8 h-8 rounded-full bg-white/85 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
     </button>
 
     <!-- ÉCRAN 1 : ACCUEIL -->
-    <div id="screen-home" class="flex-1 flex flex-col justify-between">
-      <header class="pt-8 pb-1 px-6 text-center">
-        <div class="mx-auto w-10 h-10 rounded-full mb-1 flex items-center justify-center p-1 relative">
+    <div id="screen-home" class="flex-1 flex flex-col justify-between overflow-hidden">
+      <!-- En-tête resserré -->
+      <header class="pt-4 sm:pt-6 pb-0 px-6 text-center flex-shrink-0">
+        <div class="mx-auto w-8 h-8 rounded-full mb-1 flex items-center justify-center p-0.5 relative">
           <div class="w-full h-full rounded-full border border-[#e5c583]/60 flex items-center justify-center shadow-inner" style="background: radial-gradient(circle, #fffdf8 30%, #fde7b0 70%, #d8e5ff 100%);">
-            <div class="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-[#eac575] to-[#f4dca6]"></div>
+            <div class="w-2 h-2 rounded-full bg-gradient-to-tr from-[#eac575] to-[#f4dca6]"></div>
           </div>
         </div>
-        <h1 class="font-brand text-xs font-bold text-[#9e7d3b] tracking-[0.3em] uppercase">ONIRA</h1>
+        <h1 class="font-brand text-[11px] font-bold text-[#9e7d3b] tracking-[0.28em] uppercase">ONIRA</h1>
       </header>
 
-      <main class="flex-1 flex flex-col items-center justify-center px-6">
-        <div id="orb" class="w-52 h-52 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all mt-6">
-          <div class="px-4 py-1.5 bg-white/80 backdrop-blur-md rounded-full border border-white flex items-center shadow-md">
+      <!-- Zone centrale équilibrée -->
+      <main class="flex-1 flex flex-col items-center justify-evenly px-5 py-2 min-h-0">
+        
+        <!-- Orbe redimensionnée (160px) pour libérer de la place en bas -->
+        <div id="orb" class="w-40 h-40 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all">
+          <div class="px-3.5 py-1 bg-white/80 backdrop-blur-md rounded-full border border-white flex items-center shadow-sm">
             <div id="record-indicator" class="w-2 h-2 rounded-full bg-[#caa255] mr-2"></div>
-            <span id="badge-text" data-i18n="recordBadge" class="text-xs font-bold text-[#7c6332]">Enregistrer</span>
+            <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-bold text-[#7c6332]">Enregistrer</span>
           </div>
         </div>
 
-        <div class="mt-8 text-center px-4">
-          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-[13px] font-semibold text-[#3b342f]">Appuyez sur l'orbe pour parler</h2>
-          <p id="instruction-sub" data-i18n="instructionSub" class="text-[11px] text-[#91867c] mt-1.5 min-h-[2rem]">Racontez librement votre rêve</p>
+        <!-- Instructions compactes -->
+        <div class="text-center px-2 max-w-[280px]">
+          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]">Appuyez sur l'orbe pour parler</h2>
+          <p id="instruction-sub" data-i18n="instructionSub" class="text-[10px] text-[#91867c] mt-0.5 min-h-[1.2rem] line-clamp-2">Racontez librement votre rêve</p>
         </div>
 
-        <div class="w-full mt-6">
-          <div class="flex justify-between items-center text-[11px] text-[#8e857c] px-1 mb-2 font-medium">
+        <!-- Rêves récents toujours visibles -->
+        <div class="w-full">
+          <div class="flex justify-between items-center text-[10px] text-[#8e857c] px-1 mb-1.5 font-medium">
             <span data-i18n="recentDreams">Rêves récents</span>
             <button onclick="switchTab('journal')" data-i18n="viewJournal" class="text-[#a88644] text-[10px] hover:underline font-semibold">Voir le journal →</button>
           </div>
-          <div id="home-recents-grid" class="grid grid-cols-2 gap-2.5">
-            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-3 italic" data-i18n="syncing">
+          <div id="home-recents-grid" class="grid grid-cols-2 gap-2">
+            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-2 italic" data-i18n="syncing">
               Synchronisation des songes...
             </div>
           </div>
@@ -84,68 +91,68 @@
 
     <!-- ÉCRAN 2 : CHARGEMENT -->
     <div id="screen-loading" class="hidden flex-1 flex flex-col items-center justify-center px-8 text-center bg-[#faf8f5]">
-      <div class="w-32 h-32 rounded-full orb-glow orb-pulse flex items-center justify-center mb-6">
-        <svg class="w-10 h-10 text-[#a88644] animate-spin" fill="none" viewBox="0 0 24 24">
+      <div class="w-28 h-28 rounded-full orb-glow orb-pulse flex items-center justify-center mb-5">
+        <svg class="w-9 h-9 text-[#a88644] animate-spin" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
         </svg>
       </div>
-      <h3 id="loading-step" data-i18n="loadingTitle" class="text-sm font-semibold text-[#2d2926]">Décryptage onirique...</h3>
-      <p id="loading-sub" data-i18n="loadingSub" class="text-[11px] text-[#8c827a] mt-1">L'inconscient prend forme...</p>
+      <h3 id="loading-step" data-i18n="loadingTitle" class="text-xs font-semibold text-[#2d2926]">Décryptage onirique...</h3>
+      <p id="loading-sub" data-i18n="loadingSub" class="text-[10px] text-[#8c827a] mt-1">L'inconscient prend forme...</p>
     </div>
 
     <!-- ÉCRAN 3 : RÉSULTAT -->
-    <div id="screen-result" class="hidden flex-1 flex flex-col overflow-y-auto no-scrollbar p-5">
-      <div class="flex justify-between items-center mb-3">
+    <div id="screen-result" class="hidden flex-1 flex flex-col overflow-y-auto no-scrollbar p-4">
+      <div class="flex justify-between items-center mb-2.5">
         <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]">Nouveau Songe</span>
-        <button onclick="switchTab('home')" class="text-xs text-[#8c827a]">✕</button>
+        <button onclick="switchTab('home')" class="text-xs text-[#8c827a] p-1">✕</button>
       </div>
 
-      <div class="relative rounded-2xl overflow-hidden shadow-lg h-56 border border-[#e5ded2] mb-4 bg-[#f0ebd8]">
+      <div class="relative rounded-2xl overflow-hidden shadow-md h-48 border border-[#e5ded2] mb-3 bg-[#f0ebd8]">
         <img id="result-img" src="" class="w-full h-full object-cover hidden">
-        <div id="result-img-placeholder" class="text-center p-4 pt-20">
+        <div id="result-img-placeholder" class="text-center p-4 pt-16">
           <svg class="w-8 h-8 mx-auto text-[#caa255] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent flex items-end p-3.5">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent flex items-end p-3">
           <div>
-            <span id="result-badge" class="px-2.5 py-0.5 rounded-full text-[9px] font-semibold bg-[#a88644] text-white"></span>
-            <h2 id="result-title" class="text-base font-bold text-white mt-1"></h2>
+            <span id="result-badge" class="px-2 py-0.5 rounded-full text-[8px] font-semibold bg-[#a88644] text-white"></span>
+            <h2 id="result-title" class="text-sm font-bold text-white mt-1"></h2>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl p-4 border border-[#eee7db] shadow-sm mb-3">
-        <h3 data-i18n="decryptionTitle" class="text-[11px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-2">Décryptage Onira</h3>
+      <div class="bg-white rounded-xl p-3.5 border border-[#eee7db] shadow-sm mb-2.5">
+        <h3 data-i18n="decryptionTitle" class="text-[10px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-1.5">Décryptage Onira</h3>
         <p id="result-interpretation" class="text-xs text-[#524b45] leading-relaxed"></p>
       </div>
 
-      <div class="bg-[#f2ece2]/60 rounded-2xl p-3.5 border border-[#eee7db] mb-4">
-        <p data-i18n="yourStory" class="text-[10px] font-semibold text-[#8c827a] mb-1">Votre récit :</p>
-        <p id="result-transcript" class="text-xs text-[#635b54] italic leading-relaxed"></p>
+      <div class="bg-[#f2ece2]/60 rounded-xl p-3 border border-[#eee7db] mb-3">
+        <p data-i18n="yourStory" class="text-[9px] font-semibold text-[#8c827a] mb-1">Votre récit :</p>
+        <p id="result-transcript" class="text-[11px] text-[#635b54] italic leading-relaxed"></p>
       </div>
 
-      <button id="save-btn" onclick="saveToSupabase()" data-i18n="saveBtn" class="w-full py-3 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow-md transition-all">
+      <button id="save-btn" onclick="saveToSupabase()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all">
         Conserver dans mon Journal
       </button>
     </div>
 
     <!-- ÉCRAN 4 : JOURNAL -->
     <div id="screen-journal" class="hidden flex-1 flex flex-col overflow-hidden">
-      <header class="pt-8 pb-3 px-5 border-b border-[#eee8dc] bg-[#faf8f5]/90 flex-shrink-0">
-        <h1 data-i18n="journalTitle" class="text-lg font-bold text-[#2d2926]">Journal d'Onira</h1>
-        <p id="journal-count" class="text-[11px] text-[#91867c]">...</p>
+      <header class="pt-4 sm:pt-6 pb-2.5 px-5 border-b border-[#eee8dc] bg-[#faf8f5]/90 flex-shrink-0">
+        <h1 data-i18n="journalTitle" class="text-base font-bold text-[#2d2926]">Journal d'Onira</h1>
+        <p id="journal-count" class="text-[10px] text-[#91867c]">...</p>
       </header>
-      <main class="flex-1 overflow-y-auto no-scrollbar p-4">
-        <div id="journal-grid" class="grid grid-cols-2 gap-3 pb-4"></div>
+      <main class="flex-1 overflow-y-auto no-scrollbar p-3.5">
+        <div id="journal-grid" class="grid grid-cols-2 gap-2.5 pb-4"></div>
       </main>
     </div>
 
     <!-- MODALE CLÉ OPENAI -->
     <div id="settings-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-5">
       <div class="w-full bg-[#faf8f5] rounded-3xl p-5 border border-[#e2d7c5] shadow-2xl">
-        <h3 data-i18n="settingsTitle" class="text-sm font-bold text-[#2d2926]">Clé API OpenAI</h3>
-        <input id="api-key-input" type="password" placeholder="sk-..." class="w-full mt-3 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white">
-        <div class="mt-4 flex gap-2">
+        <h3 data-i18n="settingsTitle" class="text-xs font-bold text-[#2d2926]">Clé API OpenAI</h3>
+        <input id="api-key-input" type="password" placeholder="sk-..." class="w-full mt-2.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white">
+        <div class="mt-3.5 flex gap-2">
           <button onclick="saveApiKey()" data-i18n="settingsSave" class="flex-1 py-2 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold">Enregistrer</button>
           <button onclick="toggleSettingsModal(false)" data-i18n="settingsClose" class="px-4 py-2 border border-[#ddd3c4] text-[#736a61] rounded-xl text-xs">Fermer</button>
         </div>
@@ -154,21 +161,21 @@
 
     <!-- MODALE DÉTAIL -->
     <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
-      <div class="w-full bg-[#faf8f5] rounded-t-[32px] p-5 border-t border-[#e2d7c5] max-h-[90%] overflow-y-auto no-scrollbar">
-        <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-4 cursor-pointer" onclick="closeModal()"></div>
-        <div class="relative rounded-2xl overflow-hidden shadow-md mb-4 h-48 border border-[#e5ded2]">
+      <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar">
+        <div class="w-8 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
+        <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-44 border border-[#e5ded2]">
           <img id="modal-img" src="" class="w-full h-full object-cover">
         </div>
-        <h2 id="modal-title" class="text-base font-bold text-[#2d2926]"></h2>
-        <p id="modal-date" class="text-[10px] text-[#91867c] mb-2"></p>
+        <h2 id="modal-title" class="text-sm font-bold text-[#2d2926]"></h2>
+        <p id="modal-date" class="text-[9px] text-[#91867c] mb-2"></p>
         <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
         <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
-        <button onclick="closeModal()" data-i18n="settingsClose" class="w-full mt-4 py-3 bg-[#9e7d3b] text-white rounded-xl text-xs">Fermer</button>
+        <button onclick="closeModal()" data-i18n="settingsClose" class="w-full mt-3 py-2.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold">Fermer</button>
       </div>
     </div>
 
-    <!-- NAVBAR -->
-    <nav class="bg-white/95 border-t border-[#ede7dc] px-6 py-2.5 flex justify-between text-[10px] text-[#968b80] flex-shrink-0">
+    <!-- BARRE DE NAVIGATION ADAPTÉE AU BAS DE L'IPHONE -->
+    <nav class="bg-white/95 border-t border-[#ede7dc] px-6 pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex justify-between text-[10px] text-[#968b80] flex-shrink-0">
       <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-0.5 text-[#a88644] font-semibold">
         <span data-i18n="navHome">Accueil</span>
       </button>
@@ -291,17 +298,17 @@
       const topTwo = dreamsData.slice(0, 2);
 
       if (topTwo.length === 0) {
-        recentsGrid.innerHTML = `<div class="col-span-2 text-center text-[10px] text-[#9b9186] py-3">${t.emptyJournal}</div>`;
+        recentsGrid.innerHTML = `<div class="col-span-2 text-center text-[10px] text-[#9b9186] py-2">${t.emptyJournal}</div>`;
         return;
       }
       topTwo.forEach((dream, index) => {
         const item = document.createElement('div');
-        item.className = "bg-white/90 border border-[#eee7db] rounded-xl p-2 flex items-center gap-2 shadow-sm cursor-pointer hover:border-[#d9be85]";
+        item.className = "bg-white/90 border border-[#eee7db] rounded-xl p-1.5 flex items-center gap-2 shadow-sm cursor-pointer hover:border-[#d9be85]";
         item.onclick = () => openModal(index);
-        item.innerHTML = `<img src="${dream.image_url}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 bg-[#eee]">
+        item.innerHTML = `<img src="${dream.image_url}" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-[#eee]">
           <div class="overflow-hidden text-left">
-            <p class="text-[11px] font-semibold text-[#2d2926] truncate">${dream.title}</p>
-            <p class="text-[9px] text-[#9b9186]">${formatDate(dream.created_at)}</p>
+            <p class="text-[10px] font-semibold text-[#2d2926] truncate">${dream.title}</p>
+            <p class="text-[8px] text-[#9b9186]">${formatDate(dream.created_at)}</p>
           </div>`;
         recentsGrid.appendChild(item);
       });
@@ -311,19 +318,19 @@
       const grid = document.getElementById('journal-grid');
       grid.innerHTML = '';
       if (dreamsData.length === 0) {
-        grid.innerHTML = `<p class="col-span-2 text-center text-xs text-[#91867c] mt-10">${t.emptyJournal}</p>`;
+        grid.innerHTML = `<p class="col-span-2 text-center text-xs text-[#91867c] mt-8">${t.emptyJournal}</p>`;
       }
       dreamsData.forEach((dream, index) => {
         const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl overflow-hidden border border-[#eee7db] shadow-sm cursor-pointer";
+        card.className = "bg-white rounded-xl overflow-hidden border border-[#eee7db] shadow-sm cursor-pointer";
         card.onclick = () => openModal(index);
-        card.innerHTML = `<div class="h-28 w-full relative bg-[#eee]">
+        card.innerHTML = `<div class="h-24 w-full relative bg-[#eee]">
             <img src="${dream.image_url}" class="w-full h-full object-cover">
-            <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span>
+            <span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span>
           </div>
-          <div class="p-2.5">
-            <h3 class="font-semibold text-xs truncate">${dream.title}</h3>
-            <p class="text-[9px] text-[#91867c] mt-0.5">${formatDate(dream.created_at)}</p>
+          <div class="p-2">
+            <h3 class="font-semibold text-[11px] truncate">${dream.title}</h3>
+            <p class="text-[8px] text-[#91867c] mt-0.5">${formatDate(dream.created_at)}</p>
           </div>`;
         grid.appendChild(card);
       });
@@ -433,23 +440,15 @@
         const imgData = await imgRes.json();
         if (imgData.error) throw new Error("Erreur OpenAI (Image) : " + imgData.error.message);
 
-        // Analyse universelle du format de l'image (URL, b64_json, ou chaîne directe)
         let imageUrl = "";
         const item = imgData.data?.[0];
-        
         if (item) {
-          if (item.url) {
-            imageUrl = item.url;
-          } else if (item.b64_json) {
-            imageUrl = `data:image/png;base64,${item.b64_json}`;
-          } else if (typeof item === "string") {
-            imageUrl = item.startsWith("http") || item.startsWith("data:") ? item : `data:image/png;base64,${item}`;
-          }
+          if (item.url) imageUrl = item.url;
+          else if (item.b64_json) imageUrl = `data:image/png;base64,${item.b64_json}`;
+          else if (typeof item === "string") imageUrl = item.startsWith("http") || item.startsWith("data:") ? item : `data:image/png;base64,${item}`;
         }
 
-        if (!imageUrl) {
-          throw new Error("Contenu reçu non reconnu : " + JSON.stringify(imgData).slice(0, 160));
-        }
+        if (!imageUrl) throw new Error("Format d'image non reconnu.");
 
         currentAnalysis = {
           title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
