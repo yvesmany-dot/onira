@@ -56,8 +56,6 @@
       </header>
 
       <main class="flex-1 flex flex-col items-center justify-center px-6">
-        
-        <!-- L'ORBE : DÉSORMAIS L'UNIQUE BOUTON -->
         <div id="orb" class="w-52 h-52 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all mt-6">
           <div class="px-4 py-1.5 bg-white/80 backdrop-blur-md rounded-full border border-white flex items-center shadow-md">
             <div id="record-indicator" class="w-2 h-2 rounded-full bg-[#caa255] mr-2"></div>
@@ -184,7 +182,7 @@
   </div>
 
   <script>
-    // --- DICTIONNAIRE DES LANGUES (i18n) ---
+    // --- DICTIONNAIRE DES LANGUES ---
     const translations = {
       fr: {
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
@@ -272,6 +270,8 @@
 
       try {
         let permanentImageUrl = currentAnalysis.img;
+
+        // Téléchargement vers Supabase Storage si accessible, sinon repli sur le lien direct
         try {
           const res = await fetch(currentAnalysis.img);
           const imageBlob = await res.blob();
@@ -282,12 +282,15 @@
             if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
           }
         } catch(storageErr) {
-          console.warn("Upload Storage ignoré, sauvegarde de l'URL directe", storageErr);
+          console.warn("Stockage Supabase ignoré, lien direct conservé :", storageErr);
         }
 
         const { error: dbError } = await supabaseClient.from('dreams').insert([{
-          title: currentAnalysis.title, tag: currentAnalysis.tag, transcript: currentAnalysis.transcript,
-          interpretation: currentAnalysis.interpretation, image_url: permanentImageUrl
+          title: currentAnalysis.title,
+          tag: currentAnalysis.tag,
+          transcript: currentAnalysis.transcript,
+          interpretation: currentAnalysis.interpretation,
+          image_url: permanentImageUrl
         }]);
 
         if (dbError) throw new Error("Erreur base de données : " + dbError.message);
@@ -387,7 +390,7 @@
       else modal.classList.add('hidden');
     }
 
-    // --- RECONNAISSANCE VOCALE (Bouton Unique) ---
+    // --- RECONNAISSANCE VOCALE ---
     let isRecording = false;
     let recognition;
     let finalTranscript = "";
@@ -397,7 +400,7 @@
       recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = t.voiceLangCode; 
+      recognition.lang = t.voiceLangCode;
 
       recognition.onresult = (event) => {
         let interim = "";
@@ -435,7 +438,7 @@
 
         document.getElementById('loading-step').textContent = t.loadingTitle;
         
-        // Requête image avec format de réponse strictement défini en Base64
+        // Requête image standard (sans le paramètre non pris en charge)
         const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -443,21 +446,17 @@
             model: "gpt-image-2.5-flare", 
             prompt: result.image_prompt, 
             n: 1, 
-            size: "1024x1024",
-            response_format: "b64_json"
+            size: "1024x1024"
           })
         });
         
         const imgData = await imgRes.json();
-        if (imgData.error) throw new Error("Erreur Image : " + imgData.error.message);
-        if (!imgData.data || imgData.data.length === 0) throw new Error("Aucune donnée d'image reçue.");
+        if (imgData.error) throw new Error("Erreur Image OpenAI : " + imgData.error.message);
+        if (!imgData.data || !imgData.data[0] || !imgData.data[0].url) {
+          throw new Error("L'API n'a retourné aucune URL d'image valide.");
+        }
 
-        // Sécurisation absolue de la source de l'image (Base64 prioritaire, sinon URL)
-        const imageUrl = imgData.data[0].b64_json 
-          ? `data:image/png;base64,${imgData.data[0].b64_json}` 
-          : imgData.data[0].url;
-
-        if (!imageUrl) throw new Error("Format d'image illisible.");
+        const imageUrl = imgData.data[0].url;
 
         currentAnalysis = {
           title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
@@ -470,7 +469,13 @@
         
         const imgEl = document.getElementById('result-img');
         imgEl.src = currentAnalysis.img;
-        imgEl.onload = () => { imgEl.classList.remove('hidden'); document.getElementById('result-img-placeholder').classList.add('hidden'); };
+        imgEl.onload = () => { 
+          imgEl.classList.remove('hidden'); 
+          document.getElementById('result-img-placeholder').classList.add('hidden'); 
+        };
+        imgEl.onerror = () => {
+          alert("Erreur lors de l'affichage de l'image.");
+        };
 
         switchTab('result');
       } catch (err) { 
@@ -487,7 +492,6 @@
       const dot = document.getElementById('record-indicator');
       
       if (!isRecording) {
-        // DÉMARRER L'ENREGISTREMENT
         isRecording = true; 
         finalTranscript = "";
         try { recognition.start(); } catch(e) {}
@@ -497,9 +501,7 @@
         badge.classList.replace('text-[#7c6332]', 'text-red-500');
         dot.classList.replace('bg-[#caa255]', 'bg-red-500');
         document.getElementById('instruction-sub').textContent = t.listening;
-        
       } else {
-        // ARRÊTER L'ENREGISTREMENT
         isRecording = false; 
         recognition.stop();
         
@@ -516,7 +518,6 @@
       }
     }
 
-    // Un seul événement d'écoute attaché à l'orbe
     document.getElementById('orb').addEventListener('click', handleRecordAction);
   </script>
 </body>
