@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Onira - Journal de Rêves IA</title>
+  
   <link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -266,47 +267,34 @@
       }
     }
 
-    // --- NOUVELLE FONCTION DE SAUVEGARDE (STORAGE + BDD) ---
     async function saveToSupabase() {
       if (!currentAnalysis) return;
       const btn = document.getElementById('save-btn');
       btn.textContent = t.saving;
 
       try {
-        let imageBlob;
-        
-        // Convertit l'image (Base64 renvoyée par OpenAI) en fichier binaire
-        if (currentAnalysis.img.startsWith('data:')) {
+        let permanentImageUrl = currentAnalysis.img;
+
+        // Téléchargement vers Supabase Storage si l'image provient d'OpenAI
+        try {
           const res = await fetch(currentAnalysis.img);
-          imageBlob = await res.blob();
-        } else {
-          const imgFetch = await fetch(currentAnalysis.img);
-          imageBlob = await imgFetch.blob();
+          const imageBlob = await res.blob();
+          const fileName = `dream_${Date.now()}.png`;
+
+          const { error: uploadError } = await supabaseClient
+            .storage
+            .from('dream_images')
+            .upload(fileName, imageBlob, { contentType: 'image/png', upsert: false });
+
+          if (!uploadError) {
+            const { data: publicUrlData } = supabaseClient.storage.from('dream_images').getPublicUrl(fileName);
+            if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
+          }
+        } catch(storageErr) {
+          console.warn("Upload Storage ignoré, sauvegarde de l'URL directe", storageErr);
         }
 
-        // Nom unique pour éviter d'écraser une autre image
-        const fileName = `dream_${Date.now()}.png`;
-
-        // 1. Upload dans le bucket 'dream_images'
-        const { data: uploadData, error: uploadError } = await supabaseClient
-          .storage
-          .from('dream_images')
-          .upload(fileName, imageBlob, {
-            contentType: 'image/png',
-            upsert: false
-          });
-
-        if (uploadError) throw new Error("Erreur upload image : " + uploadError.message);
-
-        // 2. Récupère le lien public permanent
-        const { data: publicUrlData } = supabaseClient
-          .storage
-          .from('dream_images')
-          .getPublicUrl(fileName);
-
-        const permanentImageUrl = publicUrlData.publicUrl;
-
-        // 3. Sauvegarde dans la table SQL
+        // Sauvegarde de l'entrée dans la base de données
         const { error: dbError } = await supabaseClient
           .from('dreams')
           .insert([{
@@ -319,7 +307,6 @@
 
         if (dbError) throw new Error("Erreur base de données : " + dbError.message);
 
-        // Terminé !
         await fetchDreamsFromCloud();
         switchTab('journal');
       } catch (err) {
@@ -439,7 +426,11 @@
 
     async function processDreamWithOpenAI(transcript) {
       const apiKey = getApiKey();
-      if (!apiKey) { switchTab('home'); return; }
+      if (!apiKey) {
+        alert("Clé OpenAI manquante. Ouvrez Réglages AI.");
+        switchTab('home');
+        return;
+      }
 
       try {
         const promptSystem = `Tu es Onira. Décrypte le rêve. JSON requis: {"title":"Titre poétique en ${t.aiLangName}", "mood":"Humeur en ${t.aiLangName}", "interpretation":"Analyse détaillée en ${t.aiLangName}", "image_prompt":"Prompt for surreal dreamy digital art in English."}`;
@@ -454,11 +445,13 @@
         });
         
         const chatData = await chatRes.json();
+        if (chatData.error) throw new Error("Erreur Texte : " + chatData.error.message);
+
         const result = JSON.parse(chatData.choices[0].message.content);
 
         document.getElementById('loading-step').textContent = t.loadingTitle;
         
-        // Demande de l'image en Base64 (b64_json) pour faciliter l'upload Supabase
+        // Requête image avec gestion d'erreur dédiée
         const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -466,13 +459,15 @@
             model: "gpt-image-2.5-flare", 
             prompt: result.image_prompt, 
             n: 1, 
-            size: "1024x1024",
-            response_format: "b64_json" 
+            size: "1024x1024"
           })
         });
         
         const imgData = await imgRes.json();
-        const imageUrl = imgData.data[0].url || (imgData.data[0].b64_json ? `data:image/png;base64,${imgData.data[0].b64_json}` : '');
+        if (imgData.error) throw new Error("Erreur Image OpenAI : " + imgData.error.message);
+        if (!imgData.data || !imgData.data[0]) throw new Error("Réponse inattendue lors de la création de l'image.");
+
+        const imageUrl = imgData.data[0].url;
 
         currentAnalysis = {
           title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
