@@ -435,6 +435,7 @@
 
         document.getElementById('loading-step').textContent = t.loadingTitle;
         
+        // Requête image avec format de réponse strictement défini en Base64
         const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -442,15 +443,21 @@
             model: "gpt-image-2.5-flare", 
             prompt: result.image_prompt, 
             n: 1, 
-            size: "1024x1024"
+            size: "1024x1024",
+            response_format: "b64_json"
           })
         });
         
         const imgData = await imgRes.json();
         if (imgData.error) throw new Error("Erreur Image : " + imgData.error.message);
-        if (!imgData.data || !imgData.data[0]) throw new Error("Réponse inattendue de l'IA Image.");
+        if (!imgData.data || imgData.data.length === 0) throw new Error("Aucune donnée d'image reçue.");
 
-        const imageUrl = imgData.data[0].url;
+        // Sécurisation absolue de la source de l'image (Base64 prioritaire, sinon URL)
+        const imageUrl = imgData.data[0].b64_json 
+          ? `data:image/png;base64,${imgData.data[0].b64_json}` 
+          : imgData.data[0].url;
+
+        if (!imageUrl) throw new Error("Format d'image illisible.");
 
         currentAnalysis = {
           title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
@@ -466,7 +473,10 @@
         imgEl.onload = () => { imgEl.classList.remove('hidden'); document.getElementById('result-img-placeholder').classList.add('hidden'); };
 
         switchTab('result');
-      } catch (err) { alert(err.message); switchTab('home'); }
+      } catch (err) { 
+        alert(err.message); 
+        switchTab('home'); 
+      }
     }
 
     function handleRecordAction() {
