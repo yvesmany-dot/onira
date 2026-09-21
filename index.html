@@ -182,7 +182,6 @@
   </div>
 
   <script>
-    // --- DICTIONNAIRE DES LANGUES ---
     const translations = {
       fr: {
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
@@ -192,7 +191,7 @@
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés",
         settingsTitle: "Clé API OpenAI", settingsSave: "Enregistrer", settingsClose: "Fermer",
         navHome: "Accueil", navJournal: "Journal", navSettings: "Réglages AI",
-        listening: "Écoute en cours... Appuyez pour arrêter.", saving: "Sauvegarde en cours...",
+        listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
         aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
       },
       en: {
@@ -203,37 +202,15 @@
         journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams",
         settingsTitle: "OpenAI API Key", settingsSave: "Save", settingsClose: "Close",
         navHome: "Home", navJournal: "Journal", navSettings: "AI Settings",
-        listening: "Listening... Tap to stop.", saving: "Saving...",
+        listening: "Listening... Speak, then tap the orb to stop.", saving: "Saving...",
         aiLangName: "ENGLISH", voiceLangCode: "en-US"
-      },
-      es: {
-        recordBadge: "Grabar", stopBadge: "Detener", instructionTitle: "Toca el orbe para hablar", instructionSub: "Habla libremente al despertar",
-        recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Sincronizando sueños...",
-        loadingTitle: "Decodificando sueño...", loadingSub: "El inconsciente toma forma...",
-        newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
-        journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados",
-        settingsTitle: "Clave API OpenAI", settingsSave: "Guardar", settingsClose: "Cerrar",
-        navHome: "Inicio", navJournal: "Diario", navSettings: "Ajustes IA",
-        listening: "Escuchando... Toca para detener.", saving: "Guardando...",
-        aiLangName: "ESPAÑOL", voiceLangCode: "es-ES"
-      },
-      it: {
-        recordBadge: "Registra", stopBadge: "Ferma", instructionTitle: "Tocca la sfera per parlare", instructionSub: "Parla liberamente al risveglio",
-        recentDreams: "Sogni recenti", viewJournal: "Vedi diario →", syncing: "Sincronizzazione...",
-        loadingTitle: "Decodifica in corso...", loadingSub: "L'inconscio prende forma...",
-        newDream: "Nuovo Sogno", decryptionTitle: "Analisi Onira", yourStory: "Il tuo racconto:", saveBtn: "Salva nel Diario",
-        journalTitle: "Diario Onira", emptyJournal: "Il tuo diario è vuoto.", archived: "sogni archiviati",
-        settingsTitle: "Chiave API OpenAI", settingsSave: "Salva", settingsClose: "Chiudi",
-        navHome: "Home", navJournal: "Diario", navSettings: "Impostazioni IA",
-        listening: "In ascolto... Tocca per fermare.", saving: "Salvataggio...",
-        aiLangName: "ITALIANO", voiceLangCode: "it-IT"
       }
     };
 
     function detectLanguage() {
       const userLang = navigator.language || navigator.userLanguage;
       const shortLang = userLang.split('-')[0];
-      return translations[shortLang] ? shortLang : 'en';
+      return translations[shortLang] ? shortLang : 'fr';
     }
     const currentLang = detectLanguage();
     const t = translations[currentLang];
@@ -271,7 +248,6 @@
       try {
         let permanentImageUrl = currentAnalysis.img;
 
-        // Téléchargement vers Supabase Storage si accessible, sinon repli sur le lien direct
         try {
           const res = await fetch(currentAnalysis.img);
           const imageBlob = await res.blob();
@@ -282,15 +258,12 @@
             if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
           }
         } catch(storageErr) {
-          console.warn("Stockage Supabase ignoré, lien direct conservé :", storageErr);
+          console.warn("Upload Storage ignoré, sauvegarde URL directe :", storageErr);
         }
 
         const { error: dbError } = await supabaseClient.from('dreams').insert([{
-          title: currentAnalysis.title,
-          tag: currentAnalysis.tag,
-          transcript: currentAnalysis.transcript,
-          interpretation: currentAnalysis.interpretation,
-          image_url: permanentImageUrl
+          title: currentAnalysis.title, tag: currentAnalysis.tag, transcript: currentAnalysis.transcript,
+          interpretation: currentAnalysis.interpretation, image_url: permanentImageUrl
         }]);
 
         if (dbError) throw new Error("Erreur base de données : " + dbError.message);
@@ -390,10 +363,10 @@
       else modal.classList.add('hidden');
     }
 
-    // --- RECONNAISSANCE VOCALE ---
+    // --- RECONNAISSANCE VOCALE OPTIMISÉE POUR IPHONE ---
     let isRecording = false;
     let recognition;
-    let finalTranscript = "";
+    let accumulatedSpeech = "";
     
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -403,20 +376,27 @@
       recognition.lang = t.voiceLangCode;
 
       recognition.onresult = (event) => {
-        let interim = "";
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript + " ";
-          else interim += event.results[i][0].transcript;
+        let fullTranscript = "";
+        for (let i = 0; i < event.results.length; ++i) {
+          fullTranscript += event.results[i][0].transcript + " ";
         }
-        document.getElementById('instruction-sub').textContent = interim || finalTranscript;
+        accumulatedSpeech = fullTranscript.trim();
+        if (accumulatedSpeech) {
+          document.getElementById('instruction-sub').textContent = accumulatedSpeech;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.warn("Speech error :", event.error);
       };
     }
 
     async function processDreamWithOpenAI(transcript) {
       const apiKey = getApiKey();
       if (!apiKey) {
-        alert("Clé OpenAI manquante. Ouvrez Réglages AI.");
-        switchTab('home'); return;
+        alert("Clé OpenAI introuvable. Ouvrez Réglages AI pour l'enregistrer.");
+        switchTab('home'); 
+        return;
       }
 
       try {
@@ -426,19 +406,19 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
           body: JSON.stringify({
-            model: "gpt-4o-mini", response_format: { type: "json_object" },
+            model: "gpt-4o-mini", 
+            response_format: { type: "json_object" },
             messages: [ { role: "system", content: promptSystem }, { role: "user", content: transcript } ]
           })
         });
         
         const chatData = await chatRes.json();
-        if (chatData.error) throw new Error("Erreur Texte : " + chatData.error.message);
+        if (chatData.error) throw new Error("Erreur OpenAI (Texte) : " + chatData.error.message);
 
         const result = JSON.parse(chatData.choices[0].message.content);
 
         document.getElementById('loading-step').textContent = t.loadingTitle;
         
-        // Requête image standard (sans le paramètre non pris en charge)
         const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -451,9 +431,9 @@
         });
         
         const imgData = await imgRes.json();
-        if (imgData.error) throw new Error("Erreur Image OpenAI : " + imgData.error.message);
+        if (imgData.error) throw new Error("Erreur OpenAI (Image) : " + imgData.error.message);
         if (!imgData.data || !imgData.data[0] || !imgData.data[0].url) {
-          throw new Error("L'API n'a retourné aucune URL d'image valide.");
+          throw new Error("L'API n'a retourné aucun lien d'image.");
         }
 
         const imageUrl = imgData.data[0].url;
@@ -473,9 +453,6 @@
           imgEl.classList.remove('hidden'); 
           document.getElementById('result-img-placeholder').classList.add('hidden'); 
         };
-        imgEl.onerror = () => {
-          alert("Erreur lors de l'affichage de l'image.");
-        };
 
         switchTab('result');
       } catch (err) { 
@@ -485,15 +462,16 @@
     }
 
     function handleRecordAction() {
-      if (!recognition) return alert("Votre navigateur ne supporte pas le microphone.");
+      if (!recognition) return alert("Votre navigateur ne supporte pas le micro.");
       
       const orb = document.getElementById('orb');
       const badge = document.getElementById('badge-text');
       const dot = document.getElementById('record-indicator');
       
       if (!isRecording) {
+        // Démarrage
         isRecording = true; 
-        finalTranscript = "";
+        accumulatedSpeech = "";
         try { recognition.start(); } catch(e) {}
         
         orb.classList.add('recording-active');
@@ -502,18 +480,23 @@
         dot.classList.replace('bg-[#caa255]', 'bg-red-500');
         document.getElementById('instruction-sub').textContent = t.listening;
       } else {
+        // Arrêt et envoi
         isRecording = false; 
-        recognition.stop();
+        try { recognition.stop(); } catch(e) {}
         
         orb.classList.remove('recording-active');
         badge.textContent = t.recordBadge;
         badge.classList.replace('text-red-500', 'text-[#7c6332]');
         dot.classList.replace('bg-red-500', 'bg-[#caa255]');
-        document.getElementById('instruction-sub').textContent = t.instructionSub;
         
-        if (finalTranscript.trim()) {
+        const textToProcess = accumulatedSpeech.trim();
+        
+        if (textToProcess) {
           switchTab('loading');
-          processDreamWithOpenAI(finalTranscript.trim());
+          processDreamWithOpenAI(textToProcess);
+        } else {
+          document.getElementById('instruction-sub').textContent = t.instructionSub;
+          alert("Aucune parole détectée. Veuillez réappuyer sur l'orbe et parler distinctement.");
         }
       }
     }
