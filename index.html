@@ -258,7 +258,7 @@
             if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
           }
         } catch(storageErr) {
-          console.warn("Upload Storage ignoré, sauvegarde URL directe :", storageErr);
+          console.warn("Upload Storage ignoré, sauvegarde directe :", storageErr);
         }
 
         const { error: dbError } = await supabaseClient.from('dreams').insert([{
@@ -363,7 +363,7 @@
       else modal.classList.add('hidden');
     }
 
-    // --- RECONNAISSANCE VOCALE OPTIMISÉE POUR IPHONE ---
+    // --- RECONNAISSANCE VOCALE IPHONE ---
     let isRecording = false;
     let recognition;
     let accumulatedSpeech = "";
@@ -394,7 +394,7 @@
     async function processDreamWithOpenAI(transcript) {
       const apiKey = getApiKey();
       if (!apiKey) {
-        alert("Clé OpenAI introuvable. Ouvrez Réglages AI pour l'enregistrer.");
+        alert("Clé OpenAI introuvable. Rendez-vous dans Réglages AI.");
         switchTab('home'); 
         return;
       }
@@ -432,11 +432,24 @@
         
         const imgData = await imgRes.json();
         if (imgData.error) throw new Error("Erreur OpenAI (Image) : " + imgData.error.message);
-        if (!imgData.data || !imgData.data[0] || !imgData.data[0].url) {
-          throw new Error("L'API n'a retourné aucun lien d'image.");
+
+        // Analyse universelle du format de l'image (URL, b64_json, ou chaîne directe)
+        let imageUrl = "";
+        const item = imgData.data?.[0];
+        
+        if (item) {
+          if (item.url) {
+            imageUrl = item.url;
+          } else if (item.b64_json) {
+            imageUrl = `data:image/png;base64,${item.b64_json}`;
+          } else if (typeof item === "string") {
+            imageUrl = item.startsWith("http") || item.startsWith("data:") ? item : `data:image/png;base64,${item}`;
+          }
         }
 
-        const imageUrl = imgData.data[0].url;
+        if (!imageUrl) {
+          throw new Error("Contenu reçu non reconnu : " + JSON.stringify(imgData).slice(0, 160));
+        }
 
         currentAnalysis = {
           title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
@@ -469,7 +482,6 @@
       const dot = document.getElementById('record-indicator');
       
       if (!isRecording) {
-        // Démarrage
         isRecording = true; 
         accumulatedSpeech = "";
         try { recognition.start(); } catch(e) {}
@@ -480,7 +492,6 @@
         dot.classList.replace('bg-[#caa255]', 'bg-red-500');
         document.getElementById('instruction-sub').textContent = t.listening;
       } else {
-        // Arrêt et envoi
         isRecording = false; 
         try { recognition.stop(); } catch(e) {}
         
