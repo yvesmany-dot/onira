@@ -1,0 +1,21 @@
+{
+  "name": "Onira - Journal de Rêves",
+  "short_name": "Onira",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#9e7d3b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/yvesmany/onira/main/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/yvesmany/onira/main/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

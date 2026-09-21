@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onira - Journal de Rêves IA</title>
+  <link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f1ea; }
+    .font-brand { font-family: 'Cinzel', serif; letter-spacing: 0.22em; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .orb-glow {
+      background: radial-gradient(circle at 45% 45%, #ffffff 0%, #ffe8b8 25%, #ffd1dc 50%, #d6e4ff 75%, #f5e6ff 100%);
+      box-shadow: 0 20px 45px rgba(230, 200, 160, 0.35), 0 0 35px rgba(210, 220, 255, 0.45);
+    }
+    .orb-pulse { animation: pulse-soft 3.2s ease-in-out infinite; }
+    @keyframes pulse-soft {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.04); filter: brightness(1.08); box-shadow: 0 25px 55px rgba(230, 195, 140, 0.5); }
+    }
+    .recording-active { animation: pulse-rec 1s ease-in-out infinite alternate !important; }
+    @keyframes pulse-rec {
+      from { transform: scale(0.96); filter: brightness(1.05); }
+      to { transform: scale(1.1); filter: brightness(1.2); box-shadow: 0 0 70px rgba(245, 175, 100, 0.75); }
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-0 sm:p-4 select-none">
+
+  <div class="relative w-full max-w-[390px] h-[844px] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[48px] shadow-2xl overflow-hidden flex flex-col justify-between border-[6px] border-[#e8e2d8]">
+
+    <button onclick="toggleSettingsModal(true)" class="absolute top-8 right-6 z-20 w-8 h-8 rounded-full bg-white/80 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 transition-all">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+    </button>
+
+    <!-- ÉCRAN 1 : ACCUEIL -->
+    <div id="screen-home" class="flex-1 flex flex-col justify-between">
+      <header class="pt-8 pb-1 px-6 text-center">
+        <div class="mx-auto w-10 h-10 rounded-full mb-1 flex items-center justify-center p-1 relative">
+          <div class="w-full h-full rounded-full border border-[#e5c583]/60 flex items-center justify-center shadow-inner" style="background: radial-gradient(circle, #fffdf8 30%, #fde7b0 70%, #d8e5ff 100%);">
+            <div class="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-[#eac575] to-[#f4dca6]"></div>
+          </div>
+        </div>
+        <h1 class="font-brand text-xs font-bold text-[#9e7d3b] tracking-[0.3em] uppercase">ONIRA</h1>
+      </header>
+
+      <main class="flex-1 flex flex-col items-center justify-center px-6">
+        <div id="orb" class="w-44 h-44 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all">
+          <div class="px-3 py-1 bg-white/70 backdrop-blur-md rounded-full border border-white/80 flex items-center shadow-sm">
+            <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-medium text-[#7c6332]">Enregistrer</span>
+          </div>
+        </div>
+
+        <button id="rec-btn" class="mt-5 w-13 h-13 p-2 rounded-full border-2 border-[#d9be85] bg-white flex items-center justify-center shadow-md active:scale-90 transition-all">
+          <div class="w-9 h-9 rounded-full border border-[#eedab2] bg-gradient-to-tr from-[#fbf4e2] to-white flex items-center justify-center">
+            <div id="rec-dot" class="w-3 h-3 rounded-full bg-[#caa255] transition-all"></div>
+          </div>
+        </button>
+
+        <div class="mt-3 text-center px-4">
+          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]">Appuyez pour raconter votre rêve</h2>
+          <p id="instruction-sub" data-i18n="instructionSub" class="text-[10px] text-[#91867c] mt-0.5 min-h-[1.2rem]">Parlez librement dès votre réveil</p>
+        </div>
+
+        <div class="w-full mt-4">
+          <div class="flex justify-between items-center text-[11px] text-[#8e857c] px-1 mb-2 font-medium">
+            <span data-i18n="recentDreams">Rêves récents</span>
+            <button onclick="switchTab('journal')" data-i18n="viewJournal" class="text-[#a88644] text-[10px] hover:underline font-semibold">Voir le journal →</button>
+          </div>
+          <div id="home-recents-grid" class="grid grid-cols-2 gap-2.5">
+            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-3 italic" data-i18n="syncing">
+              Synchronisation des songes...
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ÉCRAN 2 : CHARGEMENT -->
+    <div id="screen-loading" class="hidden flex-1 flex flex-col items-center justify-center px-8 text-center bg-[#faf8f5]">
+      <div class="w-32 h-32 rounded-full orb-glow orb-pulse flex items-center justify-center mb-6">
+        <svg class="w-10 h-10 text-[#a88644] animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+      </div>
+      <h3 id="loading-step" data-i18n="loadingTitle" class="text-sm font-semibold text-[#2d2926]">Décryptage onirique...</h3>
+      <p id="loading-sub" data-i18n="loadingSub" class="text-[11px] text-[#8c827a] mt-1">L'inconscient prend forme...</p>
+    </div>
+
+    <!-- ÉCRAN 3 : RÉSULTAT -->
+    <div id="screen-result" class="hidden flex-1 flex flex-col overflow-y-auto no-scrollbar p-5">
+      <div class="flex justify-between items-center mb-3">
+        <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]">Nouveau Songe</span>
+        <button onclick="switchTab('home')" class="text-xs text-[#8c827a]">✕</button>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden shadow-lg h-56 border border-[#e5ded2] mb-4 bg-[#f0ebd8]">
+        <img id="result-img" src="" class="w-full h-full object-cover hidden">
+        <div id="result-img-placeholder" class="text-center p-4 pt-20">
+          <svg class="w-8 h-8 mx-auto text-[#caa255] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent flex items-end p-3.5">
+          <div>
+            <span id="result-badge" class="px-2.5 py-0.5 rounded-full text-[9px] font-semibold bg-[#a88644] text-white"></span>
+            <h2 id="result-title" class="text-base font-bold text-white mt-1"></h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-4 border border-[#eee7db] shadow-sm mb-3">
+        <h3 data-i18n="decryptionTitle" class="text-[11px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-2">Décryptage Onira</h3>
+        <p id="result-interpretation" class="text-xs text-[#524b45] leading-relaxed"></p>
+      </div>
+
+      <div class="bg-[#f2ece2]/60 rounded-2xl p-3.5 border border-[#eee7db] mb-4">
+        <p data-i18n="yourStory" class="text-[10px] font-semibold text-[#8c827a] mb-1">Votre récit :</p>
+        <p id="result-transcript" class="text-xs text-[#635b54] italic leading-relaxed"></p>
+      </div>
+
+      <button id="save-btn" onclick="saveToSupabase()" data-i18n="saveBtn" class="w-full py-3 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow-md transition-all">
+        Conserver dans mon Journal
+      </button>
+    </div>
+
+    <!-- ÉCRAN 4 : JOURNAL -->
+    <div id="screen-journal" class="hidden flex-1 flex flex-col overflow-hidden">
+      <header class="pt-8 pb-3 px-5 border-b border-[#eee8dc] bg-[#faf8f5]/90 flex-shrink-0">
+        <h1 data-i18n="journalTitle" class="text-lg font-bold text-[#2d2926]">Journal d'Onira</h1>
+        <p id="journal-count" class="text-[11px] text-[#91867c]">...</p>
+      </header>
+      <main class="flex-1 overflow-y-auto no-scrollbar p-4">
+        <div id="journal-grid" class="grid grid-cols-2 gap-3 pb-4"></div>
+      </main>
+    </div>
+
+    <!-- MODALE CLÉ OPENAI -->
+    <div id="settings-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-5">
+      <div class="w-full bg-[#faf8f5] rounded-3xl p-5 border border-[#e2d7c5] shadow-2xl">
+        <h3 data-i18n="settingsTitle" class="text-sm font-bold text-[#2d2926]">Clé API OpenAI</h3>
+        <input id="api-key-input" type="password" placeholder="sk-..." class="w-full mt-3 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white">
+        <div class="mt-4 flex gap-2">
+          <button onclick="saveApiKey()" data-i18n="settingsSave" class="flex-1 py-2 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold">Enregistrer</button>
+          <button onclick="toggleSettingsModal(false)" data-i18n="settingsClose" class="px-4 py-2 border border-[#ddd3c4] text-[#736a61] rounded-xl text-xs">Fermer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODALE DÉTAIL -->
+    <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
+      <div class="w-full bg-[#faf8f5] rounded-t-[32px] p-5 border-t border-[#e2d7c5] max-h-[90%] overflow-y-auto no-scrollbar">
+        <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-4 cursor-pointer" onclick="closeModal()"></div>
+        <div class="relative rounded-2xl overflow-hidden shadow-md mb-4 h-48 border border-[#e5ded2]">
+          <img id="modal-img" src="" class="w-full h-full object-cover">
+        </div>
+        <h2 id="modal-title" class="text-base font-bold text-[#2d2926]"></h2>
+        <p id="modal-date" class="text-[10px] text-[#91867c] mb-2"></p>
+        <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
+        <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
+        <button onclick="closeModal()" data-i18n="settingsClose" class="w-full mt-4 py-3 bg-[#9e7d3b] text-white rounded-xl text-xs">Fermer</button>
+      </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="bg-white/95 border-t border-[#ede7dc] px-6 py-2.5 flex justify-between text-[10px] text-[#968b80] flex-shrink-0">
+      <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-0.5 text-[#a88644] font-semibold">
+        <span data-i18n="navHome">Accueil</span>
+      </button>
+      <button id="nav-journal" onclick="switchTab('journal')" class="flex flex-col items-center gap-0.5 hover:text-[#2d2926]">
+        <span data-i18n="navJournal">Journal</span>
+      </button>
+      <button onclick="toggleSettingsModal(true)" class="flex flex-col items-center gap-0.5 hover:text-[#2d2926]">
+        <span data-i18n="navSettings">Réglages AI</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    // --- DICTIONNAIRE DES LANGUES (i18n) ---
+    const translations = {
+      fr: {
+        recordBadge: "Enregistrer", instructionTitle: "Appuyez pour raconter votre rêve", instructionSub: "Parlez librement dès votre réveil",
+        recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Synchronisation des songes...",
+        loadingTitle: "Décryptage onirique...", loadingSub: "L'inconscient prend forme...",
+        newDream: "Nouveau Songe", decryptionTitle: "Décryptage Onira", yourStory: "Votre récit :", saveBtn: "Conserver dans mon Journal",
+        journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés",
+        settingsTitle: "Clé API OpenAI", settingsSave: "Enregistrer", settingsClose: "Fermer",
+        navHome: "Accueil", navJournal: "Journal", navSettings: "Réglages AI",
+        listening: "Je vous écoute...", saving: "Sauvegarde en cours...",
+        aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
+      },
+      en: {
+        recordBadge: "Record", instructionTitle: "Tap to narrate your dream", instructionSub: "Speak freely upon waking",
+        recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Syncing dreams...",
+        loadingTitle: "Dream decoding...", loadingSub: "The unconscious takes shape...",
+        newDream: "New Dream", decryptionTitle: "Onira Decryption", yourStory: "Your story:", saveBtn: "Save to Journal",
+        journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams",
+        settingsTitle: "OpenAI API Key", settingsSave: "Save", settingsClose: "Close",
+        navHome: "Home", navJournal: "Journal", navSettings: "AI Settings",
+        listening: "Listening...", saving: "Saving...",
+        aiLangName: "ENGLISH", voiceLangCode: "en-US"
+      },
+      es: {
+        recordBadge: "Grabar", instructionTitle: "Pulsa para contar tu sueño", instructionSub: "Habla libremente al despertar",
+        recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Sincronizando sueños...",
+        loadingTitle: "Decodificando sueño...", loadingSub: "El inconsciente toma forma...",
+        newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
+        journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados",
+        settingsTitle: "Clave API OpenAI", settingsSave: "Guardar", settingsClose: "Cerrar",
+        navHome: "Inicio", navJournal: "Diario", navSettings: "Ajustes IA",
+        listening: "Escuchando...", saving: "Guardando...",
+        aiLangName: "ESPAÑOL", voiceLangCode: "es-ES"
+      },
+      it: {
+        recordBadge: "Registra", instructionTitle: "Premi per raccontare il sogno", instructionSub: "Parla liberamente al risveglio",
+        recentDreams: "Sogni recenti", viewJournal: "Vedi diario →", syncing: "Sincronizzazione...",
+        loadingTitle: "Decodifica in corso...", loadingSub: "L'inconscio prende forma...",
+        newDream: "Nuovo Sogno", decryptionTitle: "Analisi Onira", yourStory: "Il tuo racconto:", saveBtn: "Salva nel Diario",
+        journalTitle: "Diario Onira", emptyJournal: "Il tuo diario è vuoto.", archived: "sogni archiviati",
+        settingsTitle: "Chiave API OpenAI", settingsSave: "Salva", settingsClose: "Chiudi",
+        navHome: "Home", navJournal: "Diario", navSettings: "Impostazioni IA",
+        listening: "Ti ascolto...", saving: "Salvataggio...",
+        aiLangName: "ITALIANO", voiceLangCode: "it-IT"
+      }
+    };
+
+    function detectLanguage() {
+      const userLang = navigator.language || navigator.userLanguage;
+      const shortLang = userLang.split('-')[0];
+      return translations[shortLang] ? shortLang : 'en';
+    }
+    const currentLang = detectLanguage();
+    const t = translations[currentLang];
+
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+    }
+    applyTranslations();
+
+    // --- CONFIGURATION SUPABASE ---
+    const supabaseUrl = 'https://vaaszqyjsuvybglvpxbw.supabase.co';
+    const supabaseKey = 'sb_publishable_z-_kvTo-oIgebqYOF0qZrw_GmAkEWI0';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+    let dreamsData = [];
+    let currentAnalysis = null;
+
+    async function fetchDreamsFromCloud() {
+      const { data, error } = await supabaseClient.from('dreams').select('*').order('created_at', { ascending: false });
+      if (!error) {
+        dreamsData = data || [];
+        renderJournal();
+        renderHomeRecents();
+      }
+    }
+
+    // --- NOUVELLE FONCTION DE SAUVEGARDE (STORAGE + BDD) ---
+    async function saveToSupabase() {
+      if (!currentAnalysis) return;
+      const btn = document.getElementById('save-btn');
+      btn.textContent = t.saving;
+
+      try {
+        let imageBlob;
+        
+        // Convertit l'image (Base64 renvoyée par OpenAI) en fichier binaire
+        if (currentAnalysis.img.startsWith('data:')) {
+          const res = await fetch(currentAnalysis.img);
+          imageBlob = await res.blob();
+        } else {
+          const imgFetch = await fetch(currentAnalysis.img);
+          imageBlob = await imgFetch.blob();
+        }
+
+        // Nom unique pour éviter d'écraser une autre image
+        const fileName = `dream_${Date.now()}.png`;
+
+        // 1. Upload dans le bucket 'dream_images'
+        const { data: uploadData, error: uploadError } = await supabaseClient
+          .storage
+          .from('dream_images')
+          .upload(fileName, imageBlob, {
+            contentType: 'image/png',
+            upsert: false
+          });
+
+        if (uploadError) throw new Error("Erreur upload image : " + uploadError.message);
+
+        // 2. Récupère le lien public permanent
+        const { data: publicUrlData } = supabaseClient
+          .storage
+          .from('dream_images')
+          .getPublicUrl(fileName);
+
+        const permanentImageUrl = publicUrlData.publicUrl;
+
+        // 3. Sauvegarde dans la table SQL
+        const { error: dbError } = await supabaseClient
+          .from('dreams')
+          .insert([{
+            title: currentAnalysis.title,
+            tag: currentAnalysis.tag,
+            transcript: currentAnalysis.transcript,
+            interpretation: currentAnalysis.interpretation,
+            image_url: permanentImageUrl
+          }]);
+
+        if (dbError) throw new Error("Erreur base de données : " + dbError.message);
+
+        // Terminé !
+        await fetchDreamsFromCloud();
+        switchTab('journal');
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.textContent = t.saveBtn;
+      }
+    }
+
+    fetchDreamsFromCloud();
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      return new Date(dateStr).toLocaleDateString(currentLang, { day: 'numeric', month: 'short' });
+    }
+
+    function renderHomeRecents() {
+      const recentsGrid = document.getElementById('home-recents-grid');
+      if (!recentsGrid) return;
+      recentsGrid.innerHTML = '';
+      const topTwo = dreamsData.slice(0, 2);
+
+      if (topTwo.length === 0) {
+        recentsGrid.innerHTML = `<div class="col-span-2 text-center text-[10px] text-[#9b9186] py-3">${t.emptyJournal}</div>`;
+        return;
+      }
+      topTwo.forEach((dream, index) => {
+        const item = document.createElement('div');
+        item.className = "bg-white/90 border border-[#eee7db] rounded-xl p-2 flex items-center gap-2 shadow-sm cursor-pointer hover:border-[#d9be85]";
+        item.onclick = () => openModal(index);
+        item.innerHTML = `<img src="${dream.image_url}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 bg-[#eee]">
+          <div class="overflow-hidden text-left">
+            <p class="text-[11px] font-semibold text-[#2d2926] truncate">${dream.title}</p>
+            <p class="text-[9px] text-[#9b9186]">${formatDate(dream.created_at)}</p>
+          </div>`;
+        recentsGrid.appendChild(item);
+      });
+    }
+
+    function renderJournal() {
+      const grid = document.getElementById('journal-grid');
+      grid.innerHTML = '';
+      if (dreamsData.length === 0) {
+        grid.innerHTML = `<p class="col-span-2 text-center text-xs text-[#91867c] mt-10">${t.emptyJournal}</p>`;
+      }
+      dreamsData.forEach((dream, index) => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl overflow-hidden border border-[#eee7db] shadow-sm cursor-pointer";
+        card.onclick = () => openModal(index);
+        card.innerHTML = `<div class="h-28 w-full relative bg-[#eee]">
+            <img src="${dream.image_url}" class="w-full h-full object-cover">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span>
+          </div>
+          <div class="p-2.5">
+            <h3 class="font-semibold text-xs truncate">${dream.title}</h3>
+            <p class="text-[9px] text-[#91867c] mt-0.5">${formatDate(dream.created_at)}</p>
+          </div>`;
+        grid.appendChild(card);
+      });
+      document.getElementById('journal-count').textContent = `${dreamsData.length} ${t.archived}`;
+    }
+
+    function openModal(index) {
+      const dream = dreamsData[index];
+      document.getElementById('modal-img').src = dream.image_url;
+      document.getElementById('modal-title').textContent = dream.title;
+      document.getElementById('modal-date').textContent = formatDate(dream.created_at);
+      document.getElementById('modal-interpretation').textContent = dream.interpretation;
+      document.getElementById('modal-transcript').textContent = `« ${dream.transcript} »`;
+      document.getElementById('dream-modal').classList.remove('hidden');
+    }
+    function closeModal() { document.getElementById('dream-modal').classList.add('hidden'); }
+
+    function switchTab(tab) {
+      ['home', 'journal', 'loading', 'result'].forEach(s => document.getElementById(`screen-${s}`)?.classList.add('hidden'));
+      ['home', 'journal'].forEach(b => {
+        const btn = document.getElementById(`nav-${b}`);
+        if(btn) btn.classList.remove('text-[#a88644]', 'font-semibold');
+      });
+      document.getElementById(`screen-${tab}`)?.classList.remove('hidden');
+      const targetBtn = document.getElementById(`nav-${tab}`);
+      if (targetBtn) targetBtn.classList.add('text-[#a88644]', 'font-semibold');
+    }
+
+    function getApiKey() { return localStorage.getItem('onira_openai_key') || ''; }
+    function saveApiKey() {
+      const val = document.getElementById('api-key-input').value.trim();
+      if (val) { localStorage.setItem('onira_openai_key', val); toggleSettingsModal(false); }
+    }
+    function toggleSettingsModal(show) {
+      const modal = document.getElementById('settings-modal');
+      if (show) { document.getElementById('api-key-input').value = getApiKey(); modal.classList.remove('hidden'); }
+      else modal.classList.add('hidden');
+    }
+
+    // --- RECONNAISSANCE VOCALE ---
+    let isRecording = false;
+    let recognition;
+    let finalTranscript = "";
+    
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = t.voiceLangCode; 
+
+      recognition.onresult = (event) => {
+        let interim = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript + " ";
+          else interim += event.results[i][0].transcript;
+        }
+        document.getElementById('instruction-sub').textContent = interim || finalTranscript;
+      };
+    }
+
+    async function processDreamWithOpenAI(transcript) {
+      const apiKey = getApiKey();
+      if (!apiKey) { switchTab('home'); return; }
+
+      try {
+        const promptSystem = `Tu es Onira. Décrypte le rêve. JSON requis: {"title":"Titre poétique en ${t.aiLangName}", "mood":"Humeur en ${t.aiLangName}", "interpretation":"Analyse détaillée en ${t.aiLangName}", "image_prompt":"Prompt for surreal dreamy digital art in English."}`;
+        
+        const chatRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: "gpt-4o-mini", response_format: { type: "json_object" },
+            messages: [ { role: "system", content: promptSystem }, { role: "user", content: transcript } ]
+          })
+        });
+        
+        const chatData = await chatRes.json();
+        const result = JSON.parse(chatData.choices[0].message.content);
+
+        document.getElementById('loading-step').textContent = t.loadingTitle;
+        
+        // Demande de l'image en Base64 (b64_json) pour faciliter l'upload Supabase
+        const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({ 
+            model: "gpt-image-2.5-flare", 
+            prompt: result.image_prompt, 
+            n: 1, 
+            size: "1024x1024",
+            response_format: "b64_json" 
+          })
+        });
+        
+        const imgData = await imgRes.json();
+        const imageUrl = imgData.data[0].url || (imgData.data[0].b64_json ? `data:image/png;base64,${imgData.data[0].b64_json}` : '');
+
+        currentAnalysis = {
+          title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
+        };
+
+        document.getElementById('result-title').textContent = currentAnalysis.title;
+        document.getElementById('result-badge').textContent = currentAnalysis.tag;
+        document.getElementById('result-interpretation').textContent = currentAnalysis.interpretation;
+        document.getElementById('result-transcript').textContent = `« ${currentAnalysis.transcript} »`;
+        
+        const imgEl = document.getElementById('result-img');
+        imgEl.src = currentAnalysis.img;
+        imgEl.onload = () => { imgEl.classList.remove('hidden'); document.getElementById('result-img-placeholder').classList.add('hidden'); };
+
+        switchTab('result');
+      } catch (err) { alert(err.message); switchTab('home'); }
+    }
+
+    function handleRecordAction() {
+      if (!recognition) return;
+      const orb = document.getElementById('orb');
+      if (!isRecording) {
+        isRecording = true; finalTranscript = "";
+        try { recognition.start(); } catch(e) {}
+        orb.classList.add('recording-active');
+        document.getElementById('rec-dot').classList.replace('bg-[#caa255]', 'bg-red-500');
+        document.getElementById('instruction-sub').textContent = t.listening;
+      } else {
+        isRecording = false; recognition.stop();
+        orb.classList.remove('recording-active');
+        document.getElementById('rec-dot').classList.replace('bg-red-500', 'bg-[#caa255]');
+        document.getElementById('instruction-sub').textContent = t.instructionSub;
+        
+        if (finalTranscript.trim()) {
+          switchTab('loading');
+          processDreamWithOpenAI(finalTranscript.trim());
+        }
+      }
+    }
+
+    document.getElementById('rec-btn').addEventListener('click', handleRecordAction);
+    document.getElementById('orb').addEventListener('click', handleRecordAction);
+  </script>
+</body>
+</html>
