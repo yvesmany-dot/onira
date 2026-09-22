@@ -79,15 +79,12 @@
       </div>
     </div>
 
-    <!-- En-tête : Réglages & Badge Crédits (Remplace le bouton Sortir) -->
+    <!-- En-tête : Badge Crédits Restants -->
     <div class="absolute top-4 sm:top-6 right-5 z-20 flex items-center gap-2">
-      <div id="credits-badge" class="px-2.5 py-1 rounded-full bg-white/85 border border-[#e2d7c5] text-[10px] font-bold text-[#9e7d3b] shadow-sm flex items-center gap-1">
-        <span id="credits-count">2</span>
+      <div id="credits-badge" class="px-3 py-1 rounded-full bg-white/85 border border-[#e2d7c5] text-[11px] font-bold text-[#9e7d3b] shadow-sm flex items-center gap-1.5">
+        <span id="credits-count">...</span>
         <span>✨</span>
       </div>
-      <button onclick="toggleSettingsModal(true)" class="w-8 h-8 rounded-full bg-white/85 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-      </button>
     </div>
 
     <!-- ÉCRAN 1 : ACCUEIL -->
@@ -182,18 +179,6 @@
       </main>
     </div>
 
-    <!-- MODALE CLÉ OPENAI -->
-    <div id="settings-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-5">
-      <div class="w-full bg-[#faf8f5] rounded-3xl p-5 border border-[#e2d7c5] shadow-2xl">
-        <h3 data-i18n="settingsTitle" class="text-xs font-bold text-[#2d2926]"></h3>
-        <input id="api-key-input" type="password" placeholder="sk-..." class="w-full mt-2.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white">
-        <div class="mt-3.5 flex gap-2">
-          <button onclick="saveApiKey()" data-i18n="settingsSave" class="flex-1 py-2 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold"></button>
-          <button onclick="toggleSettingsModal(false)" data-i18n="settingsClose" class="px-4 py-2 border border-[#ddd3c4] text-[#736a61] rounded-xl text-xs"></button>
-        </div>
-      </div>
-    </div>
-
     <!-- MODALE DÉTAIL D'UN SONGE -->
     <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
       <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar flex flex-col">
@@ -206,32 +191,30 @@
         <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
         <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
         
-        <!-- Actions : Supprimer & Fermer -->
         <div class="flex gap-2 mt-4 flex-shrink-0">
           <button onclick="deleteDream()" class="w-14 py-2.5 bg-[#fff0f0] text-red-500 rounded-xl border border-red-100 hover:bg-red-50 flex items-center justify-center transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
           </button>
-          <button onclick="closeModal()" data-i18n="settingsClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold transition-all"></button>
+          <button onclick="closeModal()" data-i18n="modalClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold transition-all"></button>
         </div>
       </div>
     </div>
 
-    <!-- BARRE DE NAVIGATION -->
-    <nav class="bg-white/95 border-t border-[#ede7dc] px-6 pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex justify-between text-[10px] text-[#968b80] flex-shrink-0">
-      <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-0.5 text-[#a88644] font-semibold">
+    <!-- BARRE DE NAVIGATION (Plus de bouton Réglages AI) -->
+    <nav class="bg-white/95 border-t border-[#ede7dc] px-12 pt-2.5 pb-[max(0.7rem,env(safe-area-inset-bottom))] flex justify-around text-[11px] text-[#968b80] flex-shrink-0">
+      <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-[#a88644] font-semibold">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
         <span data-i18n="navHome"></span>
       </button>
-      <button id="nav-journal" onclick="switchTab('journal')" class="flex flex-col items-center gap-0.5 hover:text-[#2d2926]">
+      <button id="nav-journal" onclick="switchTab('journal')" class="flex flex-col items-center gap-1 hover:text-[#2d2926]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
         <span data-i18n="navJournal"></span>
-      </button>
-      <button onclick="toggleSettingsModal(true)" class="flex flex-col items-center gap-0.5 hover:text-[#2d2926]">
-        <span data-i18n="navSettings"></span>
       </button>
     </nav>
   </div>
 
   <script>
-    // --- DICTIONNAIRE COMPLET MULTILINGUE (FR, EN, ES, PT) ---
+    // --- DICTIONNAIRE COMPLET MULTILINGUE ---
     const translations = {
       fr: {
         onbTitle1: "Bienvenue dans Onira",
@@ -246,10 +229,10 @@
         recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Synchronisation des songes...",
         loadingTitle: "Décryptage onirique...", loadingSub: "L'inconscient prend forme...",
         newDream: "Nouveau Songe", decryptionTitle: "Décryptage Onira", yourStory: "Votre récit :", saveBtn: "Conserver dans mon Journal",
-        journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés",
-        settingsTitle: "Clé API OpenAI", settingsSave: "Enregistrer", settingsClose: "Fermer",
+        journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés", modalClose: "Fermer",
+        outOfCredits: "Vous avez utilisé vos 2 songes offerts. Rechargez vos crédits pour continuer.",
         deleteConfirm: "Voulez-vous vraiment supprimer ce rêve définitivement ?",
-        navHome: "Accueil", navJournal: "Journal", navSettings: "Réglages AI",
+        navHome: "Accueil", navJournal: "Journal",
         listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
         aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
       },
@@ -266,10 +249,10 @@
         recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Syncing dreams...",
         loadingTitle: "Dream decoding...", loadingSub: "The unconscious takes shape...",
         newDream: "New Dream", decryptionTitle: "Onira Decryption", yourStory: "Your story:", saveBtn: "Save to Journal",
-        journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams",
-        settingsTitle: "OpenAI API Key", settingsSave: "Save", settingsClose: "Close",
+        journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams", modalClose: "Close",
+        outOfCredits: "You have used your 2 free dreams. Top up your credits to continue.",
         deleteConfirm: "Are you sure you want to permanently delete this dream?",
-        navHome: "Home", navJournal: "Journal", navSettings: "AI Settings",
+        navHome: "Home", navJournal: "Journal",
         listening: "Listening... Speak, then tap the orb to stop.", saving: "Saving...",
         aiLangName: "ENGLISH", voiceLangCode: "en-US"
       },
@@ -286,10 +269,10 @@
         recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Sincronizando sueños...",
         loadingTitle: "Decodificando sueño...", loadingSub: "El inconsciente toma forma...",
         newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
-        journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados",
-        settingsTitle: "Clave API OpenAI", settingsSave: "Guardar", settingsClose: "Cerrar",
+        journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados", modalClose: "Cerrar",
+        outOfCredits: "Has utilizado tus 2 sueños gratis. Recarga créditos para continuar.",
         deleteConfirm: "¿Estás seguro de que deseas eliminar este sueño permanentemente?",
-        navHome: "Inicio", navJournal: "Diario", navSettings: "Ajustes IA",
+        navHome: "Inicio", navJournal: "Diario",
         listening: "Escuchando... Habla y vuelve a pulsar el orbe.", saving: "Guardando...",
         aiLangName: "ESPAÑOL", voiceLangCode: "es-ES"
       },
@@ -306,10 +289,10 @@
         recentDreams: "Sonhos recentes", viewJournal: "Ver diário →", syncing: "Sincronizando sonhos...",
         loadingTitle: "Decifrando sonho...", loadingSub: "O inconsciente ganha forma...",
         newDream: "Novo Sonho", decryptionTitle: "Análise Onira", yourStory: "Seu relato:", saveBtn: "Guardar no Diário",
-        journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados",
-        settingsTitle: "Chave API OpenAI", settingsSave: "Salvar", settingsClose: "Fechar",
+        journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados", modalClose: "Fechar",
+        outOfCredits: "Você utilizou seus 2 sonhos gratuitos. Recarregue créditos para continuar.",
         deleteConfirm: "Tem a certeza de que deseja excluir este sonho permanentemente?",
-        navHome: "Início", navJournal: "Diário", navSettings: "Definições IA",
+        navHome: "Início", navJournal: "Diário",
         listening: "A ouvir... Fale e toque na esfera para parar.", saving: "A guardar...",
         aiLangName: "PORTUGUÊS", voiceLangCode: "pt-PT"
       }
@@ -341,7 +324,7 @@
     let currentAnalysis = null;
     let currentDreamIndex = null;
 
-    // --- GESTION ONBOARDING & NAVIGATION SLIDES ---
+    // --- GESTION ONBOARDING ---
     let currentSlide = 0;
 
     function nextOnboardingSlide() {
@@ -361,7 +344,7 @@
       btn.textContent = "...";
       const { error } = await supabaseClient.auth.signInAnonymously();
       if (error) {
-        alert("Erreur de connexion. Vérifiez que 'Anonymous Sign-ins' est activé dans Supabase.");
+        alert("Erreur de connexion anonyme. Vérifiez Supabase.");
         btn.innerHTML = t.onbBtnStart;
       } else {
         localStorage.setItem('onira_onboarding_done', 'true');
@@ -369,7 +352,7 @@
       }
     }
 
-    // Gestion de session transparente sans mot de passe
+    // Gestion session utilisateur
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
       const onboardingScreen = document.getElementById('screen-onboarding');
@@ -382,9 +365,7 @@
         if (!localStorage.getItem('onira_onboarding_done')) {
           onboardingScreen.classList.remove('hidden');
         } else {
-          // Reconnexion silencieuse en tant qu'invité si la session est expirée
-          const { error } = await supabaseClient.auth.signInAnonymously();
-          if (error) console.warn("Erreur reconnexion anonyme :", error);
+          await supabaseClient.auth.signInAnonymously();
         }
       }
     });
@@ -399,7 +380,7 @@
         .single();
 
       if (!error && data) {
-        document.getElementById('credits-count').textContent = data.credits ?? 2;
+        document.getElementById('credits-count').textContent = data.credits ?? 0;
       }
     }
 
@@ -437,7 +418,7 @@
             if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
           }
         } catch(storageErr) {
-          console.warn("Stockage direct de l'URL distante :", storageErr);
+          console.warn("Stockage direct URL distante :", storageErr);
         }
 
         const { error: dbError } = await supabaseClient.from('dreams').insert([{
@@ -562,17 +543,6 @@
       if (targetBtn) targetBtn.classList.add('text-[#a88644]', 'font-semibold');
     }
 
-    function getApiKey() { return localStorage.getItem('onira_openai_key') || ''; }
-    function saveApiKey() {
-      const val = document.getElementById('api-key-input').value.trim();
-      if (val) { localStorage.setItem('onira_openai_key', val); toggleSettingsModal(false); }
-    }
-    function toggleSettingsModal(show) {
-      const modal = document.getElementById('settings-modal');
-      if (show) { document.getElementById('api-key-input').value = getApiKey(); modal.classList.remove('hidden'); }
-      else modal.classList.add('hidden');
-    }
-
     // --- RECONNAISSANCE VOCALE MULTILINGUE ---
     let isRecording = false;
     let recognition;
@@ -598,62 +568,36 @@
       recognition.onerror = (e) => console.warn("Speech error :", e.error);
     }
 
-    // --- MOTEUR IA ADAPTÉ À LA LANGUE ---
-    async function processDreamWithOpenAI(transcript) {
-      const apiKey = getApiKey();
-      if (!apiKey) {
-        alert("Clé OpenAI introuvable. Rendez-vous dans Réglages AI.");
-        switchTab('home'); 
-        return;
-      }
-
+    // --- APPEL DE L'EDGE FUNCTION SUPABASE (SÉCURISÉE CÔTÉ SERVEUR) ---
+    async function processDreamWithBackend(transcript) {
       try {
-        const promptSystem = `Tu es Onira. Décrypte le rêve. JSON requis: {"title":"Titre poétique en ${t.aiLangName}", "mood":"Humeur en ${t.aiLangName}", "interpretation":"Analyse détaillée en ${t.aiLangName}", "image_prompt":"Prompt for surreal dreamy digital art in English."}`;
-        
-        const chatRes = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-          body: JSON.stringify({
-            model: "gpt-4o-mini", 
-            response_format: { type: "json_object" },
-            messages: [ { role: "system", content: promptSystem }, { role: "user", content: transcript } ]
-          })
+        const { data, error } = await supabaseClient.functions.invoke('process-dream', {
+          body: { transcript, aiLangName: t.aiLangName }
         });
-        
-        const chatData = await chatRes.json();
-        if (chatData.error) throw new Error("Erreur OpenAI (Texte) : " + chatData.error.message);
 
-        const result = JSON.parse(chatData.choices[0].message.content);
-
-        document.getElementById('loading-step').textContent = t.loadingTitle;
-        
-        const imgRes = await fetch('https://api.openai.com/v1/images/generations', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-          body: JSON.stringify({ 
-            model: "gpt-image-2.5-flare", 
-            prompt: result.image_prompt, 
-            n: 1, 
-            size: "1024x1024"
-          })
-        });
-        
-        const imgData = await imgRes.json();
-        if (imgData.error) throw new Error("Erreur OpenAI (Image) : " + imgData.error.message);
-
-        let imageUrl = "";
-        const item = imgData.data?.[0];
-        if (item) {
-          if (item.url) imageUrl = item.url;
-          else if (item.b64_json) imageUrl = `data:image/png;base64,${item.b64_json}`;
+        if (error) {
+          throw new Error(error.message || "Erreur lors du traitement.");
         }
 
-        if (!imageUrl) throw new Error("Format d'image non reconnu.");
+        if (data?.error === 'OUT_OF_CREDITS') {
+          alert(t.outOfCredits);
+          switchTab('home');
+          return;
+        }
+
+        if (data?.error) {
+          throw new Error(data.error);
+        }
 
         currentAnalysis = {
-          title: result.title, tag: result.mood, interpretation: result.interpretation, transcript: transcript, img: imageUrl
+          title: data.title,
+          tag: data.tag,
+          interpretation: data.interpretation,
+          transcript: transcript,
+          img: data.img
         };
 
+        // Mise à jour de l'affichage
         document.getElementById('result-title').textContent = currentAnalysis.title;
         document.getElementById('result-badge').textContent = currentAnalysis.tag;
         document.getElementById('result-interpretation').textContent = currentAnalysis.interpretation;
@@ -665,6 +609,9 @@
           imgEl.classList.remove('hidden'); 
           document.getElementById('result-img-placeholder').classList.add('hidden'); 
         };
+
+        // Mise à jour du solde de crédits en direct
+        await fetchUserCredits();
 
         switchTab('result');
       } catch (err) { 
@@ -703,7 +650,7 @@
         const textToProcess = accumulatedSpeech.trim();
         if (textToProcess) {
           switchTab('loading');
-          processDreamWithOpenAI(textToProcess);
+          processDreamWithBackend(textToProcess);
         } else {
           document.getElementById('instruction-sub').textContent = t.instructionSub;
           alert("Aucune parole détectée. Veuillez réappuyer sur l'orbe et parler distinctement.");
