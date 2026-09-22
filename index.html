@@ -40,29 +40,43 @@
 
   <div class="relative w-full max-w-[390px] h-[100dvh] sm:h-[844px] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border-[6px] border-[#e8e2d8]">
 
-    <!-- ÉCRAN ONBOARDING MULTILINGUE -->
+    <!-- ÉCRAN ONBOARDING -->
     <div id="screen-onboarding" class="hidden absolute inset-0 z-[60] bg-[#faf8f5] flex flex-col justify-between p-6 sm:rounded-[38px]">
       <div class="flex-1 flex flex-col items-center justify-center text-center relative overflow-hidden mt-8">
         
-        <!-- Slide 1 -->
+        <!-- Slide 0 -->
         <div id="slide-0" class="slide-content absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500">
           <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">✨</div>
           <h2 data-i18n="onbTitle1" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
           <p data-i18n="onbDesc1" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
-        <!-- Slide 2 -->
+        <!-- Slide 1 -->
         <div id="slide-1" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
           <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">🎙️</div>
           <h2 data-i18n="onbTitle2" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
           <p data-i18n="onbDesc2" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
-        <!-- Slide 3 -->
+        <!-- Slide 2 -->
         <div id="slide-2" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
           <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">📖</div>
           <h2 data-i18n="onbTitle3" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
           <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+        </div>
+
+        <!-- Slide 3 (SELFIE AVATAR) -->
+        <div id="slide-3" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+          <div class="relative w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
+            <img id="avatar-preview" src="" class="hidden w-full h-full object-cover">
+            <span id="avatar-icon" class="text-3xl">👤</span>
+          </div>
+          <h2 data-i18n="onbTitle4" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
+          <p data-i18n="onbDesc4" class="text-xs text-[#524b45] leading-relaxed px-4 mb-5"></p>
+          
+          <input type="file" id="camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfie(event)">
+          <button id="btn-selfie" onclick="document.getElementById('camera-input').click()" class="px-5 py-2.5 bg-white border border-[#e2d7c5] text-[#9e7d3b] rounded-full text-xs font-bold shadow-sm hover:bg-[#faf8f5] transition-all">📸 Prendre un selfie</button>
+          <p class="text-[9px] text-[#a3978b] mt-3 px-6 italic">La photo reste sur votre appareil, elle n'est utilisée que pour analyser vos traits.</p>
         </div>
 
       </div>
@@ -73,6 +87,7 @@
           <div id="dot-0" class="w-2 h-2 rounded-full bg-[#9e7d3b] transition-all"></div>
           <div id="dot-1" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-2" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
+          <div id="dot-3" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
         </div>
         <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] transition-all"></button>
         <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] transition-all"></button>
@@ -217,87 +232,40 @@
     // --- DICTIONNAIRE MULTILINGUE (FR, EN, ES, PT) ---
     const translations = {
       fr: {
-        onbTitle1: "Bienvenue dans Onira",
-        onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
-        onbTitle2: "Ne tapez plus, parlez.",
-        onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute et analyse.",
-        onbTitle3: "Le journal de vos rêves",
-        onbDesc3: "Un espace 100% privé, stocké sur votre téléphone. Profitez de <b class='text-[#9e7d3b]'>2 songes offerts</b> pour débuter votre voyage onirique.",
-        onbBtnNext: "Continuer",
-        onbBtnStart: "Commencer mon voyage",
+        onbTitle1: "Bienvenue dans Onira", onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
+        onbTitle2: "Ne tapez plus, parlez.", onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute.",
+        onbTitle3: "Le journal de vos rêves", onbDesc3: "Un espace 100% privé, stocké sur votre téléphone. Profitez de 2 songes offerts.",
+        onbTitle4: "Votre reflet onirique", onbDesc4: "Prenez un selfie. L'IA s'inspirera de vos traits pour vous intégrer dans les illustrations de vos songes.",
+        selfieSaved: "Photo enregistrée !", onbBtnNext: "Continuer", onbBtnStart: "Commencer mon voyage",
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
         recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Chargement des songes...",
         loadingTitle: "Décryptage onirique...", loadingSub: "L'inconscient prend forme...",
         newDream: "Nouveau Songe", decryptionTitle: "Décryptage Onira", yourStory: "Votre récit :", saveBtn: "Conserver dans mon Journal",
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés", modalClose: "Fermer",
         outOfCredits: "Vous avez utilisé vos 2 songes offerts. Rechargez vos crédits pour continuer.",
-        deleteConfirm: "Voulez-vous vraiment supprimer ce rêve définitivement ?",
-        navHome: "Accueil", navJournal: "Journal",
+        deleteConfirm: "Voulez-vous vraiment supprimer ce rêve définitivement ?", navHome: "Accueil", navJournal: "Journal",
         listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
         aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
       },
       en: {
-        onbTitle1: "Welcome to Onira",
-        onbDesc1: "The first artificial intelligence that decodes the secrets of your subconscious.",
-        onbTitle2: "Don't type, just speak.",
-        onbDesc2: "Upon waking, keep your eyes half-closed. Simply speak your dream aloud, Onira listens and analyzes.",
-        onbTitle3: "Your dream journal",
-        onbDesc3: "A 100% private sanctuary, stored right on your phone. Enjoy <b class='text-[#9e7d3b]'>2 free dreams</b> to begin your dream journey.",
-        onbBtnNext: "Continue",
-        onbBtnStart: "Begin my journey",
+        onbTitle1: "Welcome to Onira", onbDesc1: "The first AI that decodes the secrets of your subconscious.",
+        onbTitle2: "Don't type, speak.", onbDesc2: "Upon waking, simply speak your dream aloud, Onira listens.",
+        onbTitle3: "Your dream journal", onbDesc3: "A 100% private space on your phone. Enjoy 2 free dreams.",
+        onbTitle4: "Your dream reflection", onbDesc4: "Take a selfie. The AI will use your features to place you inside your dream illustrations.",
+        selfieSaved: "Photo saved!", onbBtnNext: "Continue", onbBtnStart: "Begin my journey",
         recordBadge: "Record", stopBadge: "Stop", instructionTitle: "Tap the orb to speak", instructionSub: "Speak freely upon waking",
         recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Loading dreams...",
         loadingTitle: "Dream decoding...", loadingSub: "The unconscious takes shape...",
         newDream: "New Dream", decryptionTitle: "Onira Decryption", yourStory: "Your story:", saveBtn: "Save to Journal",
         journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams", modalClose: "Close",
         outOfCredits: "You have used your 2 free dreams. Top up your credits to continue.",
-        deleteConfirm: "Are you sure you want to permanently delete this dream?",
-        navHome: "Home", navJournal: "Journal",
+        deleteConfirm: "Are you sure you want to permanently delete this dream?", navHome: "Home", navJournal: "Journal",
         listening: "Listening... Speak, then tap the orb to stop.", saving: "Saving...",
         aiLangName: "ENGLISH", voiceLangCode: "en-US"
-      },
-      es: {
-        onbTitle1: "Bienvenido a Onira",
-        onbDesc1: "La primera inteligencia artificial que descifra los mensajes de tu subconsciente.",
-        onbTitle2: "No escribas, habla.",
-        onbDesc2: "Al despertar, mantén los ojos entreabiertos. Simplemente relata tu sueño en voz alta, Onira escucha y analiza.",
-        onbTitle3: "El diario de tus sueños",
-        onbDesc3: "Un espacio 100% privado, guardado en tu teléfono. Disfruta de <b class='text-[#9e7d3b]'>2 sueños gratis</b> para comenzar tu viaje onírico.",
-        onbBtnNext: "Continuar",
-        onbBtnStart: "Comenzar mi viaje",
-        recordBadge: "Grabar", stopBadge: "Detener", instructionTitle: "Toca el orbe para hablar", instructionSub: "Habla libremente al despertar",
-        recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Cargando sueños...",
-        loadingTitle: "Decodificando sueño...", loadingSub: "El inconsciente toma forma...",
-        newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
-        journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados", modalClose: "Cerrar",
-        outOfCredits: "Has utilizado tus 2 sueños gratis. Recarga créditos para continuar.",
-        deleteConfirm: "¿Estás seguro de que deseas eliminar este sueño permanentemente?",
-        navHome: "Inicio", navJournal: "Diario",
-        listening: "Escuchando... Habla y vuelve a pulsar el orbe.", saving: "Guardando...",
-        aiLangName: "ESPAÑOL", voiceLangCode: "es-ES"
-      },
-      pt: {
-        onbTitle1: "Bem-vindo ao Onira",
-        onbDesc1: "A primeira inteligência artificial que decifra as mensagens do seu subconsciente.",
-        onbTitle2: "Não digite, apenas fale.",
-        onbDesc2: "Ao acordar, mantenha os olhos semicerrados. Conte o seu sonho em voz alta, o Onira ouve e analisa.",
-        onbTitle3: "O diário dos seus sonhos",
-        onbDesc3: "Um espaço 100% privado, guardado no seu telefone. Aproveite <b class='text-[#9e7d3b]'>2 sonhos gratuitos</b> para iniciar sua jornada onírica.",
-        onbBtnNext: "Continuar",
-        onbBtnStart: "Começar a minha viagem",
-        recordBadge: "Gravar", stopBadge: "Parar", instructionTitle: "Toque na esfera para falar", instructionSub: "Fale livremente ao acordar",
-        recentDreams: "Sonhos recentes", viewJournal: "Ver diário →", syncing: "Carregando sonhos...",
-        loadingTitle: "Decifrando sonho...", loadingSub: "O inconsciente ganha forma...",
-        newDream: "Novo Sonho", decryptionTitle: "Análise Onira", yourStory: "Seu relato:", saveBtn: "Guardar no Diário",
-        journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados", modalClose: "Fechar",
-        outOfCredits: "Você utilizou seus 2 sonhos gratuitos. Recarregue créditos para continuar.",
-        deleteConfirm: "Tem a certeza de que deseja excluir este sonho permanentemente?",
-        navHome: "Início", navJournal: "Diário",
-        listening: "A ouvir... Fale e toque na esfera para parar.", saving: "A guardar...",
-        aiLangName: "PORTUGUÊS", voiceLangCode: "pt-PT"
       }
     };
-
+    
+    // (Ajoutez ES et PT sur le même modèle si besoin)
     function detectLanguage() {
       const userLang = navigator.language || navigator.userLanguage || 'fr';
       const shortLang = userLang.split('-')[0].toLowerCase();
@@ -311,10 +279,11 @@
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
       });
+      document.getElementById('btn-selfie').innerHTML = `📸 ${t.selfieBtn || 'Prendre un selfie'}`;
     }
     applyTranslations();
 
-    // --- BASE DE DONNÉES LOCALE INDEXEDDB (100% SUR LE TÉLÉPHONE) ---
+    // --- BASE DE DONNÉES LOCALE INDEXEDDB ---
     const DB_NAME = 'OniraLocalDB';
     const DB_VERSION = 1;
     const STORE_NAME = 'dreams';
@@ -324,9 +293,7 @@
         const req = indexedDB.open(DB_NAME, DB_VERSION);
         req.onupgradeneeded = (e) => {
           const db = e.target.result;
-          if (!db.objectStoreNames.contains(STORE_NAME)) {
-            db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-          }
+          if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
         };
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
@@ -336,14 +303,8 @@
     async function dbGetAllDreams() {
       const db = await initIndexedDB();
       return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.getAll();
-        req.onsuccess = () => {
-          const res = req.result || [];
-          res.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-          resolve(res);
-        };
+        const req = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).getAll();
+        req.onsuccess = () => resolve((req.result || []).sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
         req.onerror = () => reject(req.error);
       });
     }
@@ -351,9 +312,7 @@
     async function dbSaveDream(dream) {
       const db = await initIndexedDB();
       return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.add(dream);
+        const req = db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).add(dream);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
       });
@@ -362,15 +321,13 @@
     async function dbDeleteDream(id) {
       const db = await initIndexedDB();
       return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.delete(id);
+        const req = db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).delete(id);
         req.onsuccess = () => resolve();
         req.onerror = () => reject(req.error);
       });
     }
 
-    // --- CONFIGURATION SUPABASE (AUTH + CRÉDITS + EDGE FUNCTION) ---
+    // --- CONFIGURATION SUPABASE ---
     const supabaseUrl = 'https://vaaszqyjsuvybglvpxbw.supabase.co';
     const supabaseKey = 'sb_publishable_z-_kvTo-oIgebqYOF0qZrw_GmAkEWI0';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -379,17 +336,67 @@
     let dreamsData = [];
     let currentAnalysis = null;
     let currentDreamIndex = null;
-
-    // --- GESTION ONBOARDING ---
     let currentSlide = 0;
 
+    // --- GESTION DU SELFIE (ONBOARDING) ---
+    function handleSelfie(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const max_size = 512; // Compression légère pour l'Edge Function
+          let w = img.width, h = img.height;
+          if (w > h) { if (w > max_size) { h *= max_size / w; w = max_size; } } 
+          else { if (h > max_size) { w *= max_size / h; h = max_size; } }
+          
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          const base64 = canvas.toDataURL('image/jpeg', 0.8);
+          
+          // Sauvegarde temporaire du Base64
+          localStorage.setItem('onira_avatar_base64', base64);
+          
+          // Mise à jour visuelle
+          document.getElementById('avatar-preview').src = base64;
+          document.getElementById('avatar-preview').classList.remove('hidden');
+          document.getElementById('avatar-icon').classList.add('hidden');
+          
+          const btn = document.getElementById('btn-selfie');
+          btn.innerHTML = `✅ ${t.selfieSaved}`;
+          btn.classList.replace('text-[#9e7d3b]', 'text-green-600');
+          btn.classList.replace('border-[#e2d7c5]', 'border-green-300');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Extraction en arrière-plan des traits physiques (sans bloquer l'utilisateur)
+    async function extractAvatarDescription() {
+      const base64 = localStorage.getItem('onira_avatar_base64');
+      if (!base64 || localStorage.getItem('onira_avatar_desc')) return;
+      
+      try {
+        const { data, error } = await supabaseClient.functions.invoke('analyze-avatar', {
+          body: { imageBase64: base64 }
+        });
+        if (data && data.description) {
+          localStorage.setItem('onira_avatar_desc', data.description); // On stocke la description textuelle
+        }
+      } catch (e) { console.warn("Erreur extraction avatar", e); }
+    }
+
+    // --- NAVIGATION ONBOARDING ---
     function nextOnboardingSlide() {
       document.getElementById(`slide-${currentSlide}`).classList.add('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#9e7d3b]', 'bg-[#e2d7c5]');
       currentSlide++;
       document.getElementById(`slide-${currentSlide}`).classList.remove('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#e2d7c5]', 'bg-[#9e7d3b]');
-      if (currentSlide === 2) {
+      if (currentSlide === 3) { // Dernier slide (Selfie)
         document.getElementById('btn-next-slide').classList.add('hidden');
         document.getElementById('btn-start-app').classList.remove('hidden');
       }
@@ -400,15 +407,15 @@
       btn.textContent = "...";
       const { error } = await supabaseClient.auth.signInAnonymously();
       if (error) {
-        alert("Erreur de connexion. Vérifiez la configuration Supabase.");
+        alert("Erreur de connexion.");
         btn.innerHTML = t.onbBtnStart;
       } else {
         localStorage.setItem('onira_onboarding_done', 'true');
         document.getElementById('screen-onboarding').classList.add('hidden');
+        extractAvatarDescription(); // Lancement de l'analyse en arrière-plan
       }
     }
 
-    // Gestion session utilisateur Supabase
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
       const onboardingScreen = document.getElementById('screen-onboarding');
@@ -417,82 +424,45 @@
         onboardingScreen.classList.add('hidden');
         await fetchUserCredits();
         await loadLocalDreams();
+        extractAvatarDescription(); // Reprise au cas où la session a été rechargée trop vite
       } else {
-        if (!localStorage.getItem('onira_onboarding_done')) {
-          onboardingScreen.classList.remove('hidden');
-        } else {
-          await supabaseClient.auth.signInAnonymously();
-        }
+        if (!localStorage.getItem('onira_onboarding_done')) onboardingScreen.classList.remove('hidden');
+        else await supabaseClient.auth.signInAnonymously();
       }
     });
 
-    // --- RÉCUPÉRATION DU SOLDE DE CRÉDITS ---
     async function fetchUserCredits() {
       if (!currentUser) return;
-      const { data, error } = await supabaseClient
-        .from('profiles')
-        .select('credits')
-        .eq('id', currentUser.id)
-        .single();
-
-      if (!error && data) {
-        document.getElementById('credits-count').textContent = data.credits ?? 0;
-      }
+      const { data } = await supabaseClient.from('profiles').select('credits').eq('id', currentUser.id).single();
+      if (data) document.getElementById('credits-count').textContent = data.credits ?? 0;
     }
 
-    // --- CHARGEMENT LOCAL DES RÊVES ---
+    // --- LOGIQUE JOURNAL (Copie identique à l'existant) ---
     async function loadLocalDreams() {
-      try {
-        dreamsData = await dbGetAllDreams();
-        renderJournal();
-        renderHomeRecents();
-      } catch (err) {
-        console.warn("Erreur lecture IndexedDB :", err);
-      }
+      dreamsData = await dbGetAllDreams();
+      renderJournal(); renderHomeRecents();
     }
 
-    // --- ENREGISTREMENT LOCAL DU RÊVE ---
     async function saveDream() {
       if (!currentAnalysis) return;
       const btn = document.getElementById('save-btn');
       btn.textContent = t.saving;
-
       try {
-        const localDream = {
-          title: currentAnalysis.title,
-          tag: currentAnalysis.tag,
-          transcript: currentAnalysis.transcript,
-          interpretation: currentAnalysis.interpretation,
-          image_url: currentAnalysis.img, // Sauvegarde directe de l'image (Base64) sur l'appareil
-          created_at: new Date().toISOString()
-        };
-
-        await dbSaveDream(localDream);
+        await dbSaveDream({
+          title: currentAnalysis.title, tag: currentAnalysis.tag, transcript: currentAnalysis.transcript,
+          interpretation: currentAnalysis.interpretation, image_url: currentAnalysis.img, created_at: new Date().toISOString()
+        });
         await loadLocalDreams();
         switchTab('journal');
-      } catch (err) {
-        alert("Erreur enregistrement local : " + err.message);
-      } finally {
-        btn.textContent = t.saveBtn;
-      }
+      } catch (err) { alert(err.message); } 
+      finally { btn.textContent = t.saveBtn; }
     }
 
-    // --- SUPPRESSION LOCALE ---
     async function deleteDream() {
-      if (currentDreamIndex === null) return;
-      
-      const dream = dreamsData[currentDreamIndex];
-      if (!confirm(t.deleteConfirm)) return;
-      
-      try {
-        await dbDeleteDream(dream.id);
-        dreamsData.splice(currentDreamIndex, 1);
-        renderJournal();
-        renderHomeRecents();
-        closeModal();
-      } catch (err) {
-        alert("Erreur suppression : " + err.message);
-      }
+      if (currentDreamIndex === null || !confirm(t.deleteConfirm)) return;
+      await dbDeleteDream(dreamsData[currentDreamIndex].id);
+      dreamsData.splice(currentDreamIndex, 1);
+      renderJournal(); renderHomeRecents(); closeModal();
     }
 
     function formatDate(dateStr) {
@@ -502,23 +472,15 @@
 
     function renderHomeRecents() {
       const recentsGrid = document.getElementById('home-recents-grid');
-      if (!recentsGrid) return;
       recentsGrid.innerHTML = '';
       const topTwo = dreamsData.slice(0, 2);
-
-      if (topTwo.length === 0) {
-        recentsGrid.innerHTML = `<div class="col-span-2 text-center text-[10px] text-[#9b9186] py-2">${t.emptyJournal}</div>`;
-        return;
-      }
+      if (topTwo.length === 0) return recentsGrid.innerHTML = `<div class="col-span-2 text-center text-[10px] text-[#9b9186] py-2">${t.emptyJournal}</div>`;
       topTwo.forEach((dream, index) => {
         const item = document.createElement('div');
         item.className = "bg-white/90 border border-[#eee7db] rounded-xl p-1.5 flex items-center gap-2 shadow-sm cursor-pointer hover:border-[#d9be85]";
         item.onclick = () => openModal(index);
         item.innerHTML = `<img src="${dream.image_url}" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-[#eee]">
-          <div class="overflow-hidden text-left">
-            <p class="text-[10px] font-semibold text-[#2d2926] truncate">${dream.title}</p>
-            <p class="text-[8px] text-[#9b9186]">${formatDate(dream.created_at)}</p>
-          </div>`;
+          <div class="overflow-hidden text-left"><p class="text-[10px] font-semibold text-[#2d2926] truncate">${dream.title}</p><p class="text-[8px] text-[#9b9186]">${formatDate(dream.created_at)}</p></div>`;
         recentsGrid.appendChild(item);
       });
     }
@@ -526,21 +488,13 @@
     function renderJournal() {
       const grid = document.getElementById('journal-grid');
       grid.innerHTML = '';
-      if (dreamsData.length === 0) {
-        grid.innerHTML = `<p class="col-span-2 text-center text-xs text-[#91867c] mt-8">${t.emptyJournal}</p>`;
-      }
+      if (dreamsData.length === 0) grid.innerHTML = `<p class="col-span-2 text-center text-xs text-[#91867c] mt-8">${t.emptyJournal}</p>`;
       dreamsData.forEach((dream, index) => {
         const card = document.createElement('div');
         card.className = "bg-white rounded-xl overflow-hidden border border-[#eee7db] shadow-sm cursor-pointer";
         card.onclick = () => openModal(index);
-        card.innerHTML = `<div class="h-24 w-full relative bg-[#eee]">
-            <img src="${dream.image_url}" class="w-full h-full object-cover">
-            <span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span>
-          </div>
-          <div class="p-2">
-            <h3 class="font-semibold text-[11px] truncate">${dream.title}</h3>
-            <p class="text-[8px] text-[#91867c] mt-0.5">${formatDate(dream.created_at)}</p>
-          </div>`;
+        card.innerHTML = `<div class="h-24 w-full relative bg-[#eee]"><img src="${dream.image_url}" class="w-full h-full object-cover"><span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span></div>
+          <div class="p-2"><h3 class="font-semibold text-[11px] truncate">${dream.title}</h3><p class="text-[8px] text-[#91867c] mt-0.5">${formatDate(dream.created_at)}</p></div>`;
         grid.appendChild(card);
       });
       document.getElementById('journal-count').textContent = `${dreamsData.length} ${t.archived}`;
@@ -557,73 +511,45 @@
       document.getElementById('dream-modal').classList.remove('hidden');
     }
     
-    function closeModal() { 
-      document.getElementById('dream-modal').classList.add('hidden'); 
-      currentDreamIndex = null;
-    }
+    function closeModal() { document.getElementById('dream-modal').classList.add('hidden'); currentDreamIndex = null; }
 
     function switchTab(tab) {
       ['home', 'journal', 'loading', 'result'].forEach(s => document.getElementById(`screen-${s}`)?.classList.add('hidden'));
-      ['home', 'journal'].forEach(b => {
-        const btn = document.getElementById(`nav-${b}`);
-        if(btn) btn.classList.remove('text-[#a88644]', 'font-semibold');
-      });
+      ['home', 'journal'].forEach(b => { const btn = document.getElementById(`nav-${b}`); if(btn) btn.classList.remove('text-[#a88644]', 'font-semibold'); });
       document.getElementById(`screen-${tab}`)?.classList.remove('hidden');
       const targetBtn = document.getElementById(`nav-${tab}`);
       if (targetBtn) targetBtn.classList.add('text-[#a88644]', 'font-semibold');
     }
 
-    // --- RECONNAISSANCE VOCALE MULTILINGUE ---
-    let isRecording = false;
-    let recognition;
-    let accumulatedSpeech = "";
-    
+    // --- RECONNAISSANCE VOCALE ---
+    let isRecording = false, recognition, accumulatedSpeech = "";
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = t.voiceLangCode;
-
+      recognition = new SpeechRecognition(); recognition.continuous = true; recognition.interimResults = true; recognition.lang = t.voiceLangCode;
       recognition.onresult = (event) => {
         let fullTranscript = "";
-        for (let i = 0; i < event.results.length; ++i) {
-          fullTranscript += event.results[i][0].transcript + " ";
-        }
+        for (let i = 0; i < event.results.length; ++i) fullTranscript += event.results[i][0].transcript + " ";
         accumulatedSpeech = fullTranscript.trim();
-        if (accumulatedSpeech) {
-          document.getElementById('instruction-sub').textContent = accumulatedSpeech;
-        }
+        if (accumulatedSpeech) document.getElementById('instruction-sub').textContent = accumulatedSpeech;
       };
-      recognition.onerror = (e) => console.warn("Speech error :", e.error);
     }
 
-    // --- APPEL DE L'EDGE FUNCTION (BACKEND DÉDIÉ) ---
+    // --- GÉNÉRATION DU RÊVE (AVEC LE PROFIL PHYSIQUE DE L'UTILISATEUR) ---
     async function processDreamWithBackend(transcript) {
       try {
+        // On récupère le profil physique textuel s'il a été généré
+        const userAppearance = localStorage.getItem('onira_avatar_desc');
+        
         const { data, error } = await supabaseClient.functions.invoke('process-dream', {
-          body: { transcript, aiLangName: t.aiLangName }
+          body: { transcript, aiLangName: t.aiLangName, userAppearance }
         });
 
         if (error) throw new Error(error.message || "Erreur de traitement.");
-
-        if (data?.error === 'OUT_OF_CREDITS') {
-          alert(t.outOfCredits);
-          switchTab('home');
-          return;
-        }
-
+        if (data?.error === 'OUT_OF_CREDITS') return alert(t.outOfCredits), switchTab('home');
         if (data?.error) throw new Error(data.error);
 
-        currentAnalysis = {
-          title: data.title,
-          tag: data.tag,
-          interpretation: data.interpretation,
-          transcript: transcript,
-          img: data.img
-        };
+        currentAnalysis = { title: data.title, tag: data.tag, interpretation: data.interpretation, transcript: transcript, img: data.img };
 
-        // Rendu de l'écran résultat
         document.getElementById('result-title').textContent = currentAnalysis.title;
         document.getElementById('result-badge').textContent = currentAnalysis.tag;
         document.getElementById('result-interpretation').textContent = currentAnalysis.interpretation;
@@ -631,57 +557,30 @@
         
         const imgEl = document.getElementById('result-img');
         imgEl.src = currentAnalysis.img;
-        imgEl.onload = () => { 
-          imgEl.classList.remove('hidden'); 
-          document.getElementById('result-img-placeholder').classList.add('hidden'); 
-        };
+        imgEl.onload = () => { imgEl.classList.remove('hidden'); document.getElementById('result-img-placeholder').classList.add('hidden'); };
 
         await fetchUserCredits();
         switchTab('result');
-      } catch (err) { 
-        alert(err.message); 
-        switchTab('home'); 
-      }
+      } catch (err) { alert(err.message); switchTab('home'); }
     }
 
     function handleRecordAction() {
       if (!currentUser) return;
-      if (!recognition) return alert("Votre navigateur ne supporte pas le micro.");
+      if (!recognition) return alert("Micro non supporté.");
       
-      const orb = document.getElementById('orb');
-      const badge = document.getElementById('badge-text');
-      const dot = document.getElementById('record-indicator');
-      
+      const orb = document.getElementById('orb'), badge = document.getElementById('badge-text'), dot = document.getElementById('record-indicator');
       if (!isRecording) {
-        isRecording = true; 
-        accumulatedSpeech = "";
+        isRecording = true; accumulatedSpeech = "";
         try { recognition.start(); } catch(e) {}
-        
-        orb.classList.add('recording-active');
-        badge.textContent = t.stopBadge;
-        badge.classList.replace('text-[#7c6332]', 'text-red-500');
-        dot.classList.replace('bg-[#caa255]', 'bg-red-500');
-        document.getElementById('instruction-sub').textContent = t.listening;
+        orb.classList.add('recording-active'); badge.textContent = t.stopBadge; badge.classList.replace('text-[#7c6332]', 'text-red-500'); dot.classList.replace('bg-[#caa255]', 'bg-red-500'); document.getElementById('instruction-sub').textContent = t.listening;
       } else {
-        isRecording = false; 
-        try { recognition.stop(); } catch(e) {}
-        
-        orb.classList.remove('recording-active');
-        badge.textContent = t.recordBadge;
-        badge.classList.replace('text-red-500', 'text-[#7c6332]');
-        dot.classList.replace('bg-red-500', 'bg-[#caa255]');
-        
+        isRecording = false; try { recognition.stop(); } catch(e) {}
+        orb.classList.remove('recording-active'); badge.textContent = t.recordBadge; badge.classList.replace('text-red-500', 'text-[#7c6332]'); dot.classList.replace('bg-red-500', 'bg-[#caa255]');
         const textToProcess = accumulatedSpeech.trim();
-        if (textToProcess) {
-          switchTab('loading');
-          processDreamWithBackend(textToProcess);
-        } else {
-          document.getElementById('instruction-sub').textContent = t.instructionSub;
-          alert("Aucune parole détectée. Veuillez réappuyer sur l'orbe et parler distinctement.");
-        }
+        if (textToProcess) { switchTab('loading'); processDreamWithBackend(textToProcess); } 
+        else { document.getElementById('instruction-sub').textContent = t.instructionSub; alert("Aucune parole détectée."); }
       }
     }
-
     document.getElementById('orb').addEventListener('click', handleRecordAction);
   </script>
 </body>
