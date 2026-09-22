@@ -40,9 +40,53 @@
 
   <div class="relative w-full max-w-[390px] h-[100dvh] sm:h-[844px] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border-[6px] border-[#e8e2d8]">
 
-    <button onclick="toggleSettingsModal(true)" class="absolute top-4 sm:top-6 right-5 z-20 w-8 h-8 rounded-full bg-white/85 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-    </button>
+    <!-- ÉCRAN ONBOARDING MULTILINGUE -->
+    <div id="screen-onboarding" class="hidden absolute inset-0 z-[60] bg-[#faf8f5] flex flex-col justify-between p-6 sm:rounded-[38px]">
+      <div class="flex-1 flex flex-col items-center justify-center text-center relative overflow-hidden mt-8">
+        
+        <!-- Slide 1 -->
+        <div id="slide-0" class="slide-content absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500">
+          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">✨</div>
+          <h2 data-i18n="onbTitle1" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
+          <p data-i18n="onbDesc1" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+        </div>
+
+        <!-- Slide 2 -->
+        <div id="slide-1" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">🎙️</div>
+          <h2 data-i18n="onbTitle2" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
+          <p data-i18n="onbDesc2" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+        </div>
+
+        <!-- Slide 3 -->
+        <div id="slide-2" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">📖</div>
+          <h2 data-i18n="onbTitle3" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
+          <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+        </div>
+
+      </div>
+
+      <!-- Boutons Onboarding -->
+      <div class="mb-6 flex flex-col items-center w-full">
+        <div class="flex gap-2 mb-8">
+          <div id="dot-0" class="w-2 h-2 rounded-full bg-[#9e7d3b] transition-all"></div>
+          <div id="dot-1" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
+          <div id="dot-2" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
+        </div>
+        <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] transition-all"></button>
+        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] transition-all"></button>
+      </div>
+    </div>
+
+    <!-- En-tête : Réglages & Déconnexion -->
+    <div class="absolute top-4 sm:top-6 right-5 z-20 flex items-center gap-2">
+      <button onclick="toggleSettingsModal(true)" class="w-8 h-8 rounded-full bg-white/85 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      </button>
+      <button id="logout-btn" onclick="handleLogout()" data-i18n="logoutBtn" class="hidden px-2.5 py-1 rounded-full bg-white/85 border border-[#e2d7c5] text-[10px] font-semibold text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
+      </button>
+    </div>
 
     <!-- ÉCRAN 1 : ACCUEIL -->
     <div id="screen-home" class="flex-1 flex flex-col justify-between overflow-hidden">
@@ -59,24 +103,22 @@
         <div id="orb" class="w-40 h-40 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all">
           <div class="px-3.5 py-1 bg-white/80 backdrop-blur-md rounded-full border border-white flex items-center shadow-sm">
             <div id="record-indicator" class="w-2 h-2 rounded-full bg-[#caa255] mr-2"></div>
-            <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-bold text-[#7c6332]">Enregistrer</span>
+            <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-bold text-[#7c6332]"></span>
           </div>
         </div>
 
         <div class="text-center px-2 max-w-[280px]">
-          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]">Appuyez sur l'orbe pour parler</h2>
-          <p id="instruction-sub" data-i18n="instructionSub" class="text-[10px] text-[#91867c] mt-0.5 min-h-[1.2rem] line-clamp-2">Racontez librement votre rêve</p>
+          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]"></h2>
+          <p id="instruction-sub" data-i18n="instructionSub" class="text-[10px] text-[#91867c] mt-0.5 min-h-[1.2rem] line-clamp-2"></p>
         </div>
 
         <div class="w-full">
           <div class="flex justify-between items-center text-[10px] text-[#8e857c] px-1 mb-1.5 font-medium">
-            <span data-i18n="recentDreams">Rêves récents</span>
-            <button onclick="switchTab('journal')" data-i18n="viewJournal" class="text-[#a88644] text-[10px] hover:underline font-semibold">Voir le journal →</button>
+            <span data-i18n="recentDreams"></span>
+            <button onclick="switchTab('journal')" data-i18n="viewJournal" class="text-[#a88644] text-[10px] hover:underline font-semibold"></button>
           </div>
           <div id="home-recents-grid" class="grid grid-cols-2 gap-2">
-            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-2 italic" data-i18n="syncing">
-              Synchronisation des songes...
-            </div>
+            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-2 italic" data-i18n="syncing"></div>
           </div>
         </div>
       </main>
@@ -90,14 +132,14 @@
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
         </svg>
       </div>
-      <h3 id="loading-step" data-i18n="loadingTitle" class="text-xs font-semibold text-[#2d2926]">Décryptage onirique...</h3>
-      <p id="loading-sub" data-i18n="loadingSub" class="text-[10px] text-[#8c827a] mt-1">L'inconscient prend forme...</p>
+      <h3 id="loading-step" data-i18n="loadingTitle" class="text-xs font-semibold text-[#2d2926]"></h3>
+      <p id="loading-sub" data-i18n="loadingSub" class="text-[10px] text-[#8c827a] mt-1"></p>
     </div>
 
     <!-- ÉCRAN 3 : RÉSULTAT -->
     <div id="screen-result" class="hidden flex-1 flex flex-col overflow-y-auto no-scrollbar p-4">
       <div class="flex justify-between items-center mb-2.5">
-        <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]">Nouveau Songe</span>
+        <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]"></span>
         <button onclick="switchTab('home')" class="text-xs text-[#8c827a] p-1">✕</button>
       </div>
 
@@ -115,24 +157,22 @@
       </div>
 
       <div class="bg-white rounded-xl p-3.5 border border-[#eee7db] shadow-sm mb-2.5">
-        <h3 data-i18n="decryptionTitle" class="text-[10px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-1.5">Décryptage Onira</h3>
+        <h3 data-i18n="decryptionTitle" class="text-[10px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-1.5"></h3>
         <p id="result-interpretation" class="text-xs text-[#524b45] leading-relaxed"></p>
       </div>
 
       <div class="bg-[#f2ece2]/60 rounded-xl p-3 border border-[#eee7db] mb-3">
-        <p data-i18n="yourStory" class="text-[9px] font-semibold text-[#8c827a] mb-1">Votre récit :</p>
+        <p data-i18n="yourStory" class="text-[9px] font-semibold text-[#8c827a] mb-1"></p>
         <p id="result-transcript" class="text-[11px] text-[#635b54] italic leading-relaxed"></p>
       </div>
 
-      <button id="save-btn" onclick="saveToSupabase()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all">
-        Conserver dans mon Journal
-      </button>
+      <button id="save-btn" onclick="saveToSupabase()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all"></button>
     </div>
 
     <!-- ÉCRAN 4 : JOURNAL -->
     <div id="screen-journal" class="hidden flex-1 flex flex-col overflow-hidden">
       <header class="pt-4 sm:pt-6 pb-2.5 px-5 border-b border-[#eee8dc] bg-[#faf8f5]/90 flex-shrink-0">
-        <h1 data-i18n="journalTitle" class="text-base font-bold text-[#2d2926]">Journal d'Onira</h1>
+        <h1 data-i18n="journalTitle" class="text-base font-bold text-[#2d2926]"></h1>
         <p id="journal-count" class="text-[10px] text-[#91867c]">...</p>
       </header>
       <main class="flex-1 overflow-y-auto no-scrollbar p-3.5">
@@ -143,16 +183,33 @@
     <!-- MODALE CLÉ OPENAI -->
     <div id="settings-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-5">
       <div class="w-full bg-[#faf8f5] rounded-3xl p-5 border border-[#e2d7c5] shadow-2xl">
-        <h3 data-i18n="settingsTitle" class="text-xs font-bold text-[#2d2926]">Clé API OpenAI</h3>
+        <h3 data-i18n="settingsTitle" class="text-xs font-bold text-[#2d2926]"></h3>
         <input id="api-key-input" type="password" placeholder="sk-..." class="w-full mt-2.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white">
         <div class="mt-3.5 flex gap-2">
-          <button onclick="saveApiKey()" data-i18n="settingsSave" class="flex-1 py-2 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold">Enregistrer</button>
-          <button onclick="toggleSettingsModal(false)" data-i18n="settingsClose" class="px-4 py-2 border border-[#ddd3c4] text-[#736a61] rounded-xl text-xs">Fermer</button>
+          <button onclick="saveApiKey()" data-i18n="settingsSave" class="flex-1 py-2 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold"></button>
+          <button onclick="toggleSettingsModal(false)" data-i18n="settingsClose" class="px-4 py-2 border border-[#ddd3c4] text-[#736a61] rounded-xl text-xs"></button>
         </div>
       </div>
     </div>
 
-    <!-- MODALE DÉTAIL -->
+    <!-- MODALE AUTHENTIFICATION CLASSICAL -->
+    <div id="auth-modal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-5">
+      <div class="w-full bg-[#faf8f5] rounded-3xl p-6 border border-[#e2d7c5] shadow-2xl text-center">
+        <h3 data-i18n="authTitle" class="text-sm font-bold text-[#2d2926] mb-1"></h3>
+        <p data-i18n="authSubtitle" class="text-[10px] text-[#91867c] mb-4"></p>
+        
+        <input id="auth-email" type="email" placeholder="Email" class="w-full mb-2.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white focus:outline-none focus:border-[#a88644]">
+        <input id="auth-password" type="password" placeholder="Password (min. 6)" class="w-full mb-3.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white focus:outline-none focus:border-[#a88644]">
+        
+        <div class="flex flex-col gap-2">
+          <button onclick="handleAuth('login')" data-i18n="authLogin" class="w-full py-2.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow hover:bg-[#886a30] transition"></button>
+          <button onclick="handleAuth('signup')" data-i18n="authSignup" class="w-full py-2.5 bg-white border border-[#9e7d3b] text-[#9e7d3b] rounded-xl text-xs font-semibold hover:bg-[#faf8f5] transition"></button>
+        </div>
+        <p id="auth-error" class="text-[10px] text-red-500 mt-2.5 hidden"></p>
+      </div>
+    </div>
+
+    <!-- MODALE DÉTAIL D'UN SONGE -->
     <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
       <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar">
         <div class="w-8 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
@@ -163,67 +220,103 @@
         <p id="modal-date" class="text-[9px] text-[#91867c] mb-2"></p>
         <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
         <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
-        <button onclick="closeModal()" data-i18n="settingsClose" class="w-full mt-3 py-2.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold">Fermer</button>
+        <button onclick="closeModal()" data-i18n="settingsClose" class="w-full mt-3 py-2.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold"></button>
       </div>
     </div>
 
-    <!-- BARRE DE NAVIGATION ADAPTÉE -->
+    <!-- BARRE DE NAVIGATION -->
     <nav class="bg-white/95 border-t border-[#ede7dc] px-6 pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))] flex justify-between text-[10px] text-[#968b80] flex-shrink-0">
       <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-0.5 text-[#a88644] font-semibold">
-        <span data-i18n="navHome">Accueil</span>
+        <span data-i18n="navHome"></span>
       </button>
       <button id="nav-journal" onclick="switchTab('journal')" class="flex flex-col items-center gap-0.5 hover:text-[#2d2926]">
-        <span data-i18n="navJournal">Journal</span>
+        <span data-i18n="navJournal"></span>
       </button>
       <button onclick="toggleSettingsModal(true)" class="flex flex-col items-center gap-0.5 hover:text-[#2d2926]">
-        <span data-i18n="navSettings">Réglages AI</span>
+        <span data-i18n="navSettings"></span>
       </button>
     </nav>
   </div>
 
   <script>
-    // --- GESTION MULTILINGUE COMPLÈTE (FR / EN / ES / PT) ---
+    // --- DICTIONNAIRE COMPLET MULTILINGUE (FR, EN, ES, PT) ---
     const translations = {
       fr: {
+        onbTitle1: "Bienvenue dans Onira",
+        onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
+        onbTitle2: "Ne tapez plus, parlez.",
+        onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute et analyse.",
+        onbTitle3: "Votre journal intime",
+        onbDesc3: "Un espace 100% privé. Profitez de <b class='text-[#9e7d3b]'>2 songes offerts</b> pour débuter votre voyage onirique.",
+        onbBtnNext: "Continuer",
+        onbBtnStart: "Commencer mon voyage",
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
         recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Synchronisation des songes...",
         loadingTitle: "Décryptage onirique...", loadingSub: "L'inconscient prend forme...",
         newDream: "Nouveau Songe", decryptionTitle: "Décryptage Onira", yourStory: "Votre récit :", saveBtn: "Conserver dans mon Journal",
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés",
         settingsTitle: "Clé API OpenAI", settingsSave: "Enregistrer", settingsClose: "Fermer",
+        authTitle: "Bienvenue sur Onira", authSubtitle: "Connectez-vous pour conserver vos songes.", authLogin: "Se connecter", authSignup: "Créer un compte", logoutBtn: "Sortir",
         navHome: "Accueil", navJournal: "Journal", navSettings: "Réglages AI",
         listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
         aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
       },
       en: {
+        onbTitle1: "Welcome to Onira",
+        onbDesc1: "The first artificial intelligence that decodes the secrets of your subconscious.",
+        onbTitle2: "Don't type, just speak.",
+        onbDesc2: "Upon waking, keep your eyes half-closed. Simply speak your dream aloud, Onira listens and analyzes.",
+        onbTitle3: "Your private journal",
+        onbDesc3: "A 100% private sanctuary. Enjoy <b class='text-[#9e7d3b]'>2 free dreams</b> to begin your dream journey.",
+        onbBtnNext: "Continue",
+        onbBtnStart: "Begin my journey",
         recordBadge: "Record", stopBadge: "Stop", instructionTitle: "Tap the orb to speak", instructionSub: "Speak freely upon waking",
         recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Syncing dreams...",
         loadingTitle: "Dream decoding...", loadingSub: "The unconscious takes shape...",
         newDream: "New Dream", decryptionTitle: "Onira Decryption", yourStory: "Your story:", saveBtn: "Save to Journal",
         journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams",
         settingsTitle: "OpenAI API Key", settingsSave: "Save", settingsClose: "Close",
+        authTitle: "Welcome to Onira", authSubtitle: "Sign in to safeguard your dreams.", authLogin: "Sign In", authSignup: "Create Account", logoutBtn: "Sign Out",
         navHome: "Home", navJournal: "Journal", navSettings: "AI Settings",
         listening: "Listening... Speak, then tap the orb to stop.", saving: "Saving...",
         aiLangName: "ENGLISH", voiceLangCode: "en-US"
       },
       es: {
+        onbTitle1: "Bienvenido a Onira",
+        onbDesc1: "La primera inteligencia artificial que descifra los mensajes de tu subconsciente.",
+        onbTitle2: "No escribas, habla.",
+        onbDesc2: "Al despertar, mantén los ojos entreabiertos. Simplemente relata tu sueño en voz alta, Onira escucha y analiza.",
+        onbTitle3: "Tu diario íntimo",
+        onbDesc3: "Un espacio 100% privado. Disfruta de <b class='text-[#9e7d3b]'>2 sueños gratis</b> para comenzar tu viaje onírico.",
+        onbBtnNext: "Continuar",
+        onbBtnStart: "Comenzar mi viaje",
         recordBadge: "Grabar", stopBadge: "Detener", instructionTitle: "Toca el orbe para hablar", instructionSub: "Habla libremente al despertar",
         recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Sincronizando sueños...",
         loadingTitle: "Decodificando sueño...", loadingSub: "El inconsciente toma forma...",
         newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
         journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados",
         settingsTitle: "Clave API OpenAI", settingsSave: "Guardar", settingsClose: "Cerrar",
+        authTitle: "Bienvenido a Onira", authSubtitle: "Inicia sesión para guardar tus sueños.", authLogin: "Iniciar sesión", authSignup: "Crear cuenta", logoutBtn: "Salir",
         navHome: "Inicio", navJournal: "Diario", navSettings: "Ajustes IA",
         listening: "Escuchando... Habla y vuelve a pulsar el orbe.", saving: "Guardando...",
         aiLangName: "ESPAÑOL", voiceLangCode: "es-ES"
       },
       pt: {
+        onbTitle1: "Bem-vindo ao Onira",
+        onbDesc1: "A primeira inteligência artificial que decifra as mensagens do seu subconsciente.",
+        onbTitle2: "Não digite, apenas fale.",
+        onbDesc2: "Ao acordar, mantenha os olhos semicerrados. Conte o seu sonho em voz alta, o Onira ouve e analisa.",
+        onbTitle3: "Seu diário íntimo",
+        onbDesc3: "Um espaço 100% privado. Aproveite <b class='text-[#9e7d3b]'>2 sonhos gratuitos</b> para iniciar sua jornada onírica.",
+        onbBtnNext: "Continuar",
+        onbBtnStart: "Começar a minha viagem",
         recordBadge: "Gravar", stopBadge: "Parar", instructionTitle: "Toque na esfera para falar", instructionSub: "Fale livremente ao acordar",
         recentDreams: "Sonhos recentes", viewJournal: "Ver diário →", syncing: "Sincronizando sonhos...",
         loadingTitle: "Decifrando sonho...", loadingSub: "O inconsciente ganha forma...",
         newDream: "Novo Sonho", decryptionTitle: "Análise Onira", yourStory: "Seu relato:", saveBtn: "Guardar no Diário",
         journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados",
         settingsTitle: "Chave API OpenAI", settingsSave: "Salvar", settingsClose: "Fechar",
+        authTitle: "Bem-vindo ao Onira", authSubtitle: "Inicie sessão para guardar os seus sonhos.", authLogin: "Entrar", authSignup: "Criar conta", logoutBtn: "Sair",
         navHome: "Início", navJournal: "Diário", navSettings: "Definições IA",
         listening: "A ouvir... Fale e toque na esfera para parar.", saving: "A guardar...",
         aiLangName: "PORTUGUÊS", voiceLangCode: "pt-PT"
@@ -241,7 +334,7 @@
     function applyTranslations() {
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (t[key]) el.textContent = t[key];
+        if (t[key]) el.innerHTML = t[key];
       });
     }
     applyTranslations();
@@ -251,11 +344,102 @@
     const supabaseKey = 'sb_publishable_z-_kvTo-oIgebqYOF0qZrw_GmAkEWI0';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+    let currentUser = null;
     let dreamsData = [];
     let currentAnalysis = null;
 
+    // --- GESTION ONBOARDING ---
+    let currentSlide = 0;
+
+    function nextOnboardingSlide() {
+      document.getElementById(`slide-${currentSlide}`).classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#9e7d3b]', 'bg-[#e2d7c5]');
+      currentSlide++;
+      document.getElementById(`slide-${currentSlide}`).classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#e2d7c5]', 'bg-[#9e7d3b]');
+      if (currentSlide === 2) {
+        document.getElementById('btn-next-slide').classList.add('hidden');
+        document.getElementById('btn-start-app').classList.remove('hidden');
+      }
+    }
+
+    async function finishOnboarding() {
+      const btn = document.getElementById('btn-start-app');
+      btn.textContent = "...";
+      const { error } = await supabaseClient.auth.signInAnonymously();
+      if (error) {
+        alert("Erreur de connexion. Vérifiez que 'Anonymous Sign-ins' est activé dans Supabase.");
+        btn.innerHTML = t.onbBtnStart;
+      } else {
+        localStorage.setItem('onira_onboarding_done', 'true');
+        document.getElementById('screen-onboarding').classList.add('hidden');
+      }
+    }
+
+    // Changement d'état de connexion
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      currentUser = session?.user || null;
+      const authModal = document.getElementById('auth-modal');
+      const logoutBtn = document.getElementById('logout-btn');
+      const onboardingScreen = document.getElementById('screen-onboarding');
+
+      if (currentUser) {
+        authModal.classList.add('hidden');
+        onboardingScreen.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+        fetchDreamsFromCloud();
+      } else {
+        logoutBtn.classList.add('hidden');
+        dreamsData = [];
+        renderJournal();
+        renderHomeRecents();
+        
+        if (!localStorage.getItem('onira_onboarding_done')) {
+          onboardingScreen.classList.remove('hidden');
+        } else {
+          authModal.classList.remove('hidden');
+        }
+      }
+    });
+
+    async function handleAuth(action) {
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
+      const errorEl = document.getElementById('auth-error');
+      errorEl.classList.add('hidden');
+
+      if (!email || password.length < 6) {
+        errorEl.textContent = "Email invalide ou mot de passe trop court.";
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      let res;
+      if (action === 'signup') {
+        res = await supabaseClient.auth.signUp({ email, password });
+      } else {
+        res = await supabaseClient.auth.signInWithPassword({ email, password });
+      }
+
+      if (res.error) {
+        errorEl.textContent = res.error.message;
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+    }
+
+    // --- BASE DE DONNÉES ET STOCKAGE ---
     async function fetchDreamsFromCloud() {
-      const { data, error } = await supabaseClient.from('dreams').select('*').order('created_at', { ascending: false });
+      if (!currentUser) return;
+      const { data, error } = await supabaseClient
+        .from('dreams')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
       if (!error) {
         dreamsData = data || [];
         renderJournal();
@@ -264,7 +448,7 @@
     }
 
     async function saveToSupabase() {
-      if (!currentAnalysis) return;
+      if (!currentAnalysis || !currentUser) return;
       const btn = document.getElementById('save-btn');
       btn.textContent = t.saving;
 
@@ -274,22 +458,26 @@
         try {
           const res = await fetch(currentAnalysis.img);
           const imageBlob = await res.blob();
-          const fileName = `dream_${Date.now()}.png`;
+          const fileName = `${currentUser.id}_${Date.now()}.png`;
           const { error: uploadError } = await supabaseClient.storage.from('dream_images').upload(fileName, imageBlob, { contentType: 'image/png', upsert: false });
           if (!uploadError) {
             const { data: publicUrlData } = supabaseClient.storage.from('dream_images').getPublicUrl(fileName);
             if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
           }
         } catch(storageErr) {
-          console.warn("Upload Storage ignoré, sauvegarde directe :", storageErr);
+          console.warn("Stockage direct de l'URL distante :", storageErr);
         }
 
         const { error: dbError } = await supabaseClient.from('dreams').insert([{
-          title: currentAnalysis.title, tag: currentAnalysis.tag, transcript: currentAnalysis.transcript,
-          interpretation: currentAnalysis.interpretation, image_url: permanentImageUrl
+          user_id: currentUser.id,
+          title: currentAnalysis.title,
+          tag: currentAnalysis.tag,
+          transcript: currentAnalysis.transcript,
+          interpretation: currentAnalysis.interpretation,
+          image_url: permanentImageUrl
         }]);
 
-        if (dbError) throw new Error("Erreur base de données : " + dbError.message);
+        if (dbError) throw new Error("Erreur base : " + dbError.message);
 
         await fetchDreamsFromCloud();
         switchTab('journal');
@@ -299,8 +487,6 @@
         btn.textContent = t.saveBtn;
       }
     }
-
-    fetchDreamsFromCloud();
 
     function formatDate(dateStr) {
       if (!dateStr) return '';
@@ -386,7 +572,7 @@
       else modal.classList.add('hidden');
     }
 
-    // --- RECONNAISSANCE VOCALE OPTIMISÉE POUR IPHONE ---
+    // --- RECONNAISSANCE VOCALE MULTILINGUE ---
     let isRecording = false;
     let recognition;
     let accumulatedSpeech = "";
@@ -408,12 +594,10 @@
           document.getElementById('instruction-sub').textContent = accumulatedSpeech;
         }
       };
-
-      recognition.onerror = (event) => {
-        console.warn("Speech error :", event.error);
-      };
+      recognition.onerror = (e) => console.warn("Speech error :", e.error);
     }
 
+    // --- MOTEUR IA ADAPTÉ À LA LANGUE ---
     async function processDreamWithOpenAI(transcript) {
       const apiKey = getApiKey();
       if (!apiKey) {
@@ -461,7 +645,6 @@
         if (item) {
           if (item.url) imageUrl = item.url;
           else if (item.b64_json) imageUrl = `data:image/png;base64,${item.b64_json}`;
-          else if (typeof item === "string") imageUrl = item.startsWith("http") || item.startsWith("data:") ? item : `data:image/png;base64,${item}`;
         }
 
         if (!imageUrl) throw new Error("Format d'image non reconnu.");
@@ -490,6 +673,7 @@
     }
 
     function handleRecordAction() {
+      if (!currentUser) return;
       if (!recognition) return alert("Votre navigateur ne supporte pas le micro.");
       
       const orb = document.getElementById('orb');
@@ -516,7 +700,6 @@
         dot.classList.replace('bg-red-500', 'bg-[#caa255]');
         
         const textToProcess = accumulatedSpeech.trim();
-        
         if (textToProcess) {
           switchTab('loading');
           processDreamWithOpenAI(textToProcess);
