@@ -211,16 +211,23 @@
 
     <!-- MODALE DÉTAIL D'UN SONGE -->
     <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
-      <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar">
+      <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar flex flex-col">
         <div class="w-8 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
-        <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-44 border border-[#e5ded2]">
+        <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-44 border border-[#e5ded2] flex-shrink-0">
           <img id="modal-img" src="" class="w-full h-full object-cover">
         </div>
         <h2 id="modal-title" class="text-sm font-bold text-[#2d2926]"></h2>
         <p id="modal-date" class="text-[9px] text-[#91867c] mb-2"></p>
         <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
         <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
-        <button onclick="closeModal()" data-i18n="settingsClose" class="w-full mt-3 py-2.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold"></button>
+        
+        <!-- Boutons d'action : Fermer et Supprimer -->
+        <div class="flex gap-2 mt-4 flex-shrink-0">
+          <button onclick="deleteDream()" class="w-14 py-2.5 bg-[#fff0f0] text-red-500 rounded-xl border border-red-100 hover:bg-red-50 flex items-center justify-center transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </button>
+          <button onclick="closeModal()" data-i18n="settingsClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold transition-all"></button>
+        </div>
       </div>
     </div>
 
@@ -246,7 +253,7 @@
         onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
         onbTitle2: "Ne tapez plus, parlez.",
         onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute et analyse.",
-        onbTitle3: "Votre journal intime",
+        onbTitle3: "Le journal de vos rêves",
         onbDesc3: "Un espace 100% privé. Profitez de <b class='text-[#9e7d3b]'>2 songes offerts</b> pour débuter votre voyage onirique.",
         onbBtnNext: "Continuer",
         onbBtnStart: "Commencer mon voyage",
@@ -257,6 +264,7 @@
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés",
         settingsTitle: "Clé API OpenAI", settingsSave: "Enregistrer", settingsClose: "Fermer",
         authTitle: "Bienvenue sur Onira", authSubtitle: "Connectez-vous pour conserver vos songes.", authLogin: "Se connecter", authSignup: "Créer un compte", logoutBtn: "Sortir",
+        deleteConfirm: "Voulez-vous vraiment supprimer ce rêve définitivement ?",
         navHome: "Accueil", navJournal: "Journal", navSettings: "Réglages AI",
         listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
         aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
@@ -266,7 +274,7 @@
         onbDesc1: "The first artificial intelligence that decodes the secrets of your subconscious.",
         onbTitle2: "Don't type, just speak.",
         onbDesc2: "Upon waking, keep your eyes half-closed. Simply speak your dream aloud, Onira listens and analyzes.",
-        onbTitle3: "Your private journal",
+        onbTitle3: "Your dream journal",
         onbDesc3: "A 100% private sanctuary. Enjoy <b class='text-[#9e7d3b]'>2 free dreams</b> to begin your dream journey.",
         onbBtnNext: "Continue",
         onbBtnStart: "Begin my journey",
@@ -277,6 +285,7 @@
         journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams",
         settingsTitle: "OpenAI API Key", settingsSave: "Save", settingsClose: "Close",
         authTitle: "Welcome to Onira", authSubtitle: "Sign in to safeguard your dreams.", authLogin: "Sign In", authSignup: "Create Account", logoutBtn: "Sign Out",
+        deleteConfirm: "Are you sure you want to permanently delete this dream?",
         navHome: "Home", navJournal: "Journal", navSettings: "AI Settings",
         listening: "Listening... Speak, then tap the orb to stop.", saving: "Saving...",
         aiLangName: "ENGLISH", voiceLangCode: "en-US"
@@ -286,7 +295,7 @@
         onbDesc1: "La primera inteligencia artificial que descifra los mensajes de tu subconsciente.",
         onbTitle2: "No escribas, habla.",
         onbDesc2: "Al despertar, mantén los ojos entreabiertos. Simplemente relata tu sueño en voz alta, Onira escucha y analiza.",
-        onbTitle3: "Tu diario íntimo",
+        onbTitle3: "El diario de tus sueños",
         onbDesc3: "Un espacio 100% privado. Disfruta de <b class='text-[#9e7d3b]'>2 sueños gratis</b> para comenzar tu viaje onírico.",
         onbBtnNext: "Continuar",
         onbBtnStart: "Comenzar mi viaje",
@@ -297,6 +306,7 @@
         journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados",
         settingsTitle: "Clave API OpenAI", settingsSave: "Guardar", settingsClose: "Cerrar",
         authTitle: "Bienvenido a Onira", authSubtitle: "Inicia sesión para guardar tus sueños.", authLogin: "Iniciar sesión", authSignup: "Crear cuenta", logoutBtn: "Salir",
+        deleteConfirm: "¿Estás seguro de que deseas eliminar este sueño permanentemente?",
         navHome: "Inicio", navJournal: "Diario", navSettings: "Ajustes IA",
         listening: "Escuchando... Habla y vuelve a pulsar el orbe.", saving: "Guardando...",
         aiLangName: "ESPAÑOL", voiceLangCode: "es-ES"
@@ -306,7 +316,7 @@
         onbDesc1: "A primeira inteligência artificial que decifra as mensagens do seu subconsciente.",
         onbTitle2: "Não digite, apenas fale.",
         onbDesc2: "Ao acordar, mantenha os olhos semicerrados. Conte o seu sonho em voz alta, o Onira ouve e analisa.",
-        onbTitle3: "Seu diário íntimo",
+        onbTitle3: "O diário dos seus sonhos",
         onbDesc3: "Um espaço 100% privado. Aproveite <b class='text-[#9e7d3b]'>2 sonhos gratuitos</b> para iniciar sua jornada onírica.",
         onbBtnNext: "Continuar",
         onbBtnStart: "Começar a minha viagem",
@@ -317,6 +327,7 @@
         journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados",
         settingsTitle: "Chave API OpenAI", settingsSave: "Salvar", settingsClose: "Fechar",
         authTitle: "Bem-vindo ao Onira", authSubtitle: "Inicie sessão para guardar os seus sonhos.", authLogin: "Entrar", authSignup: "Criar conta", logoutBtn: "Sair",
+        deleteConfirm: "Tem a certeza de que deseja excluir este sonho permanentemente?",
         navHome: "Início", navJournal: "Diário", navSettings: "Definições IA",
         listening: "A ouvir... Fale e toque na esfera para parar.", saving: "A guardar...",
         aiLangName: "PORTUGUÊS", voiceLangCode: "pt-PT"
@@ -347,6 +358,7 @@
     let currentUser = null;
     let dreamsData = [];
     let currentAnalysis = null;
+    let currentDreamIndex = null; // Mémorise le rêve actuellement ouvert
 
     // --- GESTION ONBOARDING ---
     let currentSlide = 0;
@@ -488,6 +500,31 @@
       }
     }
 
+    // --- SUPPRESSION D'UN RÊVE ---
+    async function deleteDream() {
+      if (currentDreamIndex === null) return;
+      
+      const dream = dreamsData[currentDreamIndex];
+      if (!confirm(t.deleteConfirm)) return;
+      
+      // Suppression de la base de données (l'id du rêve est nécessaire)
+      const { error } = await supabaseClient
+        .from('dreams')
+        .delete()
+        .eq('id', dream.id);
+
+      if (error) {
+        alert("Erreur lors de la suppression : " + error.message);
+        return;
+      }
+
+      // Mise à jour de l'affichage local
+      dreamsData.splice(currentDreamIndex, 1);
+      renderJournal();
+      renderHomeRecents();
+      closeModal();
+    }
+
     function formatDate(dateStr) {
       if (!dateStr) return '';
       return new Date(dateStr).toLocaleDateString(currentLang, { day: 'numeric', month: 'short' });
@@ -540,6 +577,7 @@
     }
 
     function openModal(index) {
+      currentDreamIndex = index; // Mémorise le rêve pour la suppression éventuelle
       const dream = dreamsData[index];
       document.getElementById('modal-img').src = dream.image_url;
       document.getElementById('modal-title').textContent = dream.title;
@@ -548,7 +586,11 @@
       document.getElementById('modal-transcript').textContent = `« ${dream.transcript} »`;
       document.getElementById('dream-modal').classList.remove('hidden');
     }
-    function closeModal() { document.getElementById('dream-modal').classList.add('hidden'); }
+    
+    function closeModal() { 
+      document.getElementById('dream-modal').classList.add('hidden'); 
+      currentDreamIndex = null;
+    }
 
     function switchTab(tab) {
       ['home', 'journal', 'loading', 'result'].forEach(s => document.getElementById(`screen-${s}`)?.classList.add('hidden'));
