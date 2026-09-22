@@ -165,7 +165,7 @@
         <p id="result-transcript" class="text-[11px] text-[#635b54] italic leading-relaxed"></p>
       </div>
 
-      <button id="save-btn" onclick="saveToSupabase()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all"></button>
+      <button id="save-btn" onclick="saveDream()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all"></button>
     </div>
 
     <!-- ÉCRAN 4 : JOURNAL -->
@@ -200,7 +200,7 @@
       </div>
     </div>
 
-    <!-- BARRE DE NAVIGATION (Plus de bouton Réglages AI) -->
+    <!-- BARRE DE NAVIGATION -->
     <nav class="bg-white/95 border-t border-[#ede7dc] px-12 pt-2.5 pb-[max(0.7rem,env(safe-area-inset-bottom))] flex justify-around text-[11px] text-[#968b80] flex-shrink-0">
       <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-[#a88644] font-semibold">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
@@ -214,7 +214,7 @@
   </div>
 
   <script>
-    // --- DICTIONNAIRE COMPLET MULTILINGUE ---
+    // --- DICTIONNAIRE MULTILINGUE (FR, EN, ES, PT) ---
     const translations = {
       fr: {
         onbTitle1: "Bienvenue dans Onira",
@@ -222,11 +222,11 @@
         onbTitle2: "Ne tapez plus, parlez.",
         onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute et analyse.",
         onbTitle3: "Le journal de vos rêves",
-        onbDesc3: "Un espace 100% privé. Profitez de <b class='text-[#9e7d3b]'>2 songes offerts</b> pour débuter votre voyage onirique.",
+        onbDesc3: "Un espace 100% privé, stocké sur votre téléphone. Profitez de <b class='text-[#9e7d3b]'>2 songes offerts</b> pour débuter votre voyage onirique.",
         onbBtnNext: "Continuer",
         onbBtnStart: "Commencer mon voyage",
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
-        recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Synchronisation des songes...",
+        recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Chargement des songes...",
         loadingTitle: "Décryptage onirique...", loadingSub: "L'inconscient prend forme...",
         newDream: "Nouveau Songe", decryptionTitle: "Décryptage Onira", yourStory: "Votre récit :", saveBtn: "Conserver dans mon Journal",
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés", modalClose: "Fermer",
@@ -242,11 +242,11 @@
         onbTitle2: "Don't type, just speak.",
         onbDesc2: "Upon waking, keep your eyes half-closed. Simply speak your dream aloud, Onira listens and analyzes.",
         onbTitle3: "Your dream journal",
-        onbDesc3: "A 100% private sanctuary. Enjoy <b class='text-[#9e7d3b]'>2 free dreams</b> to begin your dream journey.",
+        onbDesc3: "A 100% private sanctuary, stored right on your phone. Enjoy <b class='text-[#9e7d3b]'>2 free dreams</b> to begin your dream journey.",
         onbBtnNext: "Continue",
         onbBtnStart: "Begin my journey",
         recordBadge: "Record", stopBadge: "Stop", instructionTitle: "Tap the orb to speak", instructionSub: "Speak freely upon waking",
-        recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Syncing dreams...",
+        recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Loading dreams...",
         loadingTitle: "Dream decoding...", loadingSub: "The unconscious takes shape...",
         newDream: "New Dream", decryptionTitle: "Onira Decryption", yourStory: "Your story:", saveBtn: "Save to Journal",
         journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams", modalClose: "Close",
@@ -262,11 +262,11 @@
         onbTitle2: "No escribas, habla.",
         onbDesc2: "Al despertar, mantén los ojos entreabiertos. Simplemente relata tu sueño en voz alta, Onira escucha y analiza.",
         onbTitle3: "El diario de tus sueños",
-        onbDesc3: "Un espacio 100% privado. Disfruta de <b class='text-[#9e7d3b]'>2 sueños gratis</b> para comenzar tu viaje onírico.",
+        onbDesc3: "Un espacio 100% privado, guardado en tu teléfono. Disfruta de <b class='text-[#9e7d3b]'>2 sueños gratis</b> para comenzar tu viaje onírico.",
         onbBtnNext: "Continuar",
         onbBtnStart: "Comenzar mi viaje",
         recordBadge: "Grabar", stopBadge: "Detener", instructionTitle: "Toca el orbe para hablar", instructionSub: "Habla libremente al despertar",
-        recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Sincronizando sueños...",
+        recentDreams: "Sueños recientes", viewJournal: "Ver diario →", syncing: "Cargando sueños...",
         loadingTitle: "Decodificando sueño...", loadingSub: "El inconsciente toma forma...",
         newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
         journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados", modalClose: "Cerrar",
@@ -282,11 +282,11 @@
         onbTitle2: "Não digite, apenas fale.",
         onbDesc2: "Ao acordar, mantenha os olhos semicerrados. Conte o seu sonho em voz alta, o Onira ouve e analisa.",
         onbTitle3: "O diário dos seus sonhos",
-        onbDesc3: "Um espaço 100% privado. Aproveite <b class='text-[#9e7d3b]'>2 sonhos gratuitos</b> para iniciar sua jornada onírica.",
+        onbDesc3: "Um espaço 100% privado, guardado no seu telefone. Aproveite <b class='text-[#9e7d3b]'>2 sonhos gratuitos</b> para iniciar sua jornada onírica.",
         onbBtnNext: "Continuar",
         onbBtnStart: "Começar a minha viagem",
         recordBadge: "Gravar", stopBadge: "Parar", instructionTitle: "Toque na esfera para falar", instructionSub: "Fale livremente ao acordar",
-        recentDreams: "Sonhos recentes", viewJournal: "Ver diário →", syncing: "Sincronizando sonhos...",
+        recentDreams: "Sonhos recentes", viewJournal: "Ver diário →", syncing: "Carregando sonhos...",
         loadingTitle: "Decifrando sonho...", loadingSub: "O inconsciente ganha forma...",
         newDream: "Novo Sonho", decryptionTitle: "Análise Onira", yourStory: "Seu relato:", saveBtn: "Guardar no Diário",
         journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados", modalClose: "Fechar",
@@ -314,7 +314,63 @@
     }
     applyTranslations();
 
-    // --- CONFIGURATION SUPABASE ---
+    // --- BASE DE DONNÉES LOCALE INDEXEDDB (100% SUR LE TÉLÉPHONE) ---
+    const DB_NAME = 'OniraLocalDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'dreams';
+
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbGetAllDreams() {
+      const db = await initIndexedDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.getAll();
+        req.onsuccess = () => {
+          const res = req.result || [];
+          res.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          resolve(res);
+        };
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbSaveDream(dream) {
+      const db = await initIndexedDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.add(dream);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbDeleteDream(id) {
+      const db = await initIndexedDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.delete(id);
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    // --- CONFIGURATION SUPABASE (AUTH + CRÉDITS + EDGE FUNCTION) ---
     const supabaseUrl = 'https://vaaszqyjsuvybglvpxbw.supabase.co';
     const supabaseKey = 'sb_publishable_z-_kvTo-oIgebqYOF0qZrw_GmAkEWI0';
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -344,7 +400,7 @@
       btn.textContent = "...";
       const { error } = await supabaseClient.auth.signInAnonymously();
       if (error) {
-        alert("Erreur de connexion anonyme. Vérifiez Supabase.");
+        alert("Erreur de connexion. Vérifiez la configuration Supabase.");
         btn.innerHTML = t.onbBtnStart;
       } else {
         localStorage.setItem('onira_onboarding_done', 'true');
@@ -352,7 +408,7 @@
       }
     }
 
-    // Gestion session utilisateur
+    // Gestion session utilisateur Supabase
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
       const onboardingScreen = document.getElementById('screen-onboarding');
@@ -360,7 +416,7 @@
       if (currentUser) {
         onboardingScreen.classList.add('hidden');
         await fetchUserCredits();
-        await fetchDreamsFromCloud();
+        await loadLocalDreams();
       } else {
         if (!localStorage.getItem('onira_onboarding_done')) {
           onboardingScreen.classList.remove('hidden');
@@ -384,85 +440,59 @@
       }
     }
 
-    // --- BASE DE DONNÉES ET STOCKAGE ---
-    async function fetchDreamsFromCloud() {
-      if (!currentUser) return;
-      const { data, error } = await supabaseClient
-        .from('dreams')
-        .select('*')
-        .eq('user_id', currentUser.id)
-        .order('created_at', { ascending: false });
-
-      if (!error) {
-        dreamsData = data || [];
+    // --- CHARGEMENT LOCAL DES RÊVES ---
+    async function loadLocalDreams() {
+      try {
+        dreamsData = await dbGetAllDreams();
         renderJournal();
         renderHomeRecents();
+      } catch (err) {
+        console.warn("Erreur lecture IndexedDB :", err);
       }
     }
 
-    async function saveToSupabase() {
-      if (!currentAnalysis || !currentUser) return;
+    // --- ENREGISTREMENT LOCAL DU RÊVE ---
+    async function saveDream() {
+      if (!currentAnalysis) return;
       const btn = document.getElementById('save-btn');
       btn.textContent = t.saving;
 
       try {
-        let permanentImageUrl = currentAnalysis.img;
-
-        try {
-          const res = await fetch(currentAnalysis.img);
-          const imageBlob = await res.blob();
-          const fileName = `${currentUser.id}_${Date.now()}.png`;
-          const { error: uploadError } = await supabaseClient.storage.from('dream_images').upload(fileName, imageBlob, { contentType: 'image/png', upsert: false });
-          if (!uploadError) {
-            const { data: publicUrlData } = supabaseClient.storage.from('dream_images').getPublicUrl(fileName);
-            if (publicUrlData?.publicUrl) permanentImageUrl = publicUrlData.publicUrl;
-          }
-        } catch(storageErr) {
-          console.warn("Stockage direct URL distante :", storageErr);
-        }
-
-        const { error: dbError } = await supabaseClient.from('dreams').insert([{
-          user_id: currentUser.id,
+        const localDream = {
           title: currentAnalysis.title,
           tag: currentAnalysis.tag,
           transcript: currentAnalysis.transcript,
           interpretation: currentAnalysis.interpretation,
-          image_url: permanentImageUrl
-        }]);
+          image_url: currentAnalysis.img, // Sauvegarde directe de l'image (Base64) sur l'appareil
+          created_at: new Date().toISOString()
+        };
 
-        if (dbError) throw new Error("Erreur base : " + dbError.message);
-
-        await fetchDreamsFromCloud();
-        await fetchUserCredits();
+        await dbSaveDream(localDream);
+        await loadLocalDreams();
         switchTab('journal');
       } catch (err) {
-        alert(err.message);
+        alert("Erreur enregistrement local : " + err.message);
       } finally {
         btn.textContent = t.saveBtn;
       }
     }
 
-    // --- SUPPRESSION D'UN RÊVE ---
+    // --- SUPPRESSION LOCALE ---
     async function deleteDream() {
       if (currentDreamIndex === null) return;
       
       const dream = dreamsData[currentDreamIndex];
       if (!confirm(t.deleteConfirm)) return;
       
-      const { error } = await supabaseClient
-        .from('dreams')
-        .delete()
-        .eq('id', dream.id);
-
-      if (error) {
-        alert("Erreur lors de la suppression : " + error.message);
-        return;
+      try {
+        await dbDeleteDream(dream.id);
+        dreamsData.splice(currentDreamIndex, 1);
+        renderJournal();
+        renderHomeRecents();
+        closeModal();
+      } catch (err) {
+        alert("Erreur suppression : " + err.message);
       }
-
-      dreamsData.splice(currentDreamIndex, 1);
-      renderJournal();
-      renderHomeRecents();
-      closeModal();
     }
 
     function formatDate(dateStr) {
@@ -568,16 +598,14 @@
       recognition.onerror = (e) => console.warn("Speech error :", e.error);
     }
 
-    // --- APPEL DE L'EDGE FUNCTION SUPABASE (SÉCURISÉE CÔTÉ SERVEUR) ---
+    // --- APPEL DE L'EDGE FUNCTION (BACKEND DÉDIÉ) ---
     async function processDreamWithBackend(transcript) {
       try {
         const { data, error } = await supabaseClient.functions.invoke('process-dream', {
           body: { transcript, aiLangName: t.aiLangName }
         });
 
-        if (error) {
-          throw new Error(error.message || "Erreur lors du traitement.");
-        }
+        if (error) throw new Error(error.message || "Erreur de traitement.");
 
         if (data?.error === 'OUT_OF_CREDITS') {
           alert(t.outOfCredits);
@@ -585,9 +613,7 @@
           return;
         }
 
-        if (data?.error) {
-          throw new Error(data.error);
-        }
+        if (data?.error) throw new Error(data.error);
 
         currentAnalysis = {
           title: data.title,
@@ -597,7 +623,7 @@
           img: data.img
         };
 
-        // Mise à jour de l'affichage
+        // Rendu de l'écran résultat
         document.getElementById('result-title').textContent = currentAnalysis.title;
         document.getElementById('result-badge').textContent = currentAnalysis.tag;
         document.getElementById('result-interpretation').textContent = currentAnalysis.interpretation;
@@ -610,9 +636,7 @@
           document.getElementById('result-img-placeholder').classList.add('hidden'); 
         };
 
-        // Mise à jour du solde de crédits en direct
         await fetchUserCredits();
-
         switchTab('result');
       } catch (err) { 
         alert(err.message); 
