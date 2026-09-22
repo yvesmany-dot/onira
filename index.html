@@ -79,12 +79,14 @@
       </div>
     </div>
 
-    <!-- En-tête : Réglages & Déconnexion -->
+    <!-- En-tête : Réglages & Badge Crédits (Remplace le bouton Sortir) -->
     <div class="absolute top-4 sm:top-6 right-5 z-20 flex items-center gap-2">
+      <div id="credits-badge" class="px-2.5 py-1 rounded-full bg-white/85 border border-[#e2d7c5] text-[10px] font-bold text-[#9e7d3b] shadow-sm flex items-center gap-1">
+        <span id="credits-count">2</span>
+        <span>✨</span>
+      </div>
       <button onclick="toggleSettingsModal(true)" class="w-8 h-8 rounded-full bg-white/85 border border-[#e2d7c5] flex items-center justify-center text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-      </button>
-      <button id="logout-btn" onclick="handleLogout()" data-i18n="logoutBtn" class="hidden px-2.5 py-1 rounded-full bg-white/85 border border-[#e2d7c5] text-[10px] font-semibold text-[#9e7d3b] shadow-sm hover:scale-105 active:scale-95 transition-all">
       </button>
     </div>
 
@@ -192,23 +194,6 @@
       </div>
     </div>
 
-    <!-- MODALE AUTHENTIFICATION CLASSICAL -->
-    <div id="auth-modal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-5">
-      <div class="w-full bg-[#faf8f5] rounded-3xl p-6 border border-[#e2d7c5] shadow-2xl text-center">
-        <h3 data-i18n="authTitle" class="text-sm font-bold text-[#2d2926] mb-1"></h3>
-        <p data-i18n="authSubtitle" class="text-[10px] text-[#91867c] mb-4"></p>
-        
-        <input id="auth-email" type="email" placeholder="Email" class="w-full mb-2.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white focus:outline-none focus:border-[#a88644]">
-        <input id="auth-password" type="password" placeholder="Password (min. 6)" class="w-full mb-3.5 px-3 py-2 text-xs border border-[#ddd3c4] rounded-xl bg-white focus:outline-none focus:border-[#a88644]">
-        
-        <div class="flex flex-col gap-2">
-          <button onclick="handleAuth('login')" data-i18n="authLogin" class="w-full py-2.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow hover:bg-[#886a30] transition"></button>
-          <button onclick="handleAuth('signup')" data-i18n="authSignup" class="w-full py-2.5 bg-white border border-[#9e7d3b] text-[#9e7d3b] rounded-xl text-xs font-semibold hover:bg-[#faf8f5] transition"></button>
-        </div>
-        <p id="auth-error" class="text-[10px] text-red-500 mt-2.5 hidden"></p>
-      </div>
-    </div>
-
     <!-- MODALE DÉTAIL D'UN SONGE -->
     <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
       <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar flex flex-col">
@@ -221,7 +206,7 @@
         <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
         <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
         
-        <!-- Boutons d'action : Fermer et Supprimer -->
+        <!-- Actions : Supprimer & Fermer -->
         <div class="flex gap-2 mt-4 flex-shrink-0">
           <button onclick="deleteDream()" class="w-14 py-2.5 bg-[#fff0f0] text-red-500 rounded-xl border border-red-100 hover:bg-red-50 flex items-center justify-center transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -263,7 +248,6 @@
         newDream: "Nouveau Songe", decryptionTitle: "Décryptage Onira", yourStory: "Votre récit :", saveBtn: "Conserver dans mon Journal",
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés",
         settingsTitle: "Clé API OpenAI", settingsSave: "Enregistrer", settingsClose: "Fermer",
-        authTitle: "Bienvenue sur Onira", authSubtitle: "Connectez-vous pour conserver vos songes.", authLogin: "Se connecter", authSignup: "Créer un compte", logoutBtn: "Sortir",
         deleteConfirm: "Voulez-vous vraiment supprimer ce rêve définitivement ?",
         navHome: "Accueil", navJournal: "Journal", navSettings: "Réglages AI",
         listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
@@ -284,7 +268,6 @@
         newDream: "New Dream", decryptionTitle: "Onira Decryption", yourStory: "Your story:", saveBtn: "Save to Journal",
         journalTitle: "Onira Journal", emptyJournal: "Your journal is empty.", archived: "archived dreams",
         settingsTitle: "OpenAI API Key", settingsSave: "Save", settingsClose: "Close",
-        authTitle: "Welcome to Onira", authSubtitle: "Sign in to safeguard your dreams.", authLogin: "Sign In", authSignup: "Create Account", logoutBtn: "Sign Out",
         deleteConfirm: "Are you sure you want to permanently delete this dream?",
         navHome: "Home", navJournal: "Journal", navSettings: "AI Settings",
         listening: "Listening... Speak, then tap the orb to stop.", saving: "Saving...",
@@ -305,7 +288,6 @@
         newDream: "Nuevo Sueño", decryptionTitle: "Análisis Onira", yourStory: "Tu relato:", saveBtn: "Guardar en el Diario",
         journalTitle: "Diario Onira", emptyJournal: "Tu diario está vacío.", archived: "sueños archivados",
         settingsTitle: "Clave API OpenAI", settingsSave: "Guardar", settingsClose: "Cerrar",
-        authTitle: "Bienvenido a Onira", authSubtitle: "Inicia sesión para guardar tus sueños.", authLogin: "Iniciar sesión", authSignup: "Crear cuenta", logoutBtn: "Salir",
         deleteConfirm: "¿Estás seguro de que deseas eliminar este sueño permanentemente?",
         navHome: "Inicio", navJournal: "Diario", navSettings: "Ajustes IA",
         listening: "Escuchando... Habla y vuelve a pulsar el orbe.", saving: "Guardando...",
@@ -326,7 +308,6 @@
         newDream: "Novo Sonho", decryptionTitle: "Análise Onira", yourStory: "Seu relato:", saveBtn: "Guardar no Diário",
         journalTitle: "Diário Onira", emptyJournal: "Seu diário está vazio.", archived: "sonhos arquivados",
         settingsTitle: "Chave API OpenAI", settingsSave: "Salvar", settingsClose: "Fechar",
-        authTitle: "Bem-vindo ao Onira", authSubtitle: "Inicie sessão para guardar os seus sonhos.", authLogin: "Entrar", authSignup: "Criar conta", logoutBtn: "Sair",
         deleteConfirm: "Tem a certeza de que deseja excluir este sonho permanentemente?",
         navHome: "Início", navJournal: "Diário", navSettings: "Definições IA",
         listening: "A ouvir... Fale e toque na esfera para parar.", saving: "A guardar...",
@@ -358,9 +339,9 @@
     let currentUser = null;
     let dreamsData = [];
     let currentAnalysis = null;
-    let currentDreamIndex = null; // Mémorise le rêve actuellement ouvert
+    let currentDreamIndex = null;
 
-    // --- GESTION ONBOARDING ---
+    // --- GESTION ONBOARDING & NAVIGATION SLIDES ---
     let currentSlide = 0;
 
     function nextOnboardingSlide() {
@@ -388,59 +369,38 @@
       }
     }
 
-    // Changement d'état de connexion
-    supabaseClient.auth.onAuthStateChange((event, session) => {
+    // Gestion de session transparente sans mot de passe
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
-      const authModal = document.getElementById('auth-modal');
-      const logoutBtn = document.getElementById('logout-btn');
       const onboardingScreen = document.getElementById('screen-onboarding');
 
       if (currentUser) {
-        authModal.classList.add('hidden');
         onboardingScreen.classList.add('hidden');
-        logoutBtn.classList.remove('hidden');
-        fetchDreamsFromCloud();
+        await fetchUserCredits();
+        await fetchDreamsFromCloud();
       } else {
-        logoutBtn.classList.add('hidden');
-        dreamsData = [];
-        renderJournal();
-        renderHomeRecents();
-        
         if (!localStorage.getItem('onira_onboarding_done')) {
           onboardingScreen.classList.remove('hidden');
         } else {
-          authModal.classList.remove('hidden');
+          // Reconnexion silencieuse en tant qu'invité si la session est expirée
+          const { error } = await supabaseClient.auth.signInAnonymously();
+          if (error) console.warn("Erreur reconnexion anonyme :", error);
         }
       }
     });
 
-    async function handleAuth(action) {
-      const email = document.getElementById('auth-email').value.trim();
-      const password = document.getElementById('auth-password').value.trim();
-      const errorEl = document.getElementById('auth-error');
-      errorEl.classList.add('hidden');
+    // --- RÉCUPÉRATION DU SOLDE DE CRÉDITS ---
+    async function fetchUserCredits() {
+      if (!currentUser) return;
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('credits')
+        .eq('id', currentUser.id)
+        .single();
 
-      if (!email || password.length < 6) {
-        errorEl.textContent = "Email invalide ou mot de passe trop court.";
-        errorEl.classList.remove('hidden');
-        return;
+      if (!error && data) {
+        document.getElementById('credits-count').textContent = data.credits ?? 2;
       }
-
-      let res;
-      if (action === 'signup') {
-        res = await supabaseClient.auth.signUp({ email, password });
-      } else {
-        res = await supabaseClient.auth.signInWithPassword({ email, password });
-      }
-
-      if (res.error) {
-        errorEl.textContent = res.error.message;
-        errorEl.classList.remove('hidden');
-      }
-    }
-
-    async function handleLogout() {
-      await supabaseClient.auth.signOut();
     }
 
     // --- BASE DE DONNÉES ET STOCKAGE ---
@@ -492,6 +452,7 @@
         if (dbError) throw new Error("Erreur base : " + dbError.message);
 
         await fetchDreamsFromCloud();
+        await fetchUserCredits();
         switchTab('journal');
       } catch (err) {
         alert(err.message);
@@ -507,7 +468,6 @@
       const dream = dreamsData[currentDreamIndex];
       if (!confirm(t.deleteConfirm)) return;
       
-      // Suppression de la base de données (l'id du rêve est nécessaire)
       const { error } = await supabaseClient
         .from('dreams')
         .delete()
@@ -518,7 +478,6 @@
         return;
       }
 
-      // Mise à jour de l'affichage local
       dreamsData.splice(currentDreamIndex, 1);
       renderJournal();
       renderHomeRecents();
@@ -577,7 +536,7 @@
     }
 
     function openModal(index) {
-      currentDreamIndex = index; // Mémorise le rêve pour la suppression éventuelle
+      currentDreamIndex = index;
       const dream = dreamsData[index];
       document.getElementById('modal-img').src = dream.image_url;
       document.getElementById('modal-title').textContent = dream.title;
