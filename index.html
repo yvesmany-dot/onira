@@ -14,7 +14,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* Empêche le rebond élastique et stabilise le cadre sur Safari iOS */
     html, body {
       position: fixed;
       width: 100%;
@@ -63,7 +62,6 @@
       to { transform: scale(1.06); filter: brightness(1.2); box-shadow: 0 0 45px rgba(245, 100, 100, 0.45); }
     }
 
-    /* Empêche les éléments visuels internes de bloquer le tapotement sur smartphone */
     #orb * {
       pointer-events: none;
     }
@@ -71,7 +69,6 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-0 sm:p-4 select-none bg-[#f4f1ea]">
 
-  <!-- CADRE PRINCIPAL (Responsive bureau & smartphone) -->
   <div class="relative w-full max-w-[390px] h-[100dvh] sm:h-[min(844px,92vh)] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border-[6px] border-[#e8e2d8]">
 
     <!-- ÉCRAN ONBOARDING -->
@@ -99,44 +96,51 @@
           <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
-        <!-- Slide 3 (PORTRAIT / SELFIE - 100% OPTIONNEL) -->
+        <!-- Slide 3 (Selfie + Formulaire) -->
         <div id="slide-3" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
-          <div class="relative w-24 h-24 mb-4 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
+          <!-- Zone Selfie (Légèrement réduite pour laisser la place au formulaire) -->
+          <div class="relative w-16 h-16 mb-3 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
             <img id="avatar-preview" src="" class="hidden w-full h-full object-cover">
-            <span id="avatar-icon" class="text-3xl">👤</span>
+            <span id="avatar-icon" class="text-2xl">👤</span>
           </div>
-          <h2 data-i18n="onbTitle4" class="text-lg font-brand font-bold text-[#9e7d3b] mb-2"></h2>
-          <p data-i18n="onbDesc4" class="text-xs text-[#524b45] leading-relaxed px-4 mb-4"></p>
+          <h2 data-i18n="onbTitle4" class="text-base font-brand font-bold text-[#9e7d3b] mb-1"></h2>
+          <p data-i18n="onbDesc4" class="text-[10px] text-[#524b45] leading-relaxed px-4 mb-3"></p>
           
           <input type="file" id="camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfie(event)">
           
           <div class="flex flex-col items-center gap-2 w-full max-w-[220px]">
-            <button id="btn-selfie" type="button" onclick="document.getElementById('camera-input').click()" class="w-full px-5 py-2.5 bg-white border border-[#caa255] text-[#9e7d3b] rounded-full text-xs font-bold shadow-sm hover:bg-[#faf8f5] active:scale-95 transition-all">
+            <button id="btn-selfie" type="button" onclick="document.getElementById('camera-input').click()" class="w-full px-5 py-2 bg-white border border-[#caa255] text-[#9e7d3b] rounded-full text-xs font-bold shadow-sm hover:bg-[#faf8f5] active:scale-95 transition-all">
               📸 Prendre un selfie
             </button>
-            <button type="button" onclick="finishOnboarding()" class="text-[11px] text-[#8c827a] hover:text-[#524b45] underline py-1 transition-all">
-              Passer cette étape →
-            </button>
           </div>
-          <p class="text-[9px] text-[#a3978b] mt-3 px-6 italic">La photo reste sur votre appareil et sert uniquement à personnaliser vos songes.</p>
         </div>
 
       </div>
 
-      <!-- Boutons Onboarding -->
+      <!-- Boutons et Formulaire Onboarding -->
       <div class="mb-4 flex flex-col items-center w-full flex-shrink-0">
-        <div class="flex gap-2 mb-6">
+        <div class="flex gap-2 mb-6" id="dots-container">
           <div id="dot-0" class="w-2 h-2 rounded-full bg-[#9e7d3b] transition-all"></div>
           <div id="dot-1" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-2" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-3" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
         </div>
+        
+        <!-- Bouton Suivant classique -->
         <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
-        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
+        
+        <!-- Formulaire d'inscription (Apparaît sur la slide 3) -->
+        <form id="form-inscription" class="hidden w-full flex-col gap-3" onsubmit="handleInscription(event)">
+          <input type="text" id="input-prenom" placeholder="Votre prénom (ex: Marie)" required class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
+          <input type="email" id="input-email" placeholder="Votre adresse email" required class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
+          <button type="submit" id="btn-submit-auth" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all">
+            Recevoir mon accès
+          </button>
+        </form>
       </div>
     </div>
 
-    <!-- En-tête : Badge Crédits Restants (Cliquable) -->
+    <!-- En-tête : Badge Crédits Restants -->
     <div class="absolute top-4 sm:top-6 right-5 z-20 flex items-center gap-2">
       <button onclick="openRechargeModal()" id="credits-badge" class="px-3 py-1 rounded-full bg-white/90 border border-[#e2d7c5] text-[11px] font-bold text-[#9e7d3b] shadow-sm flex items-center gap-1.5 active:scale-95 transition-all hover:border-[#caa255]">
         <span id="credits-count">...</span>
@@ -154,10 +158,11 @@
           </div>
         </div>
         <h1 class="font-brand text-[11px] font-bold text-[#9e7d3b] tracking-[0.28em] uppercase">ONIRA</h1>
+        <!-- TEXTE DYNAMIQUE: Bonjour Marie, mercredi 23 septembre -->
+        <p id="texte-bonjour" class="text-xs font-semibold text-[#524b45] mt-1.5"></p>
       </header>
 
       <main class="flex-1 flex flex-col items-center justify-evenly px-5 py-2 min-h-0">
-        <!-- ORBE VOCAL AMÉLIORÉ (Bouton interactif avec zone tactile optimisée) -->
         <button 
           id="orb" 
           type="button"
@@ -248,12 +253,7 @@
     <!-- MODALE BOUTIQUE / RECHARGE -->
     <div id="recharge-modal" onclick="if(event.target === this) closeRechargeModal()" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
       <div class="relative w-full bg-[#faf8f5] rounded-t-[32px] p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] border-t border-[#e2d7c5] max-h-[92%] overflow-y-auto no-scrollbar flex flex-col">
-        
-        <!-- Bouton croix retour en haut à droite -->
-        <button onclick="closeRechargeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#eee8dc] text-[#6d645c] hover:bg-[#e2d9ca] flex items-center justify-center text-sm font-bold active:scale-90 transition-all z-10" aria-label="Fermer">
-          ✕
-        </button>
-
+        <button onclick="closeRechargeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#eee8dc] text-[#6d645c] hover:bg-[#e2d9ca] flex items-center justify-center text-sm font-bold active:scale-90 transition-all z-10" aria-label="Fermer">✕</button>
         <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-4 cursor-pointer" onclick="closeRechargeModal()"></div>
         
         <div class="text-center mb-5">
@@ -263,7 +263,6 @@
         </div>
 
         <div class="space-y-3">
-          <!-- Pack 5 Songes -->
           <div onclick="checkout('pack5')" class="p-3.5 bg-white border border-[#eee7db] hover:border-[#caa255] rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-sm active:scale-[0.98]">
             <div>
               <p class="text-xs font-bold text-[#2d2926]">Pack 5 Songes</p>
@@ -272,7 +271,6 @@
             <span class="px-3.5 py-1.5 bg-[#f5ede2] text-[#9e7d3b] rounded-xl text-xs font-bold">1,99 €</span>
           </div>
 
-          <!-- Pack 15 Songes (Populaire) -->
           <div onclick="checkout('pack15')" class="p-3.5 bg-white border-2 border-[#caa255] rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-sm relative active:scale-[0.98]">
             <span class="absolute -top-2.5 right-4 bg-[#9e7d3b] text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Populaire</span>
             <div>
@@ -282,7 +280,6 @@
             <span class="px-3.5 py-1.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold">4,99 €</span>
           </div>
 
-          <!-- Pack 30 Songes (Meilleure offre) -->
           <div onclick="checkout('pack30')" class="p-3.5 bg-white border border-[#eee7db] hover:border-[#caa255] rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-sm relative active:scale-[0.98]">
             <span class="absolute -top-2.5 right-4 bg-[#7c6332] text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Meilleur Prix</span>
             <div>
@@ -299,16 +296,10 @@
       </div>
     </div>
 
-    <!-- MODALE DÉTAIL D'UN SONGE (Améliorée avec bouton croix et défilement complet) -->
+    <!-- MODALE DÉTAIL D'UN SONGE -->
     <div id="dream-modal" onclick="if(event.target === this) closeModal()" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
       <div class="relative w-full bg-[#faf8f5] rounded-t-[28px] p-5 pb-[calc(2.5rem+env(safe-area-inset-bottom))] border-t border-[#e2d7c5] max-h-[90%] overflow-y-auto no-scrollbar flex flex-col">
-        
-        <!-- Croix de fermeture en haut à droite -->
-        <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 border border-[#e2d7c5] text-[#6d645c] hover:bg-[#eee8dc] flex items-center justify-center text-sm font-bold shadow-sm active:scale-90 transition-all z-20" aria-label="Fermer">
-          ✕
-        </button>
-
-        <!-- Poignée visuelle de glissement -->
+        <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 border border-[#e2d7c5] text-[#6d645c] hover:bg-[#eee8dc] flex items-center justify-center text-sm font-bold shadow-sm active:scale-90 transition-all z-20" aria-label="Fermer">✕</button>
         <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
         
         <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-48 border border-[#e5ded2] flex-shrink-0 bg-[#e8e2d5]">
@@ -350,7 +341,7 @@
         onbTitle1: "Bienvenue dans Onira", onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
         onbTitle2: "Ne tapez plus, parlez.", onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute.",
         onbTitle3: "Le journal de vos rêves", onbDesc3: "Un espace 100% privé, stocké sur votre téléphone. Profitez de 2 songes offerts.",
-        onbTitle4: "Votre reflet onirique (Optionnel)", onbDesc4: "Prenez un selfie pour que l'IA personnalise les illustrations de vos songes avec vos traits. Vous pourrez l'ajouter à tout moment dans votre profil.",
+        onbTitle4: "Votre reflet onirique (Optionnel)", onbDesc4: "Prenez un selfie pour que l'IA personnalise les illustrations avec vos traits. Ensuite, remplissez vos informations.",
         selfieSaved: "Photo enregistrée !", onbBtnNext: "Continuer", onbBtnStart: "Commencer mon voyage",
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
         recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Chargement des songes...",
@@ -366,7 +357,7 @@
         onbTitle1: "Welcome to Onira", onbDesc1: "The first AI that decodes the secrets of your subconscious.",
         onbTitle2: "Don't type, speak.", onbDesc2: "Upon waking, simply speak your dream aloud, Onira listens.",
         onbTitle3: "Your dream journal", onbDesc3: "A 100% private space on your phone. Enjoy 2 free dreams.",
-        onbTitle4: "Your dream reflection (Optional)", onbDesc4: "Take a selfie so the AI can use your features for your dream illustrations. You can also add it later in your profile.",
+        onbTitle4: "Your dream reflection (Optional)", onbDesc4: "Take a selfie so the AI can use your features. Then fill in your details.",
         selfieSaved: "Photo saved!", onbBtnNext: "Continue", onbBtnStart: "Begin my journey",
         recordBadge: "Record", stopBadge: "Stop", instructionTitle: "Tap the orb to speak", instructionSub: "Speak freely upon waking",
         recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Loading dreams...",
@@ -397,7 +388,7 @@
     }
     applyTranslations();
 
-    // --- LIENS DE PAIEMENT STRIPE (PRODUCTION) ---
+    // --- LIENS DE PAIEMENT STRIPE (INCHANGÉS, ILS ÉTAIENT DÉJÀ PARFAITS) ---
     const STRIPE_LINKS = {
       pack5: 'https://buy.stripe.com/fZu8wQ7D59D4fSt6am2Ry02',
       pack15: 'https://buy.stripe.com/aFa8wQ5uX3eG5dPcyK2Ry01',
@@ -418,6 +409,7 @@
         return;
       }
       const baseUrl = STRIPE_LINKS[packKey];
+      // Le code injecte automatiquement l'UUID ici sans erreur possible !
       const checkoutUrl = `${baseUrl}?client_reference_id=${encodeURIComponent(currentUser.id)}`;
       window.location.href = checkoutUrl;
     }
@@ -525,57 +517,89 @@
       } catch (e) { console.warn("Extraction avatar non disponible", e); }
     }
 
-    // --- NAVIGATION ONBOARDING ---
+    // --- NAVIGATION ONBOARDING ET FORMULAIRE MAGIQUE ---
     function nextOnboardingSlide() {
       document.getElementById(`slide-${currentSlide}`).classList.add('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#9e7d3b]', 'bg-[#e2d7c5]');
       currentSlide++;
       document.getElementById(`slide-${currentSlide}`).classList.remove('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#e2d7c5]', 'bg-[#9e7d3b]');
+      
       if (currentSlide === 3) {
         document.getElementById('btn-next-slide').classList.add('hidden');
-        document.getElementById('btn-start-app').classList.remove('hidden');
+        document.getElementById('dots-container').classList.add('hidden');
+        document.getElementById('form-inscription').classList.remove('hidden');
+        document.getElementById('form-inscription').classList.add('flex');
       }
     }
 
-    async function finishOnboarding() {
-      const btn = document.getElementById('btn-start-app');
-      btn.textContent = "...";
-      const { error } = await supabaseClient.auth.signInAnonymously();
+    async function handleInscription(event) {
+      event.preventDefault();
+      const btn = document.getElementById('btn-submit-auth');
+      const prenom = document.getElementById('input-prenom').value;
+      const email = document.getElementById('input-email').value;
+
+      btn.textContent = "Envoi en cours...";
+      btn.disabled = true;
+
+      // Envoi du lien par email via Supabase Auth
+      const { error } = await supabaseClient.auth.signInWithOtp({
+        email: email.trim().toLowerCase(),
+        options: {
+          data: { first_name: prenom.trim() },
+          emailRedirectTo: window.location.origin,
+        },
+      });
+
       if (error) {
-        alert("Erreur de connexion.");
-        btn.innerHTML = t.onbBtnStart;
+        alert("Erreur : " + error.message);
+        btn.textContent = "Recevoir mon accès";
+        btn.disabled = false;
       } else {
-        localStorage.setItem('onira_onboarding_done', 'true');
-        document.getElementById('screen-onboarding').classList.add('hidden');
-        extractAvatarDescription();
+        alert("Vérifiez vos emails ! Un lien de connexion vient de vous être envoyé.");
+        btn.textContent = "Lien envoyé !";
       }
     }
 
+    // --- GESTION DES SESSIONS ---
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
       const onboardingScreen = document.getElementById('screen-onboarding');
 
       if (currentUser) {
+        // L'utilisateur est reconnu : on cache l'onboarding et on affiche l'accueil
         onboardingScreen.classList.add('hidden');
-        await fetchUserCredits();
+        await fetchUserProfile();
         await loadLocalDreams();
         extractAvatarDescription();
       } else {
-        if (!localStorage.getItem('onira_onboarding_done')) onboardingScreen.classList.remove('hidden');
-        else await supabaseClient.auth.signInAnonymously();
+        // L'utilisateur n'est pas reconnu : on force le formulaire
+        onboardingScreen.classList.remove('hidden');
       }
     });
 
-    async function fetchUserCredits() {
+    async function fetchUserProfile() {
       if (!currentUser) return;
-      const { data } = await supabaseClient.from('profiles').select('credits').eq('id', currentUser.id).single();
-      if (data) document.getElementById('credits-count').textContent = data.credits ?? 0;
+      const { data } = await supabaseClient.from('profiles').select('credits, first_name').eq('id', currentUser.id).single();
+      
+      if (data) {
+        document.getElementById('credits-count').textContent = data.credits ?? 0;
+        
+        // --- MISE À JOUR DU "BONJOUR MARIE" DYNAMIQUE ---
+        const prenom = data.first_name || "Rêveur";
+        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
+        const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
+        
+        const bonjourTexte = document.getElementById('texte-bonjour');
+        if (bonjourTexte) {
+          bonjourTexte.innerText = `Bonjour ${prenom}, ${dateDuJour}`;
+        }
+      }
     }
 
-    window.addEventListener('focus', () => { if (currentUser) fetchUserCredits(); });
+    window.addEventListener('focus', () => { if (currentUser) fetchUserProfile(); });
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && currentUser) fetchUserCredits();
+      if (document.visibilityState === 'visible' && currentUser) fetchUserProfile();
     });
 
     // --- LOGIQUE JOURNAL ---
@@ -711,7 +735,6 @@
       };
 
       recognition.onend = () => {
-        // Maintient la cohérence d'état si Safari coupe le micro silencieusement
         if (isRecording && accumulatedSpeech.trim().length === 0) {
           resetOrbUI();
         }
@@ -728,14 +751,9 @@
       const centerIcon = document.getElementById('orb-center-icon');
 
       if (!isRecording) {
-        // Démarrage de l'enregistrement
         isRecording = true;
         accumulatedSpeech = "";
-        try { 
-          recognition.start(); 
-        } catch(e) {
-          console.warn("Échec lancement SpeechRecognition:", e);
-        }
+        try { recognition.start(); } catch(e) {}
 
         orb.classList.add('recording-active');
         badge.textContent = t.stopBadge;
@@ -744,13 +762,7 @@
         if (centerIcon) centerIcon.textContent = '⏹';
         document.getElementById('instruction-sub').textContent = t.listening;
       } else {
-        // Arrêt immédiat de l'enregistrement
-        try { 
-          recognition.stop(); 
-        } catch(e) {
-          try { recognition.abort(); } catch(err) {}
-        }
-
+        try { recognition.stop(); } catch(e) { try { recognition.abort(); } catch(err) {} }
         resetOrbUI();
 
         const textToProcess = accumulatedSpeech.trim();
@@ -802,7 +814,7 @@
           document.getElementById('result-img-placeholder').classList.add('hidden'); 
         };
 
-        await fetchUserCredits();
+        await fetchUserProfile();
         switchTab('result');
       } catch (err) { 
         alert(err.message); 
