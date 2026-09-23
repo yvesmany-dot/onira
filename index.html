@@ -96,7 +96,7 @@
           <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
-        <!-- Slide 3 (Formulaire fluide : Prénom + Email + Selfie) -->
+        <!-- Slide 3 (Profil : Prénom, Email, Selfie) -->
         <div id="slide-3" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
           <div class="relative w-16 h-16 mb-2 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
             <img id="avatar-preview" src="" class="hidden w-full h-full object-cover">
@@ -105,8 +105,8 @@
           <h2 class="text-base font-brand font-bold text-[#9e7d3b] mb-3">Votre profil Onira</h2>
           
           <div class="w-full max-w-[260px] flex flex-col gap-2.5">
-            <input type="text" id="input-prenom" placeholder="Votre prénom (ex: Marie)" class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
-            <input type="email" id="input-email" placeholder="Email (pour sécuriser vos achats)" class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
+            <input type="text" id="input-prenom" placeholder="Votre prénom (ex: Marie)" required class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
+            <input type="email" id="input-email" placeholder="Email (pour sauvegarder vos songes)" class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
             
             <input type="file" id="camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfie(event)">
             <button id="btn-selfie" type="button" onclick="document.getElementById('camera-input').click()" class="w-full px-4 py-2 mt-1 bg-white border border-[#caa255] text-[#9e7d3b] rounded-xl text-xs font-bold shadow-sm hover:bg-[#faf8f5] active:scale-95 transition-all">
@@ -126,8 +126,6 @@
           <div id="dot-3" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
         </div>
         <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
-        
-        <!-- Le bouton final déclenche la connexion instantanée -->
         <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
       </div>
     </div>
@@ -150,8 +148,6 @@
           </div>
         </div>
         <h1 class="font-brand text-[11px] font-bold text-[#9e7d3b] tracking-[0.28em] uppercase">ONIRA</h1>
-        
-        <!-- TEXTE DYNAMIQUE: Bonjour Marie, mercredi 23 septembre -->
         <p id="texte-bonjour" class="text-xs font-semibold text-[#524b45] mt-1.5"></p>
       </header>
 
@@ -502,7 +498,7 @@
       } catch (e) {}
     }
 
-    // --- NAVIGATION ONBOARDING & VALIDATION SILENCIEUSE ---
+    // --- NAVIGATION ONBOARDING ---
     function nextOnboardingSlide() {
       document.getElementById(`slide-${currentSlide}`).classList.add('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#9e7d3b]', 'bg-[#e2d7c5]');
@@ -516,40 +512,51 @@
       }
     }
 
+    // --- VALIDATION DU PROFIL ET DÉMARRAGE ---
     async function finishOnboarding() {
       const btn = document.getElementById('btn-start-app');
-      const prenom = document.getElementById('input-prenom').value.trim();
-      const email = document.getElementById('input-email').value.trim();
+      const prenomInput = document.getElementById('input-prenom').value.trim();
+      const emailInput = document.getElementById('input-email').value.trim();
 
-      if (!prenom) {
+      if (!prenomInput) {
         alert("Veuillez indiquer votre prénom pour personnaliser votre accueil.");
         return;
       }
 
-      btn.textContent = "Création du profil...";
-      
-      // CONNEXION INVISIBLE : Crée un compte instantanément, SANS email à cliquer !
-      const { data, error } = await supabaseClient.auth.signInAnonymously();
-      
-      if (error) {
-        alert("Erreur de connexion.");
-        btn.innerHTML = t.onbBtnStart;
-      } else {
-        // Enregistre silencieusement le prénom et l'email dans la base de données
-        if (data.user) {
-          await supabaseClient.from('profiles').update({
-            first_name: prenom,
-            email: email || null
-          }).eq('id', data.user.id);
-        }
+      // 1. Enregistrement local immédiat
+      localStorage.setItem('onira_user_name', prenomInput);
+      localStorage.setItem('onira_onboarding_done', 'true');
 
-        localStorage.setItem('onira_onboarding_done', 'true');
-        document.getElementById('screen-onboarding').classList.add('hidden');
-        extractAvatarDescription();
-        
-        // Met à jour la page d'accueil avec "Bonjour Marie"
-        fetchUserProfile();
+      // 2. Affichage direct à l'écran sans attendre le réseau
+      const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
+      const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
+      const bonjourTexte = document.getElementById('texte-bonjour');
+      if (bonjourTexte) {
+        bonjourTexte.innerText = `Bonjour ${prenomInput}, ${dateDuJour}`;
       }
+
+      btn.textContent = "Création du profil...";
+
+      // 3. Authentification Supabase avec les données transmises
+      const { data, error } = await supabaseClient.auth.signInAnonymously({
+        options: {
+          data: {
+            first_name: prenomInput
+          }
+        }
+      });
+
+      if (!error && data?.user) {
+        currentUser = data.user;
+        await supabaseClient.from('profiles').update({
+          first_name: prenomInput,
+          email: emailInput || null
+        }).eq('id', data.user.id);
+      }
+
+      document.getElementById('screen-onboarding').classList.add('hidden');
+      extractAvatarDescription();
+      await fetchUserProfile();
     }
 
     // --- GESTION DES SESSIONS ---
@@ -558,10 +565,14 @@
       const onboardingScreen = document.getElementById('screen-onboarding');
 
       if (currentUser) {
-        onboardingScreen.classList.add('hidden');
-        await fetchUserProfile();
-        await loadLocalDreams();
-        extractAvatarDescription();
+        if (localStorage.getItem('onira_onboarding_done')) {
+          onboardingScreen.classList.add('hidden');
+          await fetchUserProfile();
+          await loadLocalDreams();
+          extractAvatarDescription();
+        } else {
+          onboardingScreen.classList.remove('hidden');
+        }
       } else {
         if (!localStorage.getItem('onira_onboarding_done')) {
           onboardingScreen.classList.remove('hidden');
@@ -572,21 +583,31 @@
     });
 
     async function fetchUserProfile() {
-      if (!currentUser) return;
-      const { data } = await supabaseClient.from('profiles').select('credits, first_name').eq('id', currentUser.id).single();
-      
-      if (data) {
-        document.getElementById('credits-count').textContent = data.credits ?? 0;
-        
-        // --- MISE À JOUR DU "BONJOUR MARIE" ---
-        const prenom = data.first_name || "Rêveur";
-        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
-        const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
-        
-        const bonjourTexte = document.getElementById('texte-bonjour');
-        if (bonjourTexte) {
-          bonjourTexte.innerText = `Bonjour ${prenom}, ${dateDuJour}`;
+      // Lecture prioritaire du prénom enregistré localement
+      let prenom = localStorage.getItem('onira_user_name') || "Rêveur";
+
+      if (currentUser) {
+        const { data } = await supabaseClient
+          .from('profiles')
+          .select('credits, first_name')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (data) {
+          document.getElementById('credits-count').textContent = data.credits ?? 0;
+          if (data.first_name) {
+            prenom = data.first_name;
+            localStorage.setItem('onira_user_name', prenom);
+          }
         }
+      }
+
+      // Mise à jour du bandeau d'accueil
+      const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
+      const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
+      const bonjourTexte = document.getElementById('texte-bonjour');
+      if (bonjourTexte) {
+        bonjourTexte.innerText = `Bonjour ${prenom}, ${dateDuJour}`;
       }
     }
 
@@ -720,6 +741,7 @@
       };
 
       recognition.onerror = (e) => {
+        console.warn("Erreur reconnaissance audio:", e.error);
         if (e.error === 'not-allowed') {
           alert("Accès micro refusé. Veuillez autoriser le microphone dans Safari/Chrome.");
           resetOrbUI();
