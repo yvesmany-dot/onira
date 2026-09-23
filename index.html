@@ -94,12 +94,13 @@
       </div>
     </div>
 
-    <!-- En-tête : Badge Crédits Restants -->
+    <!-- En-tête : Badge Crédits Restants (Cliquable) -->
     <div class="absolute top-4 sm:top-6 right-5 z-20 flex items-center gap-2">
-      <div id="credits-badge" class="px-3 py-1 rounded-full bg-white/85 border border-[#e2d7c5] text-[11px] font-bold text-[#9e7d3b] shadow-sm flex items-center gap-1.5">
+      <button onclick="openRechargeModal()" id="credits-badge" class="px-3 py-1 rounded-full bg-white/90 border border-[#e2d7c5] text-[11px] font-bold text-[#9e7d3b] shadow-sm flex items-center gap-1.5 active:scale-95 transition-all hover:border-[#caa255]">
         <span id="credits-count">...</span>
         <span>✨</span>
-      </div>
+        <span class="text-[9px] text-[#a88644] font-normal border-l border-[#e2d7c5] pl-1.5">+</span>
+      </button>
     </div>
 
     <!-- ÉCRAN 1 : ACCUEIL -->
@@ -194,6 +195,54 @@
       </main>
     </div>
 
+    <!-- MODALE BOUTIQUE / RECHARGE -->
+    <div id="recharge-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
+      <div class="w-full bg-[#faf8f5] rounded-t-[32px] p-6 border-t border-[#e2d7c5] max-h-[92%] overflow-y-auto no-scrollbar flex flex-col">
+        <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-4 cursor-pointer" onclick="closeRechargeModal()"></div>
+        
+        <div class="text-center mb-5">
+          <div class="w-12 h-12 rounded-full orb-glow mx-auto mb-2 flex items-center justify-center text-xl shadow-sm">✨</div>
+          <h2 class="text-base font-brand font-bold text-[#2d2926]">Recharger vos Songes</h2>
+          <p class="text-[11px] text-[#8c827a] mt-0.5">Explorez votre inconscient sans interruption.</p>
+        </div>
+
+        <div class="space-y-3">
+          <!-- Pack 5 Songes -->
+          <div onclick="checkout('pack5')" class="p-3.5 bg-white border border-[#eee7db] hover:border-[#caa255] rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-sm active:scale-[0.98]">
+            <div>
+              <p class="text-xs font-bold text-[#2d2926]">Pack 5 Songes</p>
+              <p class="text-[10px] text-[#91867c]">Découverte onirique</p>
+            </div>
+            <span class="px-3.5 py-1.5 bg-[#f5ede2] text-[#9e7d3b] rounded-xl text-xs font-bold">1,99 €</span>
+          </div>
+
+          <!-- Pack 15 Songes (Populaire) -->
+          <div onclick="checkout('pack15')" class="p-3.5 bg-white border-2 border-[#caa255] rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-sm relative active:scale-[0.98]">
+            <span class="absolute -top-2.5 right-4 bg-[#9e7d3b] text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Populaire</span>
+            <div>
+              <p class="text-xs font-bold text-[#2d2926]">Pack 15 Songes</p>
+              <p class="text-[10px] text-[#91867c]">Idéal pour les rêveurs réguliers</p>
+            </div>
+            <span class="px-3.5 py-1.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold">4,99 €</span>
+          </div>
+
+          <!-- Pack 30 Songes (Meilleure offre) -->
+          <div onclick="checkout('pack30')" class="p-3.5 bg-white border border-[#eee7db] hover:border-[#caa255] rounded-2xl flex items-center justify-between cursor-pointer transition-all shadow-sm relative active:scale-[0.98]">
+            <span class="absolute -top-2.5 right-4 bg-[#7c6332] text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Meilleur Prix</span>
+            <div>
+              <p class="text-xs font-bold text-[#2d2926]">Pack 30 Songes</p>
+              <p class="text-[10px] text-[#91867c]">L'expérience complète Onira</p>
+            </div>
+            <span class="px-3.5 py-1.5 bg-[#f5ede2] text-[#9e7d3b] rounded-xl text-xs font-bold">8,99 €</span>
+          </div>
+        </div>
+
+        <button onclick="closeRechargeModal()" class="w-full mt-5 py-3 bg-[#eee8dc]/70 hover:bg-[#e2d9ca] text-[#6d645c] rounded-xl text-xs font-semibold transition-all">
+          Plus tard
+        </button>
+      </div>
+    </div>
+
     <!-- MODALE DÉTAIL D'UN SONGE -->
     <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
       <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar flex flex-col">
@@ -229,7 +278,7 @@
   </div>
 
   <script>
-    // --- DICTIONNAIRE MULTILINGUE (FR, EN, ES, PT) ---
+    // --- DICTIONNAIRE MULTILINGUE ---
     const translations = {
       fr: {
         onbTitle1: "Bienvenue dans Onira", onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
@@ -265,7 +314,6 @@
       }
     };
     
-    // (Ajoutez ES et PT sur le même modèle si besoin)
     function detectLanguage() {
       const userLang = navigator.language || navigator.userLanguage || 'fr';
       const shortLang = userLang.split('-')[0].toLowerCase();
@@ -279,9 +327,35 @@
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
       });
-      document.getElementById('btn-selfie').innerHTML = `📸 ${t.selfieBtn || 'Prendre un selfie'}`;
+      document.getElementById('btn-selfie').innerHTML = `📸 ${t.selfieSaved ? 'Prendre un selfie' : 'Prendre un selfie'}`;
     }
     applyTranslations();
+
+    // --- LIENS DE PAIEMENT STRIPE (PRODUCTION) ---
+    const STRIPE_LINKS = {
+      pack5: 'https://buy.stripe.com/fZu8wQ7D59D4fSt6am2Ry02',
+      pack15: 'https://buy.stripe.com/aFa8wQ5uX3eG5dPcyK2Ry01',
+      pack30: 'https://buy.stripe.com/6oUfZig9B02ucGh56i2Ry00'
+    };
+
+    function openRechargeModal() {
+      document.getElementById('recharge-modal').classList.remove('hidden');
+    }
+
+    function closeRechargeModal() {
+      document.getElementById('recharge-modal').classList.add('hidden');
+    }
+
+    function checkout(packKey) {
+      if (!currentUser || !currentUser.id) {
+        alert("Connexion en cours... Réessayez dans un instant.");
+        return;
+      }
+      const baseUrl = STRIPE_LINKS[packKey];
+      // Transmission de l'ID utilisateur à Stripe pour créditer le bon compte
+      const checkoutUrl = `${baseUrl}?client_reference_id=${encodeURIComponent(currentUser.id)}`;
+      window.location.href = checkoutUrl;
+    }
 
     // --- BASE DE DONNÉES LOCALE INDEXEDDB ---
     const DB_NAME = 'OniraLocalDB';
@@ -347,7 +421,7 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const max_size = 512; // Compression légère pour l'Edge Function
+          const max_size = 512;
           let w = img.width, h = img.height;
           if (w > h) { if (w > max_size) { h *= max_size / w; w = max_size; } } 
           else { if (h > max_size) { w *= max_size / h; h = max_size; } }
@@ -356,10 +430,8 @@
           canvas.getContext('2d').drawImage(img, 0, 0, w, h);
           const base64 = canvas.toDataURL('image/jpeg', 0.8);
           
-          // Sauvegarde temporaire du Base64
           localStorage.setItem('onira_avatar_base64', base64);
           
-          // Mise à jour visuelle
           document.getElementById('avatar-preview').src = base64;
           document.getElementById('avatar-preview').classList.remove('hidden');
           document.getElementById('avatar-icon').classList.add('hidden');
@@ -374,17 +446,16 @@
       reader.readAsDataURL(file);
     }
 
-    // Extraction en arrière-plan des traits physiques (sans bloquer l'utilisateur)
     async function extractAvatarDescription() {
       const base64 = localStorage.getItem('onira_avatar_base64');
       if (!base64 || localStorage.getItem('onira_avatar_desc')) return;
       
       try {
-        const { data, error } = await supabaseClient.functions.invoke('analyze-avatar', {
+        const { data } = await supabaseClient.functions.invoke('analyze-avatar', {
           body: { imageBase64: base64 }
         });
         if (data && data.description) {
-          localStorage.setItem('onira_avatar_desc', data.description); // On stocke la description textuelle
+          localStorage.setItem('onira_avatar_desc', data.description);
         }
       } catch (e) { console.warn("Erreur extraction avatar", e); }
     }
@@ -396,7 +467,7 @@
       currentSlide++;
       document.getElementById(`slide-${currentSlide}`).classList.remove('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#e2d7c5]', 'bg-[#9e7d3b]');
-      if (currentSlide === 3) { // Dernier slide (Selfie)
+      if (currentSlide === 3) {
         document.getElementById('btn-next-slide').classList.add('hidden');
         document.getElementById('btn-start-app').classList.remove('hidden');
       }
@@ -412,7 +483,7 @@
       } else {
         localStorage.setItem('onira_onboarding_done', 'true');
         document.getElementById('screen-onboarding').classList.add('hidden');
-        extractAvatarDescription(); // Lancement de l'analyse en arrière-plan
+        extractAvatarDescription();
       }
     }
 
@@ -424,7 +495,7 @@
         onboardingScreen.classList.add('hidden');
         await fetchUserCredits();
         await loadLocalDreams();
-        extractAvatarDescription(); // Reprise au cas où la session a été rechargée trop vite
+        extractAvatarDescription();
       } else {
         if (!localStorage.getItem('onira_onboarding_done')) onboardingScreen.classList.remove('hidden');
         else await supabaseClient.auth.signInAnonymously();
@@ -437,7 +508,13 @@
       if (data) document.getElementById('credits-count').textContent = data.credits ?? 0;
     }
 
-    // --- LOGIQUE JOURNAL (Copie identique à l'existant) ---
+    // Actualisation dès le retour sur l'onglet ou l'app
+    window.addEventListener('focus', () => { if (currentUser) fetchUserCredits(); });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && currentUser) fetchUserCredits();
+    });
+
+    // --- LOGIQUE JOURNAL ---
     async function loadLocalDreams() {
       dreamsData = await dbGetAllDreams();
       renderJournal(); renderHomeRecents();
@@ -534,10 +611,9 @@
       };
     }
 
-    // --- GÉNÉRATION DU RÊVE (AVEC LE PROFIL PHYSIQUE DE L'UTILISATEUR) ---
+    // --- GÉNÉRATION DU RÊVE ---
     async function processDreamWithBackend(transcript) {
       try {
-        // On récupère le profil physique textuel s'il a été généré
         const userAppearance = localStorage.getItem('onira_avatar_desc');
         
         const { data, error } = await supabaseClient.functions.invoke('process-dream', {
@@ -545,7 +621,13 @@
         });
 
         if (error) throw new Error(error.message || "Erreur de traitement.");
-        if (data?.error === 'OUT_OF_CREDITS') return alert(t.outOfCredits), switchTab('home');
+        
+        // Si plus de crédits : redirection directe vers la boutique
+        if (data?.error === 'OUT_OF_CREDITS') {
+          switchTab('home');
+          openRechargeModal();
+          return;
+        }
         if (data?.error) throw new Error(data.error);
 
         currentAnalysis = { title: data.title, tag: data.tag, interpretation: data.interpretation, transcript: transcript, img: data.img };
