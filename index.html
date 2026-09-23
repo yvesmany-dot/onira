@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Onira - Journal de Rêves IA</title>
   
   <link rel="manifest" href="manifest.json">
@@ -14,6 +14,17 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    /* Empêche le rebond élastique et stabilise le cadre sur Safari iOS */
+    html, body {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+      touch-action: manipulation;
+    }
+
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f1ea; }
     .font-brand { font-family: 'Cinzel', serif; letter-spacing: 0.22em; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -197,7 +208,13 @@
 
     <!-- MODALE BOUTIQUE / RECHARGE -->
     <div id="recharge-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
-      <div class="w-full bg-[#faf8f5] rounded-t-[32px] p-6 border-t border-[#e2d7c5] max-h-[92%] overflow-y-auto no-scrollbar flex flex-col">
+      <div class="relative w-full bg-[#faf8f5] rounded-t-[32px] p-6 border-t border-[#e2d7c5] max-h-[92%] overflow-y-auto no-scrollbar flex flex-col">
+        
+        <!-- Bouton croix retour en haut à droite -->
+        <button onclick="closeRechargeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#eee8dc] text-[#6d645c] hover:bg-[#e2d9ca] flex items-center justify-center text-sm font-bold active:scale-90 transition-all z-10">
+          ✕
+        </button>
+
         <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-4 cursor-pointer" onclick="closeRechargeModal()"></div>
         
         <div class="text-center mb-5">
@@ -508,7 +525,7 @@
       if (data) document.getElementById('credits-count').textContent = data.credits ?? 0;
     }
 
-    // Actualisation dès le retour sur l'onglet ou l'app
+    // Actualisation dès le retour sur l'onglet ou l'application PWA
     window.addEventListener('focus', () => { if (currentUser) fetchUserCredits(); });
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && currentUser) fetchUserCredits();
