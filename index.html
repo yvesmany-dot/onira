@@ -25,8 +25,16 @@
       touch-action: manipulation;
     }
 
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f1ea; }
-    .font-brand { font-family: 'Cinzel', serif; letter-spacing: 0.22em; }
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      background-color: #f4f1ea; 
+    }
+    
+    .font-brand { 
+      font-family: 'Cinzel', serif; 
+      letter-spacing: 0.22em; 
+    }
+    
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
@@ -35,73 +43,96 @@
       box-shadow: 0 15px 35px rgba(230, 200, 160, 0.35), 0 0 25px rgba(210, 220, 255, 0.4);
       transition: all 0.3s ease;
     }
-    .orb-pulse { animation: pulse-soft 3.2s ease-in-out infinite; }
+    
+    .orb-pulse { 
+      animation: pulse-soft 3.2s ease-in-out infinite; 
+    }
+    
     @keyframes pulse-soft {
       0%, 100% { transform: scale(1); filter: brightness(1); }
       50% { transform: scale(1.04); filter: brightness(1.08); box-shadow: 0 20px 45px rgba(230, 195, 140, 0.5); }
     }
-    .recording-active { animation: pulse-rec 1s ease-in-out infinite alternate !important; border: 2px solid rgba(255, 100, 100, 0.3); }
+    
+    .recording-active { 
+      animation: pulse-rec 1s ease-in-out infinite alternate !important; 
+      border: 3px solid rgba(239, 68, 68, 0.6) !important; 
+    }
+    
     @keyframes pulse-rec {
-      from { transform: scale(0.96); filter: brightness(1.05); }
-      to { transform: scale(1.08); filter: brightness(1.2); box-shadow: 0 0 50px rgba(245, 100, 100, 0.4); }
+      from { transform: scale(0.97); filter: brightness(1.05); }
+      to { transform: scale(1.06); filter: brightness(1.2); box-shadow: 0 0 45px rgba(245, 100, 100, 0.45); }
+    }
+
+    /* Empêche les éléments visuels internes de bloquer le tapotement sur smartphone */
+    #orb * {
+      pointer-events: none;
     }
   </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-0 sm:p-4 select-none bg-[#f4f1ea]">
 
-  <div class="relative w-full max-w-[390px] h-[100dvh] sm:h-[844px] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border-[6px] border-[#e8e2d8]">
+  <!-- CADRE PRINCIPAL (Responsive bureau & smartphone) -->
+  <div class="relative w-full max-w-[390px] h-[100dvh] sm:h-[min(844px,92vh)] bg-[#faf8f5] text-[#2d2926] rounded-none sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border-[6px] border-[#e8e2d8]">
 
     <!-- ÉCRAN ONBOARDING -->
-    <div id="screen-onboarding" class="hidden absolute inset-0 z-[60] bg-[#faf8f5] flex flex-col justify-between p-6 sm:rounded-[38px]">
-      <div class="flex-1 flex flex-col items-center justify-center text-center relative overflow-hidden mt-8">
+    <div id="screen-onboarding" class="hidden absolute inset-0 z-[60] bg-[#faf8f5] flex flex-col justify-between p-6 sm:rounded-[38px] overflow-y-auto no-scrollbar">
+      <div class="flex-1 flex flex-col items-center justify-center text-center relative overflow-hidden mt-6 min-h-[360px]">
         
         <!-- Slide 0 -->
         <div id="slide-0" class="slide-content absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500">
-          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">✨</div>
+          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl shadow-sm">✨</div>
           <h2 data-i18n="onbTitle1" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
           <p data-i18n="onbDesc1" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
         <!-- Slide 1 -->
         <div id="slide-1" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
-          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">🎙️</div>
+          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl shadow-sm">🎙️</div>
           <h2 data-i18n="onbTitle2" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
           <p data-i18n="onbDesc2" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
         <!-- Slide 2 -->
         <div id="slide-2" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
-          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl">📖</div>
+          <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl shadow-sm">📖</div>
           <h2 data-i18n="onbTitle3" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
           <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
-        <!-- Slide 3 (SELFIE AVATAR) -->
+        <!-- Slide 3 (PORTRAIT / SELFIE - 100% OPTIONNEL) -->
         <div id="slide-3" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
-          <div class="relative w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
+          <div class="relative w-24 h-24 mb-4 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
             <img id="avatar-preview" src="" class="hidden w-full h-full object-cover">
             <span id="avatar-icon" class="text-3xl">👤</span>
           </div>
-          <h2 data-i18n="onbTitle4" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
-          <p data-i18n="onbDesc4" class="text-xs text-[#524b45] leading-relaxed px-4 mb-5"></p>
+          <h2 data-i18n="onbTitle4" class="text-lg font-brand font-bold text-[#9e7d3b] mb-2"></h2>
+          <p data-i18n="onbDesc4" class="text-xs text-[#524b45] leading-relaxed px-4 mb-4"></p>
           
           <input type="file" id="camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfie(event)">
-          <button id="btn-selfie" onclick="document.getElementById('camera-input').click()" class="px-5 py-2.5 bg-white border border-[#e2d7c5] text-[#9e7d3b] rounded-full text-xs font-bold shadow-sm hover:bg-[#faf8f5] transition-all">📸 Prendre un selfie</button>
-          <p class="text-[9px] text-[#a3978b] mt-3 px-6 italic">La photo reste sur votre appareil, elle n'est utilisée que pour analyser vos traits.</p>
+          
+          <div class="flex flex-col items-center gap-2 w-full max-w-[220px]">
+            <button id="btn-selfie" type="button" onclick="document.getElementById('camera-input').click()" class="w-full px-5 py-2.5 bg-white border border-[#caa255] text-[#9e7d3b] rounded-full text-xs font-bold shadow-sm hover:bg-[#faf8f5] active:scale-95 transition-all">
+              📸 Prendre un selfie
+            </button>
+            <button type="button" onclick="finishOnboarding()" class="text-[11px] text-[#8c827a] hover:text-[#524b45] underline py-1 transition-all">
+              Passer cette étape →
+            </button>
+          </div>
+          <p class="text-[9px] text-[#a3978b] mt-3 px-6 italic">La photo reste sur votre appareil et sert uniquement à personnaliser vos songes.</p>
         </div>
 
       </div>
 
       <!-- Boutons Onboarding -->
-      <div class="mb-6 flex flex-col items-center w-full">
-        <div class="flex gap-2 mb-8">
+      <div class="mb-4 flex flex-col items-center w-full flex-shrink-0">
+        <div class="flex gap-2 mb-6">
           <div id="dot-0" class="w-2 h-2 rounded-full bg-[#9e7d3b] transition-all"></div>
           <div id="dot-1" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-2" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-3" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
         </div>
-        <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] transition-all"></button>
-        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] transition-all"></button>
+        <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
+        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
       </div>
     </div>
 
@@ -126,12 +157,20 @@
       </header>
 
       <main class="flex-1 flex flex-col items-center justify-evenly px-5 py-2 min-h-0">
-        <div id="orb" class="w-40 h-40 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all">
-          <div class="px-3.5 py-1 bg-white/80 backdrop-blur-md rounded-full border border-white flex items-center shadow-sm">
+        <!-- ORBE VOCAL AMÉLIORÉ (Bouton interactif avec zone tactile optimisée) -->
+        <button 
+          id="orb" 
+          type="button"
+          onclick="handleRecordAction()"
+          style="touch-action: manipulation; -webkit-tap-highlight-color: transparent;"
+          class="w-40 h-40 rounded-full orb-glow orb-pulse flex flex-col items-center justify-center relative cursor-pointer active:scale-95 transition-all outline-none border-0"
+        >
+          <div id="orb-center-icon" class="text-2xl mb-1 transition-all">✨</div>
+          <div class="px-3.5 py-1 bg-white/85 backdrop-blur-md rounded-full border border-white flex items-center shadow-sm">
             <div id="record-indicator" class="w-2 h-2 rounded-full bg-[#caa255] mr-2"></div>
             <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-bold text-[#7c6332]"></span>
           </div>
-        </div>
+        </button>
 
         <div class="text-center px-2 max-w-[280px]">
           <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]"></h2>
@@ -166,7 +205,7 @@
     <div id="screen-result" class="hidden flex-1 flex flex-col overflow-y-auto no-scrollbar p-4">
       <div class="flex justify-between items-center mb-2.5">
         <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]"></span>
-        <button onclick="switchTab('home')" class="text-xs text-[#8c827a] p-1">✕</button>
+        <button onclick="switchTab('home')" class="text-xs text-[#8c827a] p-1 font-bold">✕</button>
       </div>
 
       <div class="relative rounded-2xl overflow-hidden shadow-md h-48 border border-[#e5ded2] mb-3 bg-[#f0ebd8]">
@@ -192,7 +231,7 @@
         <p id="result-transcript" class="text-[11px] text-[#635b54] italic leading-relaxed"></p>
       </div>
 
-      <button id="save-btn" onclick="saveDream()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all"></button>
+      <button id="save-btn" onclick="saveDream()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all mb-4"></button>
     </div>
 
     <!-- ÉCRAN 4 : JOURNAL -->
@@ -207,11 +246,11 @@
     </div>
 
     <!-- MODALE BOUTIQUE / RECHARGE -->
-    <div id="recharge-modal" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
-      <div class="relative w-full bg-[#faf8f5] rounded-t-[32px] p-6 border-t border-[#e2d7c5] max-h-[92%] overflow-y-auto no-scrollbar flex flex-col">
+    <div id="recharge-modal" onclick="if(event.target === this) closeRechargeModal()" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
+      <div class="relative w-full bg-[#faf8f5] rounded-t-[32px] p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] border-t border-[#e2d7c5] max-h-[92%] overflow-y-auto no-scrollbar flex flex-col">
         
         <!-- Bouton croix retour en haut à droite -->
-        <button onclick="closeRechargeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#eee8dc] text-[#6d645c] hover:bg-[#e2d9ca] flex items-center justify-center text-sm font-bold active:scale-90 transition-all z-10">
+        <button onclick="closeRechargeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#eee8dc] text-[#6d645c] hover:bg-[#e2d9ca] flex items-center justify-center text-sm font-bold active:scale-90 transition-all z-10" aria-label="Fermer">
           ✕
         </button>
 
@@ -260,23 +299,33 @@
       </div>
     </div>
 
-    <!-- MODALE DÉTAIL D'UN SONGE -->
-    <div id="dream-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end justify-center">
-      <div class="w-full bg-[#faf8f5] rounded-t-[28px] p-5 border-t border-[#e2d7c5] max-h-[88%] overflow-y-auto no-scrollbar flex flex-col">
-        <div class="w-8 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
-        <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-44 border border-[#e5ded2] flex-shrink-0">
+    <!-- MODALE DÉTAIL D'UN SONGE (Améliorée avec bouton croix et défilement complet) -->
+    <div id="dream-modal" onclick="if(event.target === this) closeModal()" class="hidden absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end justify-center">
+      <div class="relative w-full bg-[#faf8f5] rounded-t-[28px] p-5 pb-[calc(2.5rem+env(safe-area-inset-bottom))] border-t border-[#e2d7c5] max-h-[90%] overflow-y-auto no-scrollbar flex flex-col">
+        
+        <!-- Croix de fermeture en haut à droite -->
+        <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 border border-[#e2d7c5] text-[#6d645c] hover:bg-[#eee8dc] flex items-center justify-center text-sm font-bold shadow-sm active:scale-90 transition-all z-20" aria-label="Fermer">
+          ✕
+        </button>
+
+        <!-- Poignée visuelle de glissement -->
+        <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
+        
+        <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-48 border border-[#e5ded2] flex-shrink-0 bg-[#e8e2d5]">
           <img id="modal-img" src="" class="w-full h-full object-cover">
         </div>
-        <h2 id="modal-title" class="text-sm font-bold text-[#2d2926]"></h2>
+        
+        <h2 id="modal-title" class="text-sm font-bold text-[#2d2926] pr-8"></h2>
         <p id="modal-date" class="text-[9px] text-[#91867c] mb-2"></p>
-        <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db]"></p>
-        <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2"></p>
+        
+        <p id="modal-interpretation" class="text-xs text-[#524b45] leading-relaxed bg-white p-3 rounded-xl border border-[#eee7db] shadow-sm"></p>
+        <p id="modal-transcript" class="text-[11px] text-[#6d645c] italic bg-[#f2ece2]/60 p-3 rounded-xl mt-2 border border-[#eee7db]"></p>
         
         <div class="flex gap-2 mt-4 flex-shrink-0">
-          <button onclick="deleteDream()" class="w-14 py-2.5 bg-[#fff0f0] text-red-500 rounded-xl border border-red-100 hover:bg-red-50 flex items-center justify-center transition-all">
+          <button onclick="deleteDream()" class="w-14 py-2.5 bg-[#fff0f0] text-red-500 rounded-xl border border-red-100 hover:bg-red-50 flex items-center justify-center transition-all" title="Supprimer ce rêve">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
           </button>
-          <button onclick="closeModal()" data-i18n="modalClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold transition-all"></button>
+          <button onclick="closeModal()" data-i18n="modalClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all"></button>
         </div>
       </div>
     </div>
@@ -301,7 +350,7 @@
         onbTitle1: "Bienvenue dans Onira", onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
         onbTitle2: "Ne tapez plus, parlez.", onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute.",
         onbTitle3: "Le journal de vos rêves", onbDesc3: "Un espace 100% privé, stocké sur votre téléphone. Profitez de 2 songes offerts.",
-        onbTitle4: "Votre reflet onirique", onbDesc4: "Prenez un selfie. L'IA s'inspirera de vos traits pour vous intégrer dans les illustrations de vos songes.",
+        onbTitle4: "Votre reflet onirique (Optionnel)", onbDesc4: "Prenez un selfie pour que l'IA personnalise les illustrations de vos songes avec vos traits. Vous pourrez l'ajouter à tout moment dans votre profil.",
         selfieSaved: "Photo enregistrée !", onbBtnNext: "Continuer", onbBtnStart: "Commencer mon voyage",
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
         recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Chargement des songes...",
@@ -310,14 +359,14 @@
         journalTitle: "Journal d'Onira", emptyJournal: "Votre journal est vide.", archived: "songes archivés", modalClose: "Fermer",
         outOfCredits: "Vous avez utilisé vos 2 songes offerts. Rechargez vos crédits pour continuer.",
         deleteConfirm: "Voulez-vous vraiment supprimer ce rêve définitivement ?", navHome: "Accueil", navJournal: "Journal",
-        listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe.", saving: "Sauvegarde en cours...",
+        listening: "Écoute en cours... Parlez, puis réappuyez sur l'orbe pour terminer.", saving: "Sauvegarde en cours...",
         aiLangName: "FRANÇAIS", voiceLangCode: "fr-FR"
       },
       en: {
         onbTitle1: "Welcome to Onira", onbDesc1: "The first AI that decodes the secrets of your subconscious.",
         onbTitle2: "Don't type, speak.", onbDesc2: "Upon waking, simply speak your dream aloud, Onira listens.",
         onbTitle3: "Your dream journal", onbDesc3: "A 100% private space on your phone. Enjoy 2 free dreams.",
-        onbTitle4: "Your dream reflection", onbDesc4: "Take a selfie. The AI will use your features to place you inside your dream illustrations.",
+        onbTitle4: "Your dream reflection (Optional)", onbDesc4: "Take a selfie so the AI can use your features for your dream illustrations. You can also add it later in your profile.",
         selfieSaved: "Photo saved!", onbBtnNext: "Continue", onbBtnStart: "Begin my journey",
         recordBadge: "Record", stopBadge: "Stop", instructionTitle: "Tap the orb to speak", instructionSub: "Speak freely upon waking",
         recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Loading dreams...",
@@ -344,7 +393,7 @@
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
       });
-      document.getElementById('btn-selfie').innerHTML = `📸 ${t.selfieSaved ? 'Prendre un selfie' : 'Prendre un selfie'}`;
+      document.getElementById('btn-selfie').innerHTML = `📸 ${localStorage.getItem('onira_avatar_base64') ? t.selfieSaved : 'Prendre un selfie'}`;
     }
     applyTranslations();
 
@@ -369,7 +418,6 @@
         return;
       }
       const baseUrl = STRIPE_LINKS[packKey];
-      // Transmission de l'ID utilisateur à Stripe pour créditer le bon compte
       const checkoutUrl = `${baseUrl}?client_reference_id=${encodeURIComponent(currentUser.id)}`;
       window.location.href = checkoutUrl;
     }
@@ -456,7 +504,7 @@
           const btn = document.getElementById('btn-selfie');
           btn.innerHTML = `✅ ${t.selfieSaved}`;
           btn.classList.replace('text-[#9e7d3b]', 'text-green-600');
-          btn.classList.replace('border-[#e2d7c5]', 'border-green-300');
+          btn.classList.replace('border-[#caa255]', 'border-green-400');
         };
         img.src = e.target.result;
       };
@@ -474,7 +522,7 @@
         if (data && data.description) {
           localStorage.setItem('onira_avatar_desc', data.description);
         }
-      } catch (e) { console.warn("Erreur extraction avatar", e); }
+      } catch (e) { console.warn("Extraction avatar non disponible", e); }
     }
 
     // --- NAVIGATION ONBOARDING ---
@@ -525,7 +573,6 @@
       if (data) document.getElementById('credits-count').textContent = data.credits ?? 0;
     }
 
-    // Actualisation dès le retour sur l'onglet ou l'application PWA
     window.addEventListener('focus', () => { if (currentUser) fetchUserCredits(); });
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && currentUser) fetchUserCredits();
@@ -605,7 +652,10 @@
       document.getElementById('dream-modal').classList.remove('hidden');
     }
     
-    function closeModal() { document.getElementById('dream-modal').classList.add('hidden'); currentDreamIndex = null; }
+    function closeModal() { 
+      document.getElementById('dream-modal').classList.add('hidden'); 
+      currentDreamIndex = null; 
+    }
 
     function switchTab(tab) {
       ['home', 'journal', 'loading', 'result'].forEach(s => document.getElementById(`screen-${s}`)?.classList.add('hidden'));
@@ -615,17 +665,103 @@
       if (targetBtn) targetBtn.classList.add('text-[#a88644]', 'font-semibold');
     }
 
-    // --- RECONNAISSANCE VOCALE ---
-    let isRecording = false, recognition, accumulatedSpeech = "";
+    // --- RECONNAISSANCE VOCALE & ORBE ---
+    let isRecording = false;
+    let recognition = null;
+    let accumulatedSpeech = "";
+
+    function resetOrbUI() {
+      isRecording = false;
+      const orb = document.getElementById('orb');
+      const badge = document.getElementById('badge-text');
+      const dot = document.getElementById('record-indicator');
+      const centerIcon = document.getElementById('orb-center-icon');
+
+      orb.classList.remove('recording-active');
+      badge.textContent = t.recordBadge;
+      badge.classList.replace('text-red-500', 'text-[#7c6332]');
+      dot.classList.replace('bg-red-500', 'bg-[#caa255]');
+      if (centerIcon) centerIcon.textContent = '✨';
+    }
+
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition(); recognition.continuous = true; recognition.interimResults = true; recognition.lang = t.voiceLangCode;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = t.voiceLangCode;
+
       recognition.onresult = (event) => {
         let fullTranscript = "";
-        for (let i = 0; i < event.results.length; ++i) fullTranscript += event.results[i][0].transcript + " ";
+        for (let i = 0; i < event.results.length; ++i) {
+          fullTranscript += event.results[i][0].transcript + " ";
+        }
         accumulatedSpeech = fullTranscript.trim();
-        if (accumulatedSpeech) document.getElementById('instruction-sub').textContent = accumulatedSpeech;
+        if (accumulatedSpeech) {
+          document.getElementById('instruction-sub').textContent = accumulatedSpeech;
+        }
       };
+
+      recognition.onerror = (e) => {
+        console.warn("Erreur reconnaissance audio:", e.error);
+        if (e.error === 'not-allowed') {
+          alert("Accès micro refusé. Veuillez autoriser le microphone dans Safari/Chrome.");
+          resetOrbUI();
+        }
+      };
+
+      recognition.onend = () => {
+        // Maintient la cohérence d'état si Safari coupe le micro silencieusement
+        if (isRecording && accumulatedSpeech.trim().length === 0) {
+          resetOrbUI();
+        }
+      };
+    }
+
+    function handleRecordAction() {
+      if (!currentUser) return;
+      if (!recognition) return alert("Microphone non supporté sur ce navigateur.");
+
+      const orb = document.getElementById('orb');
+      const badge = document.getElementById('badge-text');
+      const dot = document.getElementById('record-indicator');
+      const centerIcon = document.getElementById('orb-center-icon');
+
+      if (!isRecording) {
+        // Démarrage de l'enregistrement
+        isRecording = true;
+        accumulatedSpeech = "";
+        try { 
+          recognition.start(); 
+        } catch(e) {
+          console.warn("Échec lancement SpeechRecognition:", e);
+        }
+
+        orb.classList.add('recording-active');
+        badge.textContent = t.stopBadge;
+        badge.classList.replace('text-[#7c6332]', 'text-red-500');
+        dot.classList.replace('bg-[#caa255]', 'bg-red-500');
+        if (centerIcon) centerIcon.textContent = '⏹';
+        document.getElementById('instruction-sub').textContent = t.listening;
+      } else {
+        // Arrêt immédiat de l'enregistrement
+        try { 
+          recognition.stop(); 
+        } catch(e) {
+          try { recognition.abort(); } catch(err) {}
+        }
+
+        resetOrbUI();
+
+        const textToProcess = accumulatedSpeech.trim();
+        if (textToProcess) {
+          switchTab('loading');
+          processDreamWithBackend(textToProcess);
+        } else {
+          document.getElementById('instruction-sub').textContent = t.instructionSub;
+          alert("Aucune parole détectée. Racontez votre songe à voix haute avant d'arrêter.");
+        }
+      }
     }
 
     // --- GÉNÉRATION DU RÊVE ---
@@ -639,7 +775,6 @@
 
         if (error) throw new Error(error.message || "Erreur de traitement.");
         
-        // Si plus de crédits : redirection directe vers la boutique
         if (data?.error === 'OUT_OF_CREDITS') {
           switchTab('home');
           openRechargeModal();
@@ -647,7 +782,13 @@
         }
         if (data?.error) throw new Error(data.error);
 
-        currentAnalysis = { title: data.title, tag: data.tag, interpretation: data.interpretation, transcript: transcript, img: data.img };
+        currentAnalysis = { 
+          title: data.title, 
+          tag: data.tag, 
+          interpretation: data.interpretation, 
+          transcript: transcript, 
+          img: data.img 
+        };
 
         document.getElementById('result-title').textContent = currentAnalysis.title;
         document.getElementById('result-badge').textContent = currentAnalysis.tag;
@@ -656,31 +797,18 @@
         
         const imgEl = document.getElementById('result-img');
         imgEl.src = currentAnalysis.img;
-        imgEl.onload = () => { imgEl.classList.remove('hidden'); document.getElementById('result-img-placeholder').classList.add('hidden'); };
+        imgEl.onload = () => { 
+          imgEl.classList.remove('hidden'); 
+          document.getElementById('result-img-placeholder').classList.add('hidden'); 
+        };
 
         await fetchUserCredits();
         switchTab('result');
-      } catch (err) { alert(err.message); switchTab('home'); }
-    }
-
-    function handleRecordAction() {
-      if (!currentUser) return;
-      if (!recognition) return alert("Micro non supporté.");
-      
-      const orb = document.getElementById('orb'), badge = document.getElementById('badge-text'), dot = document.getElementById('record-indicator');
-      if (!isRecording) {
-        isRecording = true; accumulatedSpeech = "";
-        try { recognition.start(); } catch(e) {}
-        orb.classList.add('recording-active'); badge.textContent = t.stopBadge; badge.classList.replace('text-[#7c6332]', 'text-red-500'); dot.classList.replace('bg-[#caa255]', 'bg-red-500'); document.getElementById('instruction-sub').textContent = t.listening;
-      } else {
-        isRecording = false; try { recognition.stop(); } catch(e) {}
-        orb.classList.remove('recording-active'); badge.textContent = t.recordBadge; badge.classList.replace('text-red-500', 'text-[#7c6332]'); dot.classList.replace('bg-red-500', 'bg-[#caa255]');
-        const textToProcess = accumulatedSpeech.trim();
-        if (textToProcess) { switchTab('loading'); processDreamWithBackend(textToProcess); } 
-        else { document.getElementById('instruction-sub').textContent = t.instructionSub; alert("Aucune parole détectée."); }
+      } catch (err) { 
+        alert(err.message); 
+        switchTab('home'); 
       }
     }
-    document.getElementById('orb').addEventListener('click', handleRecordAction);
   </script>
 </body>
 </html>
