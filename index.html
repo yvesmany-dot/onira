@@ -96,28 +96,28 @@
           <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
         </div>
 
-        <!-- Slide 3 (Selfie + Formulaire) -->
+        <!-- Slide 3 (Formulaire fluide : Prénom + Email + Selfie) -->
         <div id="slide-3" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
-          <!-- Zone Selfie (Légèrement réduite pour laisser la place au formulaire) -->
-          <div class="relative w-16 h-16 mb-3 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
+          <div class="relative w-16 h-16 mb-2 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
             <img id="avatar-preview" src="" class="hidden w-full h-full object-cover">
             <span id="avatar-icon" class="text-2xl">👤</span>
           </div>
-          <h2 data-i18n="onbTitle4" class="text-base font-brand font-bold text-[#9e7d3b] mb-1"></h2>
-          <p data-i18n="onbDesc4" class="text-[10px] text-[#524b45] leading-relaxed px-4 mb-3"></p>
+          <h2 class="text-base font-brand font-bold text-[#9e7d3b] mb-3">Votre profil Onira</h2>
           
-          <input type="file" id="camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfie(event)">
-          
-          <div class="flex flex-col items-center gap-2 w-full max-w-[220px]">
-            <button id="btn-selfie" type="button" onclick="document.getElementById('camera-input').click()" class="w-full px-5 py-2 bg-white border border-[#caa255] text-[#9e7d3b] rounded-full text-xs font-bold shadow-sm hover:bg-[#faf8f5] active:scale-95 transition-all">
-              📸 Prendre un selfie
+          <div class="w-full max-w-[260px] flex flex-col gap-2.5">
+            <input type="text" id="input-prenom" placeholder="Votre prénom (ex: Marie)" class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
+            <input type="email" id="input-email" placeholder="Email (pour sécuriser vos achats)" class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
+            
+            <input type="file" id="camera-input" accept="image/*" capture="user" class="hidden" onchange="handleSelfie(event)">
+            <button id="btn-selfie" type="button" onclick="document.getElementById('camera-input').click()" class="w-full px-4 py-2 mt-1 bg-white border border-[#caa255] text-[#9e7d3b] rounded-xl text-xs font-bold shadow-sm hover:bg-[#faf8f5] active:scale-95 transition-all">
+              📸 Prendre un selfie (Optionnel)
             </button>
           </div>
         </div>
 
       </div>
 
-      <!-- Boutons et Formulaire Onboarding -->
+      <!-- Boutons Onboarding -->
       <div class="mb-4 flex flex-col items-center w-full flex-shrink-0">
         <div class="flex gap-2 mb-6" id="dots-container">
           <div id="dot-0" class="w-2 h-2 rounded-full bg-[#9e7d3b] transition-all"></div>
@@ -125,18 +125,10 @@
           <div id="dot-2" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-3" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
         </div>
-        
-        <!-- Bouton Suivant classique -->
         <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
         
-        <!-- Formulaire d'inscription (Apparaît sur la slide 3) -->
-        <form id="form-inscription" class="hidden w-full flex-col gap-3" onsubmit="handleInscription(event)">
-          <input type="text" id="input-prenom" placeholder="Votre prénom (ex: Marie)" required class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
-          <input type="email" id="input-email" placeholder="Votre adresse email" required class="w-full px-4 py-3 rounded-xl text-xs border border-[#e2d7c5] focus:outline-none focus:border-[#caa255] bg-white text-[#2d2926]">
-          <button type="submit" id="btn-submit-auth" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all">
-            Recevoir mon accès
-          </button>
-        </form>
+        <!-- Le bouton final déclenche la connexion instantanée -->
+        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
       </div>
     </div>
 
@@ -158,6 +150,7 @@
           </div>
         </div>
         <h1 class="font-brand text-[11px] font-bold text-[#9e7d3b] tracking-[0.28em] uppercase">ONIRA</h1>
+        
         <!-- TEXTE DYNAMIQUE: Bonjour Marie, mercredi 23 septembre -->
         <p id="texte-bonjour" class="text-xs font-semibold text-[#524b45] mt-1.5"></p>
       </header>
@@ -341,8 +334,7 @@
         onbTitle1: "Bienvenue dans Onira", onbDesc1: "La première intelligence artificielle qui décrypte les messages de votre inconscient.",
         onbTitle2: "Ne tapez plus, parlez.", onbDesc2: "Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute.",
         onbTitle3: "Le journal de vos rêves", onbDesc3: "Un espace 100% privé, stocké sur votre téléphone. Profitez de 2 songes offerts.",
-        onbTitle4: "Votre reflet onirique (Optionnel)", onbDesc4: "Prenez un selfie pour que l'IA personnalise les illustrations avec vos traits. Ensuite, remplissez vos informations.",
-        selfieSaved: "Photo enregistrée !", onbBtnNext: "Continuer", onbBtnStart: "Commencer mon voyage",
+        onbBtnNext: "Continuer", onbBtnStart: "Commencer mon voyage",
         recordBadge: "Enregistrer", stopBadge: "Arrêter", instructionTitle: "Appuyez sur l'orbe pour parler", instructionSub: "Racontez librement votre rêve",
         recentDreams: "Rêves récents", viewJournal: "Voir le journal →", syncing: "Chargement des songes...",
         loadingTitle: "Décryptage onirique...", loadingSub: "L'inconscient prend forme...",
@@ -357,8 +349,7 @@
         onbTitle1: "Welcome to Onira", onbDesc1: "The first AI that decodes the secrets of your subconscious.",
         onbTitle2: "Don't type, speak.", onbDesc2: "Upon waking, simply speak your dream aloud, Onira listens.",
         onbTitle3: "Your dream journal", onbDesc3: "A 100% private space on your phone. Enjoy 2 free dreams.",
-        onbTitle4: "Your dream reflection (Optional)", onbDesc4: "Take a selfie so the AI can use your features. Then fill in your details.",
-        selfieSaved: "Photo saved!", onbBtnNext: "Continue", onbBtnStart: "Begin my journey",
+        onbBtnNext: "Continue", onbBtnStart: "Begin my journey",
         recordBadge: "Record", stopBadge: "Stop", instructionTitle: "Tap the orb to speak", instructionSub: "Speak freely upon waking",
         recentDreams: "Recent dreams", viewJournal: "View journal →", syncing: "Loading dreams...",
         loadingTitle: "Dream decoding...", loadingSub: "The unconscious takes shape...",
@@ -384,11 +375,11 @@
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
       });
-      document.getElementById('btn-selfie').innerHTML = `📸 ${localStorage.getItem('onira_avatar_base64') ? t.selfieSaved : 'Prendre un selfie'}`;
+      document.getElementById('btn-selfie').innerHTML = `📸 ${localStorage.getItem('onira_avatar_base64') ? 'Selfie enregistré !' : 'Prendre un selfie (Optionnel)'}`;
     }
     applyTranslations();
 
-    // --- LIENS DE PAIEMENT STRIPE (INCHANGÉS, ILS ÉTAIENT DÉJÀ PARFAITS) ---
+    // --- LIENS DE PAIEMENT STRIPE ---
     const STRIPE_LINKS = {
       pack5: 'https://buy.stripe.com/fZu8wQ7D59D4fSt6am2Ry02',
       pack15: 'https://buy.stripe.com/aFa8wQ5uX3eG5dPcyK2Ry01',
@@ -409,7 +400,6 @@
         return;
       }
       const baseUrl = STRIPE_LINKS[packKey];
-      // Le code injecte automatiquement l'UUID ici sans erreur possible !
       const checkoutUrl = `${baseUrl}?client_reference_id=${encodeURIComponent(currentUser.id)}`;
       window.location.href = checkoutUrl;
     }
@@ -469,7 +459,7 @@
     let currentDreamIndex = null;
     let currentSlide = 0;
 
-    // --- GESTION DU SELFIE (ONBOARDING) ---
+    // --- GESTION DU SELFIE ---
     function handleSelfie(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -494,7 +484,7 @@
           document.getElementById('avatar-icon').classList.add('hidden');
           
           const btn = document.getElementById('btn-selfie');
-          btn.innerHTML = `✅ ${t.selfieSaved}`;
+          btn.innerHTML = `✅ Selfie enregistré !`;
           btn.classList.replace('text-[#9e7d3b]', 'text-green-600');
           btn.classList.replace('border-[#caa255]', 'border-green-400');
         };
@@ -506,18 +496,13 @@
     async function extractAvatarDescription() {
       const base64 = localStorage.getItem('onira_avatar_base64');
       if (!base64 || localStorage.getItem('onira_avatar_desc')) return;
-      
       try {
-        const { data } = await supabaseClient.functions.invoke('analyze-avatar', {
-          body: { imageBase64: base64 }
-        });
-        if (data && data.description) {
-          localStorage.setItem('onira_avatar_desc', data.description);
-        }
-      } catch (e) { console.warn("Extraction avatar non disponible", e); }
+        const { data } = await supabaseClient.functions.invoke('analyze-avatar', { body: { imageBase64: base64 } });
+        if (data && data.description) localStorage.setItem('onira_avatar_desc', data.description);
+      } catch (e) {}
     }
 
-    // --- NAVIGATION ONBOARDING ET FORMULAIRE MAGIQUE ---
+    // --- NAVIGATION ONBOARDING & VALIDATION SILENCIEUSE ---
     function nextOnboardingSlide() {
       document.getElementById(`slide-${currentSlide}`).classList.add('opacity-0', 'pointer-events-none');
       document.getElementById(`dot-${currentSlide}`).classList.replace('bg-[#9e7d3b]', 'bg-[#e2d7c5]');
@@ -527,37 +512,43 @@
       
       if (currentSlide === 3) {
         document.getElementById('btn-next-slide').classList.add('hidden');
-        document.getElementById('dots-container').classList.add('hidden');
-        document.getElementById('form-inscription').classList.remove('hidden');
-        document.getElementById('form-inscription').classList.add('flex');
+        document.getElementById('btn-start-app').classList.remove('hidden');
       }
     }
 
-    async function handleInscription(event) {
-      event.preventDefault();
-      const btn = document.getElementById('btn-submit-auth');
-      const prenom = document.getElementById('input-prenom').value;
-      const email = document.getElementById('input-email').value;
+    async function finishOnboarding() {
+      const btn = document.getElementById('btn-start-app');
+      const prenom = document.getElementById('input-prenom').value.trim();
+      const email = document.getElementById('input-email').value.trim();
 
-      btn.textContent = "Envoi en cours...";
-      btn.disabled = true;
+      if (!prenom) {
+        alert("Veuillez indiquer votre prénom pour personnaliser votre accueil.");
+        return;
+      }
 
-      // Envoi du lien par email via Supabase Auth
-      const { error } = await supabaseClient.auth.signInWithOtp({
-        email: email.trim().toLowerCase(),
-        options: {
-          data: { first_name: prenom.trim() },
-          emailRedirectTo: window.location.origin,
-        },
-      });
-
+      btn.textContent = "Création du profil...";
+      
+      // CONNEXION INVISIBLE : Crée un compte instantanément, SANS email à cliquer !
+      const { data, error } = await supabaseClient.auth.signInAnonymously();
+      
       if (error) {
-        alert("Erreur : " + error.message);
-        btn.textContent = "Recevoir mon accès";
-        btn.disabled = false;
+        alert("Erreur de connexion.");
+        btn.innerHTML = t.onbBtnStart;
       } else {
-        alert("Vérifiez vos emails ! Un lien de connexion vient de vous être envoyé.");
-        btn.textContent = "Lien envoyé !";
+        // Enregistre silencieusement le prénom et l'email dans la base de données
+        if (data.user) {
+          await supabaseClient.from('profiles').update({
+            first_name: prenom,
+            email: email || null
+          }).eq('id', data.user.id);
+        }
+
+        localStorage.setItem('onira_onboarding_done', 'true');
+        document.getElementById('screen-onboarding').classList.add('hidden');
+        extractAvatarDescription();
+        
+        // Met à jour la page d'accueil avec "Bonjour Marie"
+        fetchUserProfile();
       }
     }
 
@@ -567,14 +558,16 @@
       const onboardingScreen = document.getElementById('screen-onboarding');
 
       if (currentUser) {
-        // L'utilisateur est reconnu : on cache l'onboarding et on affiche l'accueil
         onboardingScreen.classList.add('hidden');
         await fetchUserProfile();
         await loadLocalDreams();
         extractAvatarDescription();
       } else {
-        // L'utilisateur n'est pas reconnu : on force le formulaire
-        onboardingScreen.classList.remove('hidden');
+        if (!localStorage.getItem('onira_onboarding_done')) {
+          onboardingScreen.classList.remove('hidden');
+        } else {
+          await supabaseClient.auth.signInAnonymously();
+        }
       }
     });
 
@@ -585,7 +578,7 @@
       if (data) {
         document.getElementById('credits-count').textContent = data.credits ?? 0;
         
-        // --- MISE À JOUR DU "BONJOUR MARIE" DYNAMIQUE ---
+        // --- MISE À JOUR DU "BONJOUR MARIE" ---
         const prenom = data.first_name || "Rêveur";
         const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
         const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
@@ -727,7 +720,6 @@
       };
 
       recognition.onerror = (e) => {
-        console.warn("Erreur reconnaissance audio:", e.error);
         if (e.error === 'not-allowed') {
           alert("Accès micro refusé. Veuillez autoriser le microphone dans Safari/Chrome.");
           resetOrbUI();
