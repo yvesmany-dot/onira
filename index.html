@@ -3,11 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Onira - Journal de Rêves IA</title>
   
+  <!-- SEO Primaire -->
+  <title>Onira | Journal de Rêves Vocal & Interprétation par IA</title>
+  <meta name="google-site-verification" content="X6ihNlu0x7qrkN0apcy5hKNIDz0-0cS4BApFD3cf6KU" />
+  <meta name="description" content="Enregistrez vos songes au réveil à la voix et découvrez leur interprétation immédiate grâce à l'IA d'Onira. Journal onirique privé, analyse psychologique et illustrations de vos rêves.">
+  <meta name="keywords" content="interprétation des rêves, journal de rêves, signification rêves, analyse onirique, IA rêves, audio journal intime, psychologie rêves">
+  <meta name="author" content="Onira">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://onira-app.com/">
+
+  <!-- PWA & Métadonnées Mobiles -->
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#faf8f5">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/Icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/Icon-512.png">
+
+  <!-- Open Graph (WhatsApp, Facebook, LinkedIn, iMessage) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://onira-app.com/">
+  <meta property="og:site_name" content="Onira">
+  <meta property="og:title" content="Onira | Journal de Rêves Vocal & IA">
+  <meta property="og:description" content="Racontez vos rêves à voix haute au réveil. L'IA d'Onira les retranscrit, les analyse et illustre vos songes dans un journal privé.">
+  <meta property="og:image" content="https://onira-app.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://onira-app.com/">
+  <meta name="twitter:title" content="Onira | Journal de Rêves Vocal & IA">
+  <meta name="twitter:description" content="Décodez les messages de votre inconscient grâce à une confidente IA à l'écoute de vos songes.">
+  <meta name="twitter:image" content="https://onira-app.com/og-image.jpg">
+
+  <!-- Données Structurées JSON-LD (Schema.org) pour Googlebot -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Onira",
+    "url": "https://onira-app.com/",
+    "description": "Application web d'analyse et d'illustration de rêves par intelligence artificielle vocale.",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    }
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -78,28 +126,28 @@
         <!-- Slide 0 -->
         <div id="slide-0" class="slide-content absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500">
           <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl shadow-sm">✨</div>
-          <h2 data-i18n="onbTitle1" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
-          <p data-i18n="onbDesc1" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+          <h2 data-i18n="onbTitle1" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3">Bienvenue dans Onira</h2>
+          <p data-i18n="onbDesc1" class="text-xs text-[#524b45] leading-relaxed px-4">La première intelligence artificielle qui décrypte les messages de votre inconscient.</p>
         </div>
 
         <!-- Slide 1 -->
         <div id="slide-1" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
           <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl shadow-sm">🎙️</div>
-          <h2 data-i18n="onbTitle2" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
-          <p data-i18n="onbDesc2" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+          <h2 data-i18n="onbTitle2" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3">Ne tapez plus, parlez.</h2>
+          <p data-i18n="onbDesc2" class="text-xs text-[#524b45] leading-relaxed px-4">Au réveil, gardez les yeux mi-clos. Confiez simplement votre rêve à voix haute, Onira écoute.</p>
         </div>
 
         <!-- Slide 2 -->
         <div id="slide-2" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
           <div class="w-24 h-24 mb-6 rounded-full orb-glow flex items-center justify-center text-3xl shadow-sm">📖</div>
-          <h2 data-i18n="onbTitle3" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3"></h2>
-          <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4"></p>
+          <h2 data-i18n="onbTitle3" class="text-xl font-brand font-bold text-[#9e7d3b] mb-3">Le journal de vos rêves</h2>
+          <p data-i18n="onbDesc3" class="text-xs text-[#524b45] leading-relaxed px-4">Un espace 100% privé, stocké sur votre téléphone. Profitez de 2 songes offerts.</p>
         </div>
 
         <!-- Slide 3 (Profil : Prénom, Email, Selfie) -->
         <div id="slide-3" class="slide-content absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
           <div class="relative w-16 h-16 mb-2 rounded-full orb-glow flex items-center justify-center overflow-hidden border-2 border-[#caa255] bg-white shadow-inner">
-            <img id="avatar-preview" src="" class="hidden w-full h-full object-cover">
+            <img id="avatar-preview" src="" class="hidden w-full h-full object-cover" alt="Aperçu selfie">
             <span id="avatar-icon" class="text-2xl">👤</span>
           </div>
           <h2 class="text-base font-brand font-bold text-[#9e7d3b] mb-3">Votre profil Onira</h2>
@@ -125,8 +173,8 @@
           <div id="dot-2" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
           <div id="dot-3" class="w-2 h-2 rounded-full bg-[#e2d7c5] transition-all"></div>
         </div>
-        <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
-        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all"></button>
+        <button id="btn-next-slide" onclick="nextOnboardingSlide()" data-i18n="onbBtnNext" class="w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-semibold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all">Continuer</button>
+        <button id="btn-start-app" onclick="finishOnboarding()" data-i18n="onbBtnStart" class="hidden w-full py-3.5 bg-[#9e7d3b] text-white rounded-xl text-xs font-bold shadow-lg hover:bg-[#886a30] active:scale-[0.99] transition-all">Commencer mon voyage</button>
       </div>
     </div>
 
@@ -162,22 +210,22 @@
           <div id="orb-center-icon" class="text-2xl mb-1 transition-all">✨</div>
           <div class="px-3.5 py-1 bg-white/85 backdrop-blur-md rounded-full border border-white flex items-center shadow-sm">
             <div id="record-indicator" class="w-2 h-2 rounded-full bg-[#caa255] mr-2"></div>
-            <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-bold text-[#7c6332]"></span>
+            <span id="badge-text" data-i18n="recordBadge" class="text-[11px] font-bold text-[#7c6332]">Enregistrer</span>
           </div>
         </button>
 
         <div class="text-center px-2 max-w-[280px]">
-          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]"></h2>
-          <p id="instruction-sub" data-i18n="instructionSub" class="text-[10px] text-[#91867c] mt-0.5 min-h-[1.2rem] line-clamp-2"></p>
+          <h2 id="instruction-title" data-i18n="instructionTitle" class="text-xs font-semibold text-[#3b342f]">Appuyez sur l'orbe pour parler</h2>
+          <p id="instruction-sub" data-i18n="instructionSub" class="text-[10px] text-[#91867c] mt-0.5 min-h-[1.2rem] line-clamp-2">Racontez librement votre rêve</p>
         </div>
 
         <div class="w-full">
           <div class="flex justify-between items-center text-[10px] text-[#8e857c] px-1 mb-1.5 font-medium">
-            <span data-i18n="recentDreams"></span>
-            <button onclick="switchTab('journal')" data-i18n="viewJournal" class="text-[#a88644] text-[10px] hover:underline font-semibold"></button>
+            <span data-i18n="recentDreams">Rêves récents</span>
+            <button onclick="switchTab('journal')" data-i18n="viewJournal" class="text-[#a88644] text-[10px] hover:underline font-semibold">Voir le journal →</button>
           </div>
           <div id="home-recents-grid" class="grid grid-cols-2 gap-2">
-            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-2 italic" data-i18n="syncing"></div>
+            <div class="col-span-2 text-center text-[10px] text-[#a3978b] py-2 italic" data-i18n="syncing">Chargement des songes...</div>
           </div>
         </div>
       </main>
@@ -191,19 +239,19 @@
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
         </svg>
       </div>
-      <h3 id="loading-step" data-i18n="loadingTitle" class="text-xs font-semibold text-[#2d2926]"></h3>
-      <p id="loading-sub" data-i18n="loadingSub" class="text-[10px] text-[#8c827a] mt-1"></p>
+      <h3 id="loading-step" data-i18n="loadingTitle" class="text-xs font-semibold text-[#2d2926]">Décryptage onirique...</h3>
+      <p id="loading-sub" data-i18n="loadingSub" class="text-[10px] text-[#8c827a] mt-1">L'inconscient prend forme...</p>
     </div>
 
     <!-- ÉCRAN 3 : RÉSULTAT -->
     <div id="screen-result" class="hidden flex-1 flex flex-col overflow-y-auto no-scrollbar p-4">
       <div class="flex justify-between items-center mb-2.5">
-        <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]"></span>
+        <span data-i18n="newDream" class="text-[10px] uppercase font-bold tracking-widest text-[#a88644]">Nouveau Songe</span>
         <button onclick="switchTab('home')" class="text-xs text-[#8c827a] p-1 font-bold">✕</button>
       </div>
 
       <div class="relative rounded-2xl overflow-hidden shadow-md h-48 border border-[#e5ded2] mb-3 bg-[#f0ebd8]">
-        <img id="result-img" src="" class="w-full h-full object-cover hidden">
+        <img id="result-img" src="" class="w-full h-full object-cover hidden" alt="Illustration du songe">
         <div id="result-img-placeholder" class="text-center p-4 pt-16">
           <svg class="w-8 h-8 mx-auto text-[#caa255] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
         </div>
@@ -216,22 +264,22 @@
       </div>
 
       <div class="bg-white rounded-xl p-3.5 border border-[#eee7db] shadow-sm mb-2.5">
-        <h3 data-i18n="decryptionTitle" class="text-[10px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-1.5"></h3>
+        <h3 data-i18n="decryptionTitle" class="text-[10px] font-bold text-[#9e7d3b] uppercase tracking-wider mb-1.5">Décryptage Onira</h3>
         <p id="result-interpretation" class="text-xs text-[#524b45] leading-relaxed"></p>
       </div>
 
       <div class="bg-[#f2ece2]/60 rounded-xl p-3 border border-[#eee7db] mb-3">
-        <p data-i18n="yourStory" class="text-[9px] font-semibold text-[#8c827a] mb-1"></p>
+        <p data-i18n="yourStory" class="text-[9px] font-semibold text-[#8c827a] mb-1">Votre récit :</p>
         <p id="result-transcript" class="text-[11px] text-[#635b54] italic leading-relaxed"></p>
       </div>
 
-      <button id="save-btn" onclick="saveDream()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all mb-4"></button>
+      <button id="save-btn" onclick="saveDream()" data-i18n="saveBtn" class="w-full py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all mb-4">Conserver dans mon Journal</button>
     </div>
 
     <!-- ÉCRAN 4 : JOURNAL -->
     <div id="screen-journal" class="hidden flex-1 flex flex-col overflow-hidden">
       <header class="pt-4 sm:pt-6 pb-2.5 px-5 border-b border-[#eee8dc] bg-[#faf8f5]/90 flex-shrink-0">
-        <h1 data-i18n="journalTitle" class="text-base font-bold text-[#2d2926]"></h1>
+        <h1 data-i18n="journalTitle" class="text-base font-bold text-[#2d2926]">Journal d'Onira</h1>
         <p id="journal-count" class="text-[10px] text-[#91867c]">...</p>
       </header>
       <main class="flex-1 overflow-y-auto no-scrollbar p-3.5">
@@ -292,7 +340,7 @@
         <div class="w-10 h-1 bg-[#dcd4c7] rounded-full mx-auto mb-3 cursor-pointer" onclick="closeModal()"></div>
         
         <div class="relative rounded-2xl overflow-hidden shadow mb-3 h-48 border border-[#e5ded2] flex-shrink-0 bg-[#e8e2d5]">
-          <img id="modal-img" src="" class="w-full h-full object-cover">
+          <img id="modal-img" src="" class="w-full h-full object-cover" alt="Image du songe">
         </div>
         
         <h2 id="modal-title" class="text-sm font-bold text-[#2d2926] pr-8"></h2>
@@ -305,7 +353,7 @@
           <button onclick="deleteDream()" class="w-14 py-2.5 bg-[#fff0f0] text-red-500 rounded-xl border border-red-100 hover:bg-red-50 flex items-center justify-center transition-all" title="Supprimer ce rêve">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
           </button>
-          <button onclick="closeModal()" data-i18n="modalClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all"></button>
+          <button onclick="closeModal()" data-i18n="modalClose" class="flex-1 py-2.5 bg-[#9e7d3b] hover:bg-[#886a30] text-white rounded-xl text-xs font-semibold shadow transition-all">Fermer</button>
         </div>
       </div>
     </div>
@@ -314,11 +362,11 @@
     <nav class="bg-white/95 border-t border-[#ede7dc] px-12 pt-2.5 pb-[max(0.7rem,env(safe-area-inset-bottom))] flex justify-around text-[11px] text-[#968b80] flex-shrink-0">
       <button id="nav-home" onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-[#a88644] font-semibold">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-        <span data-i18n="navHome"></span>
+        <span data-i18n="navHome">Accueil</span>
       </button>
       <button id="nav-journal" onclick="switchTab('journal')" class="flex flex-col items-center gap-1 hover:text-[#2d2926]">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-        <span data-i18n="navJournal"></span>
+        <span data-i18n="navJournal">Journal</span>
       </button>
     </nav>
   </div>
@@ -371,7 +419,10 @@
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
       });
-      document.getElementById('btn-selfie').innerHTML = `📸 ${localStorage.getItem('onira_avatar_base64') ? 'Selfie enregistré !' : 'Prendre un selfie (Optionnel)'}`;
+      const btnSelfie = document.getElementById('btn-selfie');
+      if (btnSelfie) {
+        btnSelfie.innerHTML = `📸 ${localStorage.getItem('onira_avatar_base64') ? 'Selfie enregistré !' : 'Prendre un selfie (Optionnel)'}`;
+      }
     }
     applyTranslations();
 
@@ -523,11 +574,9 @@
         return;
       }
 
-      // 1. Enregistrement local immédiat
       localStorage.setItem('onira_user_name', prenomInput);
       localStorage.setItem('onira_onboarding_done', 'true');
 
-      // 2. Affichage direct à l'écran sans attendre le réseau
       const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
       const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
       const bonjourTexte = document.getElementById('texte-bonjour');
@@ -537,7 +586,6 @@
 
       btn.textContent = "Création du profil...";
 
-      // 3. Authentification Supabase avec les données transmises
       const { data, error } = await supabaseClient.auth.signInAnonymously({
         options: {
           data: {
@@ -583,7 +631,6 @@
     });
 
     async function fetchUserProfile() {
-      // Lecture prioritaire du prénom enregistré localement
       let prenom = localStorage.getItem('onira_user_name') || "Rêveur";
 
       if (currentUser) {
@@ -602,7 +649,6 @@
         }
       }
 
-      // Mise à jour du bandeau d'accueil
       const optionsDate = { weekday: 'long', day: 'numeric', month: 'long' };
       const dateDuJour = new Intl.DateTimeFormat(currentLang, optionsDate).format(new Date());
       const bonjourTexte = document.getElementById('texte-bonjour');
@@ -658,7 +704,7 @@
         const item = document.createElement('div');
         item.className = "bg-white/90 border border-[#eee7db] rounded-xl p-1.5 flex items-center gap-2 shadow-sm cursor-pointer hover:border-[#d9be85]";
         item.onclick = () => openModal(index);
-        item.innerHTML = `<img src="${dream.image_url}" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-[#eee]">
+        item.innerHTML = `<img src="${dream.image_url}" class="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-[#eee]" alt="${dream.title}">
           <div class="overflow-hidden text-left"><p class="text-[10px] font-semibold text-[#2d2926] truncate">${dream.title}</p><p class="text-[8px] text-[#9b9186]">${formatDate(dream.created_at)}</p></div>`;
         recentsGrid.appendChild(item);
       });
@@ -672,7 +718,7 @@
         const card = document.createElement('div');
         card.className = "bg-white rounded-xl overflow-hidden border border-[#eee7db] shadow-sm cursor-pointer";
         card.onclick = () => openModal(index);
-        card.innerHTML = `<div class="h-24 w-full relative bg-[#eee]"><img src="${dream.image_url}" class="w-full h-full object-cover"><span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span></div>
+        card.innerHTML = `<div class="h-24 w-full relative bg-[#eee]"><img src="${dream.image_url}" class="w-full h-full object-cover" alt="${dream.title}"><span class="absolute top-1.5 right-1.5 px-2 py-0.5 rounded-full text-[8px] bg-white/85 font-medium">${dream.tag}</span></div>
           <div class="p-2"><h3 class="font-semibold text-[11px] truncate">${dream.title}</h3><p class="text-[8px] text-[#91867c] mt-0.5">${formatDate(dream.created_at)}</p></div>`;
         grid.appendChild(card);
       });
@@ -683,6 +729,7 @@
       currentDreamIndex = index;
       const dream = dreamsData[index];
       document.getElementById('modal-img').src = dream.image_url;
+      document.getElementById('modal-img').alt = dream.title;
       document.getElementById('modal-title').textContent = dream.title;
       document.getElementById('modal-date').textContent = formatDate(dream.created_at);
       document.getElementById('modal-interpretation').textContent = dream.interpretation;
@@ -823,6 +870,7 @@
         
         const imgEl = document.getElementById('result-img');
         imgEl.src = currentAnalysis.img;
+        imgEl.alt = currentAnalysis.title;
         imgEl.onload = () => { 
           imgEl.classList.remove('hidden'); 
           document.getElementById('result-img-placeholder').classList.add('hidden'); 
